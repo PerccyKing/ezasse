@@ -13,9 +13,9 @@ import java.util.List;
 @Data
 public class EzasseNodeList<T> {
     /**
-     * 当前节点数据
+     * 当前节点
      */
-    private T curr;
+    private String curr;
 
     /**
      * 子节点数据

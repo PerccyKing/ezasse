@@ -25,6 +25,11 @@ public class EzasseConfig {
     private List<String> fileList;
 
     /**
+     * 分组顺序
+     */
+    private List<String> groupOrder;
+
+    /**
      * 开始限定符
      */
     private String delimiterStart;

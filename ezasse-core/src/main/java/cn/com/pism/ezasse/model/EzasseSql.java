@@ -28,4 +28,9 @@ public class EzasseSql {
      * 名称
      */
     private String name;
+
+    /**
+     * 父节点路径
+     */
+    private String parentPath;
 }

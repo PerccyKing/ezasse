@@ -15,6 +15,15 @@ public class EzasseConstants {
 
     public static final String CLASSPATH_PREFIX = "classpath:";
 
+    public static final String SQL_EXTENSION = ".sql";
+
+    public static final String MINUS_SIGN = "-";
+
+    public static final int ONE = 1;
+    public static final int TWO = 2;
+    public static final int THREE = 3;
+    public static final int FOUR = 4;
+
     /**
      * 开始界定符
      */
