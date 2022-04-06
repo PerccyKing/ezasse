@@ -13,7 +13,11 @@ public enum EzasseExceptionCode {
     /**
      * 未指定目录异常
      */
-    UNSPECIFIED_FOLDER_EXCEPTION("未指定目录","UNSPECIFIED_FOLDER"),
+    UNSPECIFIED_FOLDER_EXCEPTION("未指定目录", "UNSPECIFIED_FOLDER"),
+    /**
+     * 未指定分组
+     */
+    UNSPECIFIED_GROUP_EXCEPTION("未指定GROUP", "UNSPECIFIED_GROUP"),
     ;
 
     EzasseExceptionCode(String message, String code) {

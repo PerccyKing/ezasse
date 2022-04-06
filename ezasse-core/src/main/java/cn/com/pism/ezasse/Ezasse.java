@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 import static cn.com.pism.ezasse.EzasseConstants.*;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_FOLDER_EXCEPTION;
+import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_GROUP_EXCEPTION;
 
 
 /**
@@ -49,9 +50,54 @@ public class Ezasse {
     public void executeScript(EzasseConfig config) {
         //获取SQL文件列表
         List<EzasseSql> ezasseSqls = getEzasseSqlList(config);
-        //确认文件顺序
-        //确认数据源
-        //按文件执行SQL脚本
+        //对文件分组排序
+        Map<String, List<EzasseSql>> ezasseSqlMap = ezasseSqls.stream().collect(Collectors.groupingBy(EzasseSql::getGroup));
+        //排序
+        List<String> groupOrder = config.getGroupOrder();
+        if (CollectionUtils.isEmpty(groupOrder) && ezasseSqlMap.size() > 1) {
+            throw new EzasseException(UNSPECIFIED_GROUP_EXCEPTION);
+        }
+        if (CollectionUtils.isEmpty(groupOrder)) {
+            ezasseSqlMap.forEach((k, v) -> groupParsing(config, v));
+        } else {
+            groupOrder.forEach(order -> groupParsing(config, ezasseSqlMap.get(order)));
+        }
+    }
+
+    /**
+     * <p>
+     * 分组解析
+     * </p>
+     *
+     * @param config     : 配置
+     * @param ezasseSqls : sql对象
+     * @author PerccyKing
+     * @date 2022/04/06 上午 11:04
+     */
+    private void groupParsing(EzasseConfig config, List<EzasseSql> ezasseSqls) {
+        if (CollectionUtils.isNotEmpty(ezasseSqls)) {
+            //对list进行排序
+            ezasseSqls.stream().sorted((o1, o2) -> {
+                String order1 = StringUtils.isNotBlank(o1.getOrder()) ? o1.getOrder() : "000";
+                String order2 = StringUtils.isNotBlank(o2.getOrder()) ? o2.getOrder() : "000";
+                return Integer.parseInt(order1) - Integer.parseInt(order2);
+            }).forEach(sql -> doGroupParsing(config, sql));
+        }
+    }
+
+    /**
+     * <p>
+     * 解析SQL
+     * </p>
+     *
+     * @param config : 配置
+     * @param sql    : sql脚本信息
+     * @author PerccyKing
+     * @date 2022/04/06 上午 11:24
+     */
+    private void doGroupParsing(EzasseConfig config, EzasseSql sql) {
+        //获取SQL文件
+        
     }
 
     /**
@@ -154,7 +200,7 @@ public class Ezasse {
         String filePath = absolutePath.substring(0, absolutePath.lastIndexOf(BACK_SLASH) + 1);
         String[] split = fileName.split(MINUS_SIGN);
         EzasseSql ezasseSql = new EzasseSql();
-        ezasseSql.setGroup(split[0]);
+        ezasseSql.setGroup(split[0].replace(SQL_EXTENSION, ""));
         ezasseSql.setName(fileName);
         ezasseSql.setParentPath(filePath);
         for (int i = 1; i < split.length; i++) {
@@ -176,6 +222,7 @@ public class Ezasse {
         Ezasse ezasse = new Ezasse();
         EzasseConfig ezasseConfig = new EzasseConfig();
         ezasseConfig.setFolder("data");
+        ezasseConfig.setGroupOrder(Arrays.asList("data", "file"));
         ezasse.executeScript(ezasseConfig);
     }
 
