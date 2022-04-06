@@ -5,6 +5,7 @@ import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseSql;
 import cn.com.pism.resourcescanner.Scanner;
 import cn.com.pism.resourcescanner.*;
+import cn.hutool.core.io.FileUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -35,6 +36,11 @@ public class Ezasse {
 
     private List<SqlGroup> sqlGroups;
 
+    /**
+     * 配置
+     */
+    private EzasseConfig config;
+
     public Ezasse() {
         this.dataSourceMap = new HashMap<>(0);
     }
@@ -47,7 +53,7 @@ public class Ezasse {
      * @author PerccyKing
      * @date 2022/04/04 下午 11:18
      */
-    public void executeScript(EzasseConfig config) {
+    public void executeScript() {
         //获取SQL文件列表
         List<EzasseSql> ezasseSqls = getEzasseSqlList(config);
         //对文件分组排序
@@ -96,8 +102,88 @@ public class Ezasse {
      * @date 2022/04/06 上午 11:24
      */
     private void doGroupParsing(EzasseConfig config, EzasseSql sql) {
+        LinkedHashMap<String, String> scriptMap = new LinkedHashMap<>();
         //获取SQL文件
-        
+        List<String> lines = FileUtil.readLines(sql.getPath(), StandardCharsets.UTF_8);
+        //标记以下行是否全部都是SQL执行体
+        boolean isSqlBody = false;
+        //存放当前的SQL执行体
+        StringBuilder sqlLines = new StringBuilder();
+        //存放当前的SQL校验行
+        String checkLine = "";
+        for (String line : lines) {
+            //没有指定界定符
+            if (StringUtils.isAnyBlank(config.getDelimiterStart(), config.getDelimiterEnd())) {
+                if (isSqlBody && !isCheckLine(line)) {
+                    sqlLines.append(line).append("\n");
+                }
+                //校验是否该结束上一个循环
+                if (isSqlBody && isCheckLine(line)) {
+                    //标记结束
+                    isSqlBody = false;
+                    //存入map，并重置标记点
+                    scriptMap.put(checkLine, sqlLines.toString());
+                    checkLine = "";
+                    sqlLines = new StringBuilder();
+                }
+                // 判断当前行是否为关键字行
+                if (isCheckLine(line)) {
+                    isSqlBody = true;
+                    checkLine = line.substring(LINE_COMMENT.length() + 1);
+                }
+            }
+            //指定了界定符
+            if (StringUtils.isNoneBlank(config.getDelimiterStart(), config.getDelimiterEnd())) {
+                //当前行为结束界定符
+                boolean isEndLine = isSqlBody && isCheckLine(line);
+                if (line.startsWith(config.getDelimiterEnd()) || isEndLine) {
+                    //标记结束
+                    isSqlBody = false;
+                    //存入map，并重置标记点
+                    scriptMap.put(checkLine, sqlLines.toString());
+                    checkLine = "";
+                    sqlLines = new StringBuilder();
+                }
+                //当前行不是校验行，并且是sql执行体
+                if (isSqlBody && !isCheckLine(line)) {
+                    sqlLines.append(line).append("\n");
+                }
+                //当前行是否为关键字行
+                if (isCheckLine(line)) {
+                    checkLine = line.substring(LINE_COMMENT.length() + 1);
+                }
+                //当前行是开始界定符
+                if (line.startsWith(config.getDelimiterStart()) && StringUtils.isNotBlank(checkLine) && StringUtils.isBlank(sqlLines.toString())) {
+                    isSqlBody = true;
+                }
+            }
+        }
+        //没有指定限定符，还需要存一次map
+        if (StringUtils.isAnyBlank(config.getDelimiterStart(), config.getDelimiterEnd())) {
+            scriptMap.put(checkLine, sqlLines.toString());
+        }
+        scriptMap.forEach((k, v) -> {
+            log.info("{}-{}", k, v);
+        });
+    }
+
+    /**
+     * <p>
+     * 校验字符串是否为校验行
+     * </p>
+     *
+     * @param line : 处理行信息
+     * @return {@link boolean} true:是校验行，false：不是校验行
+     * @author PerccyKing
+     * @date 2022/04/06 下午 01:53
+     */
+    private boolean isCheckLine(String line) {
+        if (line.startsWith(LINE_COMMENT)) {
+            //以-- 开头，并且包含各个校验关键字
+            String checkLine = line.substring(LINE_COMMENT.length() + 1);
+            return StringUtils.startsWithAny(checkLine, config.getTable(), config.getChange(), config.getDefaultKeyWord());
+        }
+        return false;
     }
 
     /**
@@ -203,6 +289,7 @@ public class Ezasse {
         ezasseSql.setGroup(split[0].replace(SQL_EXTENSION, ""));
         ezasseSql.setName(fileName);
         ezasseSql.setParentPath(filePath);
+        ezasseSql.setPath(absolutePath);
         for (int i = 1; i < split.length; i++) {
             //推断当前节点是什么数据
             //如果当前节点为三位数字，节点为排序
@@ -223,7 +310,10 @@ public class Ezasse {
         EzasseConfig ezasseConfig = new EzasseConfig();
         ezasseConfig.setFolder("data");
         ezasseConfig.setGroupOrder(Arrays.asList("data", "file"));
-        ezasse.executeScript(ezasseConfig);
+        ezasseConfig.setDelimiterStart("-- {");
+        ezasseConfig.setDelimiterEnd("-- }");
+        ezasse.setConfig(ezasseConfig);
+        ezasse.executeScript();
     }
 
     /**
