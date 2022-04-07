@@ -30,6 +30,11 @@ public class EzasseConfig {
     private List<String> groupOrder;
 
     /**
+     * 默认数据节点
+     */
+    private EzasseDataSource master;
+
+    /**
      * 开始限定符
      */
     private String delimiterStart;

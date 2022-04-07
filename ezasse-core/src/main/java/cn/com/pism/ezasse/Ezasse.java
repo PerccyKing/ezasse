@@ -1,18 +1,23 @@
 package cn.com.pism.ezasse;
 
+import cn.com.pism.ezasse.calibrator.DefaultKeyWordEzasseCalibrator;
+import cn.com.pism.ezasse.calibrator.EzasseCalibrator;
+import cn.com.pism.ezasse.database.EzasseExecutor;
 import cn.com.pism.ezasse.exception.EzasseException;
 import cn.com.pism.ezasse.model.EzasseConfig;
+import cn.com.pism.ezasse.model.EzasseDataSource;
 import cn.com.pism.ezasse.model.EzasseSql;
+import cn.com.pism.ezasse.util.CollectionUtil;
 import cn.com.pism.resourcescanner.Scanner;
 import cn.com.pism.resourcescanner.*;
 import cn.hutool.core.io.FileUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,17 +37,24 @@ import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_GROUP_EXC
 @Slf4j
 public class Ezasse {
 
-    private Map<String, DataSource> dataSourceMap;
-
-    private List<SqlGroup> sqlGroups;
+    private Map<String, EzasseDataSource> dataSourceMap;
 
     /**
      * 配置
      */
     private EzasseConfig config;
 
+    /**
+     * 校验器列表
+     */
+    private List<EzasseCalibrator> calibrators;
+
+    private final String MASTER_ID = "master";
+
     public Ezasse() {
         this.dataSourceMap = new HashMap<>(0);
+        //添加校验器
+        addCalibrator(new DefaultKeyWordEzasseCalibrator());
     }
 
     /**
@@ -54,6 +66,7 @@ public class Ezasse {
      * @date 2022/04/04 下午 11:18
      */
     public void executeScript() {
+        dataSourceMap.put(MASTER_ID, config.getMaster());
         //获取SQL文件列表
         List<EzasseSql> ezasseSqls = getEzasseSqlList(config);
         //对文件分组排序
@@ -162,9 +175,69 @@ public class Ezasse {
         if (StringUtils.isAnyBlank(config.getDelimiterStart(), config.getDelimiterEnd())) {
             scriptMap.put(checkLine, sqlLines.toString());
         }
-        scriptMap.forEach((k, v) -> {
-            log.info("{}-{}", k, v);
-        });
+        scriptMap.forEach((k, v) -> doExecuteScript(k, v, sql));
+    }
+
+    /**
+     * <p>
+     * 执行脚本
+     * </p>
+     *
+     * @param checkLine : 校验行 关键字.[次关键字].[校验节点].[执行节点](校验SQL/关键字)
+     * @param sqlLine   : SQL行
+     * @param ezasseSql : SQL文件信息
+     * @author PerccyKing
+     * @date 2022/04/06 下午 03:29
+     */
+    private void doExecuteScript(String checkLine, String sqlLine, EzasseSql ezasseSql) {
+        if (StringUtils.isNotBlank(sqlLine)) {
+
+            int startIndex = checkLine.indexOf("(");
+            int endIndex = checkLine.lastIndexOf(")");
+            String checkKey = checkLine.substring(0, startIndex);
+            String checkContent = checkLine.substring(startIndex + 1, endIndex);
+            String[] checkKeySplit = checkKey.split("\\.");
+            String checkNode = "";
+            String executeNode = "";
+            if (checkKeySplit.length >= TWO) {
+                //最后两位为 分别为校验节点和 执行节点
+                if (checkKeySplit.length == FOUR) {
+                    checkKey = checkKeySplit[0] + "." + checkKeySplit[1];
+                    checkNode = checkKeySplit[2];
+                } else if (checkKeySplit.length == THREE) {
+                    //如果第二位不是数据节点，那第二位就是关键字
+                    if (dataSourceMap.get(checkKeySplit[ONE]) == null) {
+                        checkKey = checkKeySplit[0] + "." + checkKeySplit[1];
+                        checkNode = checkKeySplit[2];
+                    } else {
+                        checkKey = checkKeySplit[0];
+                        checkNode = checkKeySplit[1];
+                    }
+                } else if (checkKeySplit.length == TWO) {
+                    if (dataSourceMap.get(checkKeySplit[ONE]) == null) {
+                        checkKey = checkKeySplit[0] + "." + checkKeySplit[1];
+                        checkNode = MASTER_ID;
+                    } else {
+                        checkKey = checkKeySplit[0];
+                        checkNode = checkKeySplit[1];
+                    }
+                }
+            }
+            String finalCheckKey = checkKey;
+            EzasseCalibrator ezasseCalibrator = IterableUtils.find(calibrators, s -> s.getId(config).equals(finalCheckKey));
+            if (StringUtils.isBlank(checkNode)) {
+                checkNode = ezasseSql.getNode();
+            }
+            if (StringUtils.isBlank(checkNode)) {
+                checkNode = MASTER_ID;
+            }
+            log.info("{}={}", checkNode, checkKey);
+            if (ezasseCalibrator.needToExecute(dataSourceMap.get(checkNode), checkContent)) {
+                //获取执行器并执行SQL
+                EzasseExecutor ezasseExecutor = null;
+                ezasseExecutor.execute(sqlLine);
+            }
+        }
     }
 
     /**
@@ -310,37 +383,25 @@ public class Ezasse {
         EzasseConfig ezasseConfig = new EzasseConfig();
         ezasseConfig.setFolder("data");
         ezasseConfig.setGroupOrder(Arrays.asList("data", "file"));
-        ezasseConfig.setDelimiterStart("-- {");
-        ezasseConfig.setDelimiterEnd("-- }");
         ezasse.setConfig(ezasseConfig);
         ezasse.executeScript();
     }
 
     /**
-     * sql文件分组
+     * <p>
+     * 添加校验器
+     * </p>
      *
+     * @param ezasseCalibrator : 校验器
      * @author PerccyKing
-     * @version 0.0.1
-     * @date 2022/04/04 下午 11:19
-     * @since 0.0.1
+     * @date 2022/04/06 下午 02:53
      */
-    @Data
-    static class SqlGroup {
-        /**
-         * sql文件所在目录
-         */
-        private String folder;
-
-        /**
-         * sql文件 名称
-         * 格式：TYPE-{@code ${dataSource}}-ORDER-{@code OTHERS}<br>
-         * eg:  data-master-001-users<br>
-         */
-        private List<String> files;
-
-        /**
-         * 顺序定义
-         */
-        private int order;
+    public void addCalibrator(EzasseCalibrator ezasseCalibrator) {
+        //删除同id的数据
+        EzasseCalibrator exit = IterableUtils.find(this.calibrators, c -> c.getId(config).equals(ezasseCalibrator.getId(config)));
+        if (exit != null) {
+            this.calibrators.remove(exit);
+        }
+        CollectionUtil.addToList(this.calibrators, ezasseCalibrator, l -> this.calibrators = l);
     }
 }
