@@ -1,8 +1,6 @@
 package cn.com.pism.ezasse;
 
-import cn.com.pism.ezasse.checker.DefaultKeyWordEzasseChecker;
-import cn.com.pism.ezasse.checker.EzasseChecker;
-import cn.com.pism.ezasse.checker.TableEzasseChecker;
+import cn.com.pism.ezasse.checker.*;
 import cn.com.pism.ezasse.database.EzasseExecutor;
 import cn.com.pism.ezasse.database.MysqlEzasseExecutor;
 import cn.com.pism.ezasse.enums.EzasseDatabaseType;
@@ -214,32 +212,6 @@ public class Ezasse {
 
     /**
      * <p>
-     * 适配filePath
-     * </p>
-     *
-     * @param folder   : 文件根路径
-     * @param filePath : 文件路径
-     * @return {@link String}
-     * @author PerccyKing
-     * @date 2022/04/05 下午 11:24
-     */
-    private String adaptationFilePath(String folder, String filePath) {
-        if (folder.startsWith(BACK_SLASH) && !folder.endsWith(BACK_SLASH)) {
-            //以 / 开始 不以 / 结尾
-            filePath = BACK_SLASH + StringUtils.removeEnd(filePath, BACK_SLASH);
-        }
-        if (folder.startsWith(BACK_SLASH) && folder.equals(BACK_SLASH)) {
-            //以 / 开始 以 / 结尾
-            filePath = BACK_SLASH + filePath;
-        }
-        if (!folder.startsWith(BACK_SLASH) && !folder.endsWith(BACK_SLASH)) {
-            filePath = StringUtils.removeEnd(filePath, BACK_SLASH);
-        }
-        return filePath;
-    }
-
-    /**
-     * <p>
      * 将文件名转换为ezSql对象
      * </p>
      * <pre>
@@ -342,5 +314,8 @@ public class Ezasse {
         //添加校验器
         addChecker(new DefaultKeyWordEzasseChecker());
         addChecker(new TableEzasseChecker());
+        addChecker(new ChangeAddEzasseChecker());
+        addChecker(new ChangeNameEzasseChecker());
+        addChecker(new ChangeTypeEzasseChecker());
     }
 }
