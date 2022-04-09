@@ -21,6 +21,10 @@ public class EzasseConstants {
 
     public static final String LINE_COMMENT = "--";
 
+    public static final String LEFT_BRACKET = "(";
+
+    public static final String RIGHT_BRACKET = ")";
+
     public static final int ONE = 1;
     public static final int TWO = 2;
     public static final int THREE = 3;

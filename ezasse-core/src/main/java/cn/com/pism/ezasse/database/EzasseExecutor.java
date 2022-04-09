@@ -80,6 +80,18 @@ public abstract class EzasseExecutor {
 
     /**
      * <p>
+     * 获取表信息
+     * </p>
+     *
+     * @param tableName : 表名
+     * @return {@link List<EzasseTableInfo>}
+     * @author PerccyKing
+     * @date 2022/04/09 下午 04:03
+     */
+    public abstract List<EzasseTableInfo> getTableInfo(String tableName);
+
+    /**
+     * <p>
      * 执行SQL
      * </p>
      *

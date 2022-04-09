@@ -1,19 +1,29 @@
-package cn.com.pism.ezasse.calibrator;
+package cn.com.pism.ezasse.checker;
 
 import cn.com.pism.ezasse.database.EzasseExecutor;
-import cn.com.pism.ezasse.exception.EzasseException;
 import cn.com.pism.ezasse.model.EzasseConfig;
+import cn.com.pism.ezasse.util.NoneParamCallback;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.sql.DataSource;
 
 /**
+ * 校验器
+ *
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/06 下午 02:56
+ * @date 2022/04/05 下午 12:22
  * @since 0.0.1
  */
-public class DefaultKeyWordEzasseCalibrator extends EzasseCalibrator {
+public abstract class EzasseChecker {
 
+    protected boolean publicCheck(String checkContent, EzasseExecutor executor, NoneParamCallback<Boolean> callback) {
+        if (StringUtils.isBlank(checkContent) || executor == null) {
+            return false;
+        } else {
+            return callback.call();
+        }
+    }
 
     /**
      * <p>
@@ -27,17 +37,8 @@ public class DefaultKeyWordEzasseCalibrator extends EzasseCalibrator {
      * @author PerccyKing
      * @date 2022/04/05 下午 12:23
      */
-    @Override
-    public boolean needToExecute(DataSource checkDataSource, String checkContent, EzasseExecutor executor) {
-        if (executor == null) {
-            return false;
-        }
-        Integer res = executor.queryForObject(checkContent, Integer.class);
-        if (res == null) {
-            throw new EzasseException();
-        }
-        return res == 0;
-    }
+    public abstract boolean needToExecute(DataSource checkDataSource, String checkContent, EzasseExecutor executor);
+
 
     /**
      * <p>
@@ -49,9 +50,5 @@ public class DefaultKeyWordEzasseCalibrator extends EzasseCalibrator {
      * @author PerccyKing
      * @date 2022/04/06 下午 02:45
      */
-    @Override
-    public String getId(EzasseConfig config) {
-        return config.getDefaultKeyWord();
-    }
-
+    public abstract String getId(EzasseConfig config);
 }

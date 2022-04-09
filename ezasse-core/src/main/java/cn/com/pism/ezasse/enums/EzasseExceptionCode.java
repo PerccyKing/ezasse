@@ -18,6 +18,7 @@ public enum EzasseExceptionCode {
      * 未指定分组
      */
     UNSPECIFIED_GROUP_EXCEPTION("未指定GROUP", "UNSPECIFIED_GROUP"),
+    SYNTAX_ERROR_EXCEPTION("语法错误", "SYNTAX_ERROR"),
     ;
 
     EzasseExceptionCode(String message, String code) {

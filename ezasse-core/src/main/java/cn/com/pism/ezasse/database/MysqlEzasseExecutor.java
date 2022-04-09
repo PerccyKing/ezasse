@@ -1,11 +1,16 @@
 package cn.com.pism.ezasse.database;
 
 import cn.com.pism.ezasse.model.EzasseTableInfo;
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
-import java.sql.Connection;
+import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+
+import static cn.com.pism.ezasse.util.EzasseUtil.getFromDataSource;
 
 /**
  * @author PerccyKing
@@ -30,26 +35,50 @@ public class MysqlEzasseExecutor extends EzasseExecutor {
     @Override
     public List<EzasseTableInfo> getTableInfo(String tableName, String columnName) {
         String getTableInfoSql = "SELECT COLUMN_NAME columnName,DATA_TYPE dataType,CHARACTER_MAXIMUM_LENGTH characterMaximumLength,COLUMN_COMMENT columnComment FROM Information_schema.columns WHERE table_Name = ? AND TABLE_SCHEMA=? AND COLUMN_NAME=? ";
-        return jdbcTemplate.queryForList(getTableInfoSql, EzasseTableInfo.class, tableName, getSchema(), columnName);
+        List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(getTableInfoSql, tableName, getDataBaseNameFromDataSource(this.dataSource), columnName);
+        return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
+    }
+
+    /**
+     * <p>
+     * 获取表信息
+     * </p>
+     *
+     * @param tableName : 表名
+     * @return {@link List<EzasseTableInfo>}
+     * @author PerccyKing
+     * @date 2022/04/09 下午 04:03
+     */
+    @Override
+    public List<EzasseTableInfo> getTableInfo(String tableName) {
+        String sql = "SELECT COLUMN_NAME columnName,DATA_TYPE dataType,CHARACTER_MAXIMUM_LENGTH characterMaximumLength,COLUMN_COMMENT columnComment FROM Information_schema.columns WHERE table_Name = ? AND TABLE_SCHEMA=? ";
+        List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(sql, tableName, getDataBaseNameFromDataSource(this.dataSource));
+        return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
     }
 
 
-    private String getSchema() {
-        Connection connection = null;
-        try {
-            connection = this.dataSource.getConnection();
-            return connection.getCatalog();
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-            return "";
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    log.error(e.getMessage());
-                }
+    /**
+     * <p>
+     * 从databse中获取 数据库名称
+     * </p>
+     *
+     * @param dataSource : datasource
+     * @return {@link String} 数据库名称
+     * @author PerccyKing
+     * @date 2022/04/07 下午 03:49
+     */
+    private static String getDataBaseNameFromDataSource(DataSource dataSource) {
+        String catalog = getFromDataSource(dataSource, connection -> {
+            try {
+                return connection.getCatalog();
+            } catch (SQLException e) {
+                log.error(e.getMessage());
+                return "";
             }
+        });
+        if (StringUtils.isBlank(catalog)) {
+            return "";
         }
+        return catalog;
     }
 }

@@ -1,7 +1,8 @@
 package cn.com.pism.ezasse;
 
-import cn.com.pism.ezasse.calibrator.DefaultKeyWordEzasseCalibrator;
-import cn.com.pism.ezasse.calibrator.EzasseCalibrator;
+import cn.com.pism.ezasse.checker.DefaultKeyWordEzasseChecker;
+import cn.com.pism.ezasse.checker.EzasseChecker;
+import cn.com.pism.ezasse.checker.TableEzasseChecker;
 import cn.com.pism.ezasse.database.EzasseExecutor;
 import cn.com.pism.ezasse.database.MysqlEzasseExecutor;
 import cn.com.pism.ezasse.enums.EzasseDatabaseType;
@@ -52,7 +53,7 @@ public class Ezasse {
     /**
      * 校验器
      */
-    private Map<String, EzasseCalibrator> calibratorMap;
+    private Map<String, EzasseChecker> checkerMap;
 
     /**
      * 执行器
@@ -64,11 +65,9 @@ public class Ezasse {
     public Ezasse() {
         this.dataSourceMap = new HashMap<>(0);
         this.executorMap = new EnumMap<>(EzasseDatabaseType.class);
-        this.calibratorMap = new HashMap<>(0);
-        //添加校验器
-        addCalibrator(new DefaultKeyWordEzasseCalibrator());
+        this.checkerMap = new HashMap<>(0);
         //添加执行器
-        addEzasseExecutor(MYSQL, new MysqlEzasseExecutor());
+        addExecutor(MYSQL, new MysqlEzasseExecutor());
     }
 
     /**
@@ -150,11 +149,11 @@ public class Ezasse {
         if (StringUtils.isNotBlank(sqlLine)) {
 
             EzasseCheckNode ezasseCheckNode = new EzasseCheckNode(checkLine, ezasseSql, dataSourceMap);
-            EzasseCalibrator ezasseCalibrator = calibratorMap.get(ezasseCheckNode.getCheckKey());
+            EzasseChecker ezasseChecker = checkerMap.get(ezasseCheckNode.getCheckKey());
 
             EzasseExecutor checkEzasseExecutor = getExecutorByDatasource(ezasseCheckNode.getCheckNode());
             checkEzasseExecutor.setDataSource(ezasseCheckNode.getCheckNode());
-            if (ezasseCalibrator.needToExecute(ezasseCheckNode.getCheckNode(), ezasseCheckNode.getCheckContent(), checkEzasseExecutor)) {
+            if (ezasseChecker.needToExecute(ezasseCheckNode.getCheckNode(), ezasseCheckNode.getCheckContent(), checkEzasseExecutor)) {
                 //获取执行器并执行SQL
                 EzasseExecutor ezasseExecutor = getExecutorByDatasource(ezasseCheckNode.getExecNode());
                 ezasseExecutor.setDataSource(ezasseCheckNode.getExecNode());
@@ -282,28 +281,19 @@ public class Ezasse {
         return ezasseSql;
     }
 
-    public static void main(String[] args) {
-        Ezasse ezasse = new Ezasse();
-        EzasseConfig ezasseConfig = new EzasseConfig();
-        ezasseConfig.setFolder("data");
-        ezasseConfig.setGroupOrder(Arrays.asList("data", "file"));
-        ezasse.setConfig(ezasseConfig);
-        ezasse.executeScript();
-    }
-
     /**
      * <p>
      * 添加校验器
      * </p>
      *
-     * @param ezasseCalibrator : 校验器
+     * @param ezasseChecker : 校验器
      * @author PerccyKing
      * @date 2022/04/06 下午 02:53
      */
-    public void addCalibrator(EzasseCalibrator ezasseCalibrator) {
-        String id = ezasseCalibrator.getId(config);
-        calibratorMap.remove(id);
-        calibratorMap.put(id, ezasseCalibrator);
+    public void addChecker(EzasseChecker ezasseChecker) {
+        String id = ezasseChecker.getId(config);
+        checkerMap.remove(id);
+        checkerMap.put(id, ezasseChecker);
     }
 
     /**
@@ -331,12 +321,26 @@ public class Ezasse {
      * @author PerccyKing
      * @date 2022/04/09 下午 12:38
      */
-    public void addEzasseExecutor(EzasseDatabaseType databaseType, EzasseExecutor executor) {
+    public void addExecutor(EzasseDatabaseType databaseType, EzasseExecutor executor) {
         executorMap.remove(databaseType);
         executorMap.put(databaseType, executor);
     }
 
     public EzasseExecutor getExecutorByDatasource(DataSource dataSource) {
         return executorMap.get(EzasseUtil.getDatabaseTypeFromDataSource(dataSource));
+    }
+
+    /**
+     * <p>
+     * 初始化默认校验器
+     * </p>
+     *
+     * @author PerccyKing
+     * @date 2022/04/09 下午 04:40
+     */
+    public void initChecker() {
+        //添加校验器
+        addChecker(new DefaultKeyWordEzasseChecker());
+        addChecker(new TableEzasseChecker());
     }
 }

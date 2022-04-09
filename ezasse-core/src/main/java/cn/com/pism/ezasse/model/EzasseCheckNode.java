@@ -1,5 +1,6 @@
 package cn.com.pism.ezasse.model;
 
+import cn.com.pism.ezasse.exception.EzasseException;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -7,9 +8,19 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 import static cn.com.pism.ezasse.Ezasse.MASTER_ID;
-import static cn.com.pism.ezasse.EzasseConstants.*;
+import static cn.com.pism.ezasse.EzasseConstants.LEFT_BRACKET;
+import static cn.com.pism.ezasse.EzasseConstants.RIGHT_BRACKET;
+import static cn.com.pism.ezasse.enums.EzasseExceptionCode.SYNTAX_ERROR_EXCEPTION;
 
 /**
+ * 关键字[_次关键字].[校验节点].[执行节点]
+ * EXEC()
+ * EXEC.slave()
+ * EXEC.slave.master()
+ * CHANGE_ADD()
+ * CHANGE_ADD.master()
+ * CHANGE_ADD.master.slave()
+ *
  * @author PerccyKing
  * @version 0.0.1
  * @date 2022/04/07 下午 04:23
@@ -37,46 +48,43 @@ public class EzasseCheckNode {
     private String checkContent;
 
     public EzasseCheckNode(String checkLine, EzasseSql ezasseSql, Map<String, DataSource> dataSourceMap) {
-        int startIndex = checkLine.indexOf("(");
-        int endIndex = checkLine.lastIndexOf(")");
+        int startIndex = checkLine.indexOf(LEFT_BRACKET);
+        int endIndex = checkLine.lastIndexOf(RIGHT_BRACKET);
+        //获取校验字符串
         String checkKeyStr = checkLine.substring(0, startIndex);
-        String checkContentStr = checkLine.substring(startIndex + 1, endIndex);
+        //校验内容
+        this.checkContent = checkLine.substring(startIndex + 1, endIndex);
+        //按.分割
         String[] checkKeySplit = checkKeyStr.split("\\.");
-        String checkNodeKey = "";
-        String executeNode = "";
-        if (checkKeySplit.length >= TWO) {
-            //最后两位为 分别为校验节点和 执行节点
-            if (checkKeySplit.length == FOUR) {
-                checkKeyStr = checkKeySplit[0] + "." + checkKeySplit[1];
-                checkNodeKey = checkKeySplit[2];
-            } else if (checkKeySplit.length == THREE) {
-                //如果第二位不是数据节点，那第二位就是关键字
-                if (dataSourceMap.get(checkKeySplit[ONE]) == null) {
-                    checkKeyStr = checkKeySplit[0] + "." + checkKeySplit[1];
-                    checkNodeKey = checkKeySplit[2];
-                } else {
-                    checkKeyStr = checkKeySplit[0];
-                    checkNodeKey = checkKeySplit[1];
-                }
-            } else if (checkKeySplit.length == TWO) {
-                if (dataSourceMap.get(checkKeySplit[ONE]) == null) {
-                    checkKeyStr = checkKeySplit[0] + "." + checkKeySplit[1];
-                    checkNodeKey = MASTER_ID;
-                } else {
-                    checkKeyStr = checkKeySplit[0];
-                    checkNodeKey = checkKeySplit[1];
-                }
-            }
+        int checkLength = checkKeySplit.length;
+        //默认执行节点
+        String defaultExecNode = ezasseSql.getNode();
+        //如果未指定执行节点，默认为master节点
+        if (StringUtils.isBlank(defaultExecNode)) {
+            defaultExecNode = MASTER_ID;
         }
-        if (StringUtils.isBlank(checkNodeKey)) {
-            checkNodeKey = ezasseSql.getNode();
+        switch (checkLength) {
+            case 1:
+                //校验关键字的长度为1，未指定执行节点和校验节点
+                this.checkKey = checkKeySplit[0];
+                this.checkNode = dataSourceMap.get(defaultExecNode);
+                this.execNode = dataSourceMap.get(defaultExecNode);
+                break;
+            case 2:
+                //校验关键字的长度为2，指定执行节点未指定校验节点
+                this.checkKey = checkKeySplit[0];
+                this.checkNode = dataSourceMap.get(checkKeySplit[1]);
+                this.execNode = dataSourceMap.get(defaultExecNode);
+                break;
+            case 3:
+                //校验关键字的长度为2，指定执行节点和校验节点
+                this.checkKey = checkKeySplit[0];
+                this.checkNode = dataSourceMap.get(checkKeySplit[1]);
+                this.execNode = dataSourceMap.get(checkKeySplit[2]);
+                break;
+            default:
+                throw new EzasseException(SYNTAX_ERROR_EXCEPTION);
         }
-        if (StringUtils.isBlank(checkNodeKey)) {
-            checkNodeKey = MASTER_ID;
-        }
-        this.checkNode = dataSourceMap.get(checkNodeKey);
-        this.execNode = dataSourceMap.get(executeNode);
-        this.checkKey = checkKeyStr;
-        this.checkContent = checkContentStr;
+
     }
 }
