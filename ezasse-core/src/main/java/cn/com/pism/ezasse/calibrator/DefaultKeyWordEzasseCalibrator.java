@@ -3,7 +3,8 @@ package cn.com.pism.ezasse.calibrator;
 import cn.com.pism.ezasse.database.EzasseExecutor;
 import cn.com.pism.ezasse.exception.EzasseException;
 import cn.com.pism.ezasse.model.EzasseConfig;
-import cn.com.pism.ezasse.model.EzasseDataSource;
+
+import javax.sql.DataSource;
 
 /**
  * @author PerccyKing
@@ -21,14 +22,17 @@ public class DefaultKeyWordEzasseCalibrator extends EzasseCalibrator {
      *
      * @param checkDataSource :数据校验节点
      * @param checkContent    :数据校验内容
+     * @param executor        :执行器
      * @return {@link boolean} true:执行代码块,false:跳过代码块
      * @author PerccyKing
      * @date 2022/04/05 下午 12:23
      */
     @Override
-    public boolean needToExecute(EzasseDataSource checkDataSource, String checkContent) {
-        EzasseExecutor actuator = null;
-        Integer res = actuator.queryForObject(checkContent, Integer.class);
+    public boolean needToExecute(DataSource checkDataSource, String checkContent, EzasseExecutor executor) {
+        if (executor == null) {
+            return false;
+        }
+        Integer res = executor.queryForObject(checkContent, Integer.class);
         if (res == null) {
             throw new EzasseException();
         }

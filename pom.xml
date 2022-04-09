@@ -6,12 +6,7 @@
     <modules>
         <module>ezasse-core</module>
     </modules>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.6</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
+
     <groupId>cn.com.pism</groupId>
     <artifactId>ezasse</artifactId>
     <version>0.0.1-SNAPSHOT</version>

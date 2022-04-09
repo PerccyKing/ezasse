@@ -1,10 +1,13 @@
 package cn.com.pism.ezasse.util;
 
-import cn.com.pism.ezasse.model.EzasseDataSource;
+import cn.com.pism.ezasse.enums.EzasseDatabaseType;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import static cn.com.pism.ezasse.enums.EzasseDatabaseType.UNKNOWN;
 
 /**
  * @author PerccyKing
@@ -27,29 +30,48 @@ public class EzasseUtil {
      * @author PerccyKing
      * @date 2022/04/07 下午 03:49
      */
-    public static String getDataBaseNameFromDataSource(EzasseDataSource dataSource) {
+    public static String getDataBaseNameFromDataSource(DataSource dataSource) {
         if (dataSource == null) {
             return "";
         }
+        Connection connection = null;
         try {
-            Connection connection = dataSource.getDatasource().getConnection();
+            connection = dataSource.getConnection();
             return connection.getCatalog();
         } catch (SQLException e) {
             log.error(e.getMessage());
             return "";
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    log.error(e.getMessage());
+                }
+            }
         }
     }
 
-    public static String getDatabaseTypeFromDataSource(EzasseDataSource dataSource) {
+    public static EzasseDatabaseType getDatabaseTypeFromDataSource(DataSource dataSource) {
         if (dataSource == null) {
-            return "";
+            return UNKNOWN;
         }
+        Connection connection = null;
         try {
-            Connection connection = dataSource.getDatasource().getConnection();
-            return connection.getMetaData().getDatabaseProductName();
+            connection = dataSource.getConnection();
+            String productName = connection.getMetaData().getDatabaseProductName();
+            return EzasseDatabaseType.valueOfName(productName);
         } catch (SQLException e) {
             log.error(e.getMessage());
-            return "";
+            return UNKNOWN;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    log.error(e.getMessage());
+                }
+            }
         }
     }
 }

@@ -1,7 +1,9 @@
 package cn.com.pism.ezasse.calibrator;
 
+import cn.com.pism.ezasse.database.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseConfig;
-import cn.com.pism.ezasse.model.EzasseDataSource;
+
+import javax.sql.DataSource;
 
 /**
  * 校验器
@@ -19,11 +21,12 @@ public abstract class EzasseCalibrator {
      *
      * @param checkDataSource :数据校验节点
      * @param checkContent    :数据校验内容
+     * @param executor        :执行器
      * @return {@link boolean} true:执行代码块,false:跳过代码块
      * @author PerccyKing
      * @date 2022/04/05 下午 12:23
      */
-    public abstract boolean needToExecute(EzasseDataSource checkDataSource, String checkContent);
+    public abstract boolean needToExecute(DataSource checkDataSource, String checkContent, EzasseExecutor executor);
 
 
     /**

@@ -3,26 +3,28 @@ package cn.com.pism.ezasse;
 import cn.com.pism.ezasse.calibrator.DefaultKeyWordEzasseCalibrator;
 import cn.com.pism.ezasse.calibrator.EzasseCalibrator;
 import cn.com.pism.ezasse.database.EzasseExecutor;
+import cn.com.pism.ezasse.database.MysqlEzasseExecutor;
+import cn.com.pism.ezasse.enums.EzasseDatabaseType;
 import cn.com.pism.ezasse.exception.EzasseException;
+import cn.com.pism.ezasse.model.EzasseCheckNode;
 import cn.com.pism.ezasse.model.EzasseConfig;
-import cn.com.pism.ezasse.model.EzasseDataSource;
 import cn.com.pism.ezasse.model.EzasseSql;
-import cn.com.pism.ezasse.util.CollectionUtil;
+import cn.com.pism.ezasse.util.EzasseUtil;
 import cn.com.pism.resourcescanner.Scanner;
 import cn.com.pism.resourcescanner.*;
-import cn.hutool.core.io.FileUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static cn.com.pism.ezasse.EzasseConstants.*;
+import static cn.com.pism.ezasse.enums.EzasseDatabaseType.MYSQL;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_FOLDER_EXCEPTION;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_GROUP_EXCEPTION;
 
@@ -37,24 +39,36 @@ import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_GROUP_EXC
 @Slf4j
 public class Ezasse {
 
-    private Map<String, EzasseDataSource> dataSourceMap;
-
     /**
      * 配置
      */
     private EzasseConfig config;
 
     /**
-     * 校验器列表
+     * 数据源
      */
-    private List<EzasseCalibrator> calibrators;
+    private Map<String, DataSource> dataSourceMap;
 
-    private final String MASTER_ID = "master";
+    /**
+     * 校验器
+     */
+    private Map<String, EzasseCalibrator> calibratorMap;
+
+    /**
+     * 执行器
+     */
+    private Map<EzasseDatabaseType, EzasseExecutor> executorMap;
+
+    public static final String MASTER_ID = "master";
 
     public Ezasse() {
         this.dataSourceMap = new HashMap<>(0);
+        this.executorMap = new EnumMap<>(EzasseDatabaseType.class);
+        this.calibratorMap = new HashMap<>(0);
         //添加校验器
         addCalibrator(new DefaultKeyWordEzasseCalibrator());
+        //添加执行器
+        addEzasseExecutor(MYSQL, new MysqlEzasseExecutor());
     }
 
     /**
@@ -66,6 +80,7 @@ public class Ezasse {
      * @date 2022/04/04 下午 11:18
      */
     public void executeScript() {
+        //初始化master数据源
         dataSourceMap.put(MASTER_ID, config.getMaster());
         //获取SQL文件列表
         List<EzasseSql> ezasseSqls = getEzasseSqlList(config);
@@ -115,66 +130,8 @@ public class Ezasse {
      * @date 2022/04/06 上午 11:24
      */
     private void doGroupParsing(EzasseConfig config, EzasseSql sql) {
-        LinkedHashMap<String, String> scriptMap = new LinkedHashMap<>();
-        //获取SQL文件
-        List<String> lines = FileUtil.readLines(sql.getPath(), StandardCharsets.UTF_8);
-        //标记以下行是否全部都是SQL执行体
-        boolean isSqlBody = false;
-        //存放当前的SQL执行体
-        StringBuilder sqlLines = new StringBuilder();
-        //存放当前的SQL校验行
-        String checkLine = "";
-        for (String line : lines) {
-            //没有指定界定符
-            if (StringUtils.isAnyBlank(config.getDelimiterStart(), config.getDelimiterEnd())) {
-                if (isSqlBody && !isCheckLine(line)) {
-                    sqlLines.append(line).append("\n");
-                }
-                //校验是否该结束上一个循环
-                if (isSqlBody && isCheckLine(line)) {
-                    //标记结束
-                    isSqlBody = false;
-                    //存入map，并重置标记点
-                    scriptMap.put(checkLine, sqlLines.toString());
-                    checkLine = "";
-                    sqlLines = new StringBuilder();
-                }
-                // 判断当前行是否为关键字行
-                if (isCheckLine(line)) {
-                    isSqlBody = true;
-                    checkLine = line.substring(LINE_COMMENT.length() + 1);
-                }
-            }
-            //指定了界定符
-            if (StringUtils.isNoneBlank(config.getDelimiterStart(), config.getDelimiterEnd())) {
-                //当前行为结束界定符
-                boolean isEndLine = isSqlBody && isCheckLine(line);
-                if (line.startsWith(config.getDelimiterEnd()) || isEndLine) {
-                    //标记结束
-                    isSqlBody = false;
-                    //存入map，并重置标记点
-                    scriptMap.put(checkLine, sqlLines.toString());
-                    checkLine = "";
-                    sqlLines = new StringBuilder();
-                }
-                //当前行不是校验行，并且是sql执行体
-                if (isSqlBody && !isCheckLine(line)) {
-                    sqlLines.append(line).append("\n");
-                }
-                //当前行是否为关键字行
-                if (isCheckLine(line)) {
-                    checkLine = line.substring(LINE_COMMENT.length() + 1);
-                }
-                //当前行是开始界定符
-                if (line.startsWith(config.getDelimiterStart()) && StringUtils.isNotBlank(checkLine) && StringUtils.isBlank(sqlLines.toString())) {
-                    isSqlBody = true;
-                }
-            }
-        }
-        //没有指定限定符，还需要存一次map
-        if (StringUtils.isAnyBlank(config.getDelimiterStart(), config.getDelimiterEnd())) {
-            scriptMap.put(checkLine, sqlLines.toString());
-        }
+        EzasseGroupParser parser = new EzasseGroupParser(config, sql);
+        LinkedHashMap<String, String> scriptMap = parser.parser();
         scriptMap.forEach((k, v) -> doExecuteScript(k, v, sql));
     }
 
@@ -192,71 +149,18 @@ public class Ezasse {
     private void doExecuteScript(String checkLine, String sqlLine, EzasseSql ezasseSql) {
         if (StringUtils.isNotBlank(sqlLine)) {
 
-            int startIndex = checkLine.indexOf("(");
-            int endIndex = checkLine.lastIndexOf(")");
-            String checkKey = checkLine.substring(0, startIndex);
-            String checkContent = checkLine.substring(startIndex + 1, endIndex);
-            String[] checkKeySplit = checkKey.split("\\.");
-            String checkNode = "";
-            String executeNode = "";
-            if (checkKeySplit.length >= TWO) {
-                //最后两位为 分别为校验节点和 执行节点
-                if (checkKeySplit.length == FOUR) {
-                    checkKey = checkKeySplit[0] + "." + checkKeySplit[1];
-                    checkNode = checkKeySplit[2];
-                } else if (checkKeySplit.length == THREE) {
-                    //如果第二位不是数据节点，那第二位就是关键字
-                    if (dataSourceMap.get(checkKeySplit[ONE]) == null) {
-                        checkKey = checkKeySplit[0] + "." + checkKeySplit[1];
-                        checkNode = checkKeySplit[2];
-                    } else {
-                        checkKey = checkKeySplit[0];
-                        checkNode = checkKeySplit[1];
-                    }
-                } else if (checkKeySplit.length == TWO) {
-                    if (dataSourceMap.get(checkKeySplit[ONE]) == null) {
-                        checkKey = checkKeySplit[0] + "." + checkKeySplit[1];
-                        checkNode = MASTER_ID;
-                    } else {
-                        checkKey = checkKeySplit[0];
-                        checkNode = checkKeySplit[1];
-                    }
-                }
-            }
-            String finalCheckKey = checkKey;
-            EzasseCalibrator ezasseCalibrator = IterableUtils.find(calibrators, s -> s.getId(config).equals(finalCheckKey));
-            if (StringUtils.isBlank(checkNode)) {
-                checkNode = ezasseSql.getNode();
-            }
-            if (StringUtils.isBlank(checkNode)) {
-                checkNode = MASTER_ID;
-            }
-            log.info("{}={}", checkNode, checkKey);
-            if (ezasseCalibrator.needToExecute(dataSourceMap.get(checkNode), checkContent)) {
+            EzasseCheckNode ezasseCheckNode = new EzasseCheckNode(checkLine, ezasseSql, dataSourceMap);
+            EzasseCalibrator ezasseCalibrator = calibratorMap.get(ezasseCheckNode.getCheckKey());
+
+            EzasseExecutor checkEzasseExecutor = getExecutorByDatasource(ezasseCheckNode.getCheckNode());
+            checkEzasseExecutor.setDataSource(ezasseCheckNode.getCheckNode());
+            if (ezasseCalibrator.needToExecute(ezasseCheckNode.getCheckNode(), ezasseCheckNode.getCheckContent(), checkEzasseExecutor)) {
                 //获取执行器并执行SQL
-                EzasseExecutor ezasseExecutor = null;
+                EzasseExecutor ezasseExecutor = getExecutorByDatasource(ezasseCheckNode.getExecNode());
+                ezasseExecutor.setDataSource(ezasseCheckNode.getExecNode());
                 ezasseExecutor.execute(sqlLine);
             }
         }
-    }
-
-    /**
-     * <p>
-     * 校验字符串是否为校验行
-     * </p>
-     *
-     * @param line : 处理行信息
-     * @return {@link boolean} true:是校验行，false：不是校验行
-     * @author PerccyKing
-     * @date 2022/04/06 下午 01:53
-     */
-    private boolean isCheckLine(String line) {
-        if (line.startsWith(LINE_COMMENT)) {
-            //以-- 开头，并且包含各个校验关键字
-            String checkLine = line.substring(LINE_COMMENT.length() + 1);
-            return StringUtils.startsWithAny(checkLine, config.getTable(), config.getChange(), config.getDefaultKeyWord());
-        }
-        return false;
     }
 
     /**
@@ -397,11 +301,42 @@ public class Ezasse {
      * @date 2022/04/06 下午 02:53
      */
     public void addCalibrator(EzasseCalibrator ezasseCalibrator) {
-        //删除同id的数据
-        EzasseCalibrator exit = IterableUtils.find(this.calibrators, c -> c.getId(config).equals(ezasseCalibrator.getId(config)));
-        if (exit != null) {
-            this.calibrators.remove(exit);
-        }
-        CollectionUtil.addToList(this.calibrators, ezasseCalibrator, l -> this.calibrators = l);
+        String id = ezasseCalibrator.getId(config);
+        calibratorMap.remove(id);
+        calibratorMap.put(id, ezasseCalibrator);
+    }
+
+    /**
+     * <p>
+     * 添加数据源
+     * </p>
+     *
+     * @param id         : 数据源id
+     * @param dataSource : 数据源
+     * @author PerccyKing
+     * @date 2022/04/09 下午 12:36
+     */
+    public void addDataSource(String id, DataSource dataSource) {
+        dataSourceMap.remove(id);
+        dataSourceMap.put(id, dataSource);
+    }
+
+    /**
+     * <p>
+     * 添加执行器
+     * </p>
+     *
+     * @param databaseType : 数据库类型
+     * @param executor     : 执行器
+     * @author PerccyKing
+     * @date 2022/04/09 下午 12:38
+     */
+    public void addEzasseExecutor(EzasseDatabaseType databaseType, EzasseExecutor executor) {
+        executorMap.remove(databaseType);
+        executorMap.put(databaseType, executor);
+    }
+
+    public EzasseExecutor getExecutorByDatasource(DataSource dataSource) {
+        return executorMap.get(EzasseUtil.getDatabaseTypeFromDataSource(dataSource));
     }
 }

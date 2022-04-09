@@ -1,7 +1,9 @@
 package cn.com.pism.ezasse.database;
 
-import cn.com.pism.ezasse.model.EzasseDataSource;
+import cn.com.pism.ezasse.model.EzasseTableInfo;
+import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,9 +13,26 @@ import java.util.Objects;
  * @date 2022/04/04 下午 10:52
  * @since 0.0.1
  */
-public interface EzasseExecutor {
+public abstract class EzasseExecutor {
 
-    void setDataSource(EzasseDataSource dataSource);
+
+    protected JdbcTemplate jdbcTemplate;
+
+    protected DataSource dataSource;
+
+    /**
+     * <p>
+     * 设置数据源
+     * </p>
+     *
+     * @param dataSource : 数据源
+     * @author PerccyKing
+     * @date 2022/04/07 下午 05:54
+     */
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
 
     /**
      * <p>
@@ -26,7 +45,9 @@ public interface EzasseExecutor {
      * @author PerccyKing
      * @date 2022/04/06 下午 08:56
      */
-    <T> T queryForObject(String sql, Class<T> clazz);
+    public <T> T queryForObject(String sql, Class<T> clazz) {
+        return jdbcTemplate.queryForObject(sql, clazz);
+    }
 
     /**
      * <p>
@@ -40,7 +61,9 @@ public interface EzasseExecutor {
      * @author PerccyKing
      * @date 2022/04/06 下午 11:19
      */
-    <T> List<T> queryForList(Class<T> clazz, String sql, Objects... args);
+    public <T> List<T> queryForList(Class<T> clazz, String sql, Objects... args) {
+        return jdbcTemplate.queryForList(sql, clazz, (Object[]) args);
+    }
 
     /**
      * <p>
@@ -48,13 +71,12 @@ public interface EzasseExecutor {
      * </p>
      *
      * @param tableName  : 表名
-     * @param schema     : 模式
      * @param columnName : 列名
-     * @return {@link Objects} 表的基本信息
+     * @return {@link List<EzasseTableInfo>} 表的基本信息
      * @author PerccyKing
      * @date 2022/04/06 下午 11:22
      */
-    Objects getTableInfo(String tableName, String schema, String columnName);
+    public abstract List<EzasseTableInfo> getTableInfo(String tableName, String columnName);
 
     /**
      * <p>
@@ -65,5 +87,7 @@ public interface EzasseExecutor {
      * @author PerccyKing
      * @date 2022/04/06 下午 11:23
      */
-    void execute(String sql);
+    public void execute(String sql) {
+        jdbcTemplate.execute(sql);
+    }
 }
