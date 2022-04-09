@@ -38,10 +38,10 @@ TABLE 修改表信息
 ```
 ### 修改字段信息
 ```sql
--- CHANGE.ADD(表名.字段名);
--- CHANGE.DROP(表名.字段名);#暂不适配
--- CHANGE.NAME(表名.字段名);
--- CHANGE.TYPE(表名.字段名.修改后的类型);
--- CHANGE.LENGTH(表名.字段名.修改后的长度);
--- CHANGE.COMMENT(表名.字段名.修改后的备注);
+-- CHANGE_ADD(表名.字段名);
+-- CHANGE_DROP(表名.字段名);#暂不适配
+-- CHANGE_NAME(表名.字段名);
+-- CHANGE_TYPE(表名.字段名.修改后的类型);
+-- CHANGE_LENGTH(表名.字段名.修改后的长度);
+-- CHANGE_COMMENT(表名.字段名.修改后的备注);
 ```
