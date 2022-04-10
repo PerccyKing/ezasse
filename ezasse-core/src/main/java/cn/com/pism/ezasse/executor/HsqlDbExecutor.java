@@ -9,10 +9,21 @@ import java.util.Map;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/10 下午 12:32
+ * @date 2022/04/10 下午 07:16
  * @since 0.0.1
  */
-public class H2EzasseExecutor extends EzasseExecutor {
+public class HsqlDbExecutor extends EzasseExecutor {
+    private static final String SQL = "select ISC.COLUMN_NAME              columnName,\n" +
+            "       ISC.DATA_TYPE                dataType,\n" +
+            "       ISC.CHARACTER_MAXIMUM_LENGTH characterMaximumLength,\n" +
+            "       ISSC.REMARKS                 columnComment\n" +
+            "from INFORMATION_SCHEMA.COLUMNS ISC\n" +
+            "         left join INFORMATION_SCHEMA.SYSTEM_COLUMNS ISSC\n" +
+            "                   on ISC.TABLE_NAME = ISSC.TABLE_NAME and ISC.TABLE_SCHEMA = ISSC.TABLE_SCHEM and\n" +
+            "                      ISC.COLUMN_NAME = ISSC.COLUMN_NAME\n" +
+            "where ISC.TABLE_NAME = ?\n" +
+            "  and ISC.TABLE_SCHEMA = ?\n";
+
     /**
      * <p>
      * 获取表信息
@@ -26,8 +37,8 @@ public class H2EzasseExecutor extends EzasseExecutor {
      */
     @Override
     public List<EzasseTableInfo> getTableInfo(String tableName, String columnName) {
-        String getTableInfoSql = "SELECT COLUMN_NAME columnName,DATA_TYPE dataType,CHARACTER_MAXIMUM_LENGTH characterMaximumLength,REMARKS columnComment FROM Information_schema.columns WHERE table_Name = ? AND TABLE_SCHEMA=? AND COLUMN_NAME=? ";
-        List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(getTableInfoSql, tableName, getDataBaseNameFromDataSource(this.dataSource), columnName);
+        String querySql = SQL + "AND ISC.COLUMN_NAME = ?";
+        List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(querySql, tableName, columnName);
         return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
     }
 
@@ -43,8 +54,7 @@ public class H2EzasseExecutor extends EzasseExecutor {
      */
     @Override
     public List<EzasseTableInfo> getTableInfo(String tableName) {
-        String sql = "SELECT COLUMN_NAME columnName,DATA_TYPE dataType,CHARACTER_MAXIMUM_LENGTH characterMaximumLength,REMARKS columnComment FROM Information_schema.columns WHERE table_Name = ? AND TABLE_SCHEMA=? ";
-        List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(sql, tableName, getDataBaseNameFromDataSource(this.dataSource));
+        List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(SQL, tableName);
         return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
     }
 }

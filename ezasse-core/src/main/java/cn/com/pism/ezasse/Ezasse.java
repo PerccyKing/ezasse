@@ -337,5 +337,6 @@ public class Ezasse {
         addExecutor(ORACLE, new OracleEzasseExecutor());
         addExecutor(H2, new H2EzasseExecutor());
         addExecutor(MARIADB, new MariaDbEzasseExecutor());
+        addExecutor(HSQLDB, new HsqlDbExecutor());
     }
 }

@@ -15,6 +15,7 @@ public class EzasseDatabaseTypeConstants {
     public static final String ORACLE = "ORACLE";
     public static final String H2 = "H2";
     public static final String MARIADB = "MARIADB";
+    public static final String HSQLDB = "HSQLDB";
     public static final String UNKNOWN = "UNKNOWN";
 
 }

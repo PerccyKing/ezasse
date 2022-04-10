@@ -1,11 +1,16 @@
 package cn.com.pism.ezasse.executor;
 
 import cn.com.pism.ezasse.model.EzasseTableInfo;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
+
+import static cn.com.pism.ezasse.util.EzasseUtil.getFromDataSource;
 
 /**
  * @author PerccyKing
@@ -13,6 +18,7 @@ import java.util.Objects;
  * @date 2022/04/04 下午 10:52
  * @since 0.0.1
  */
+@Slf4j
 public abstract class EzasseExecutor {
 
 
@@ -101,5 +107,31 @@ public abstract class EzasseExecutor {
      */
     public void execute(String sql) {
         jdbcTemplate.execute(sql);
+    }
+
+
+    /**
+     * <p>
+     * 从databse中获取 数据库名称
+     * </p>
+     *
+     * @param dataSource : datasource
+     * @return {@link String} 数据库名称
+     * @author PerccyKing
+     * @date 2022/04/07 下午 03:49
+     */
+    protected static String getDataBaseNameFromDataSource(DataSource dataSource) {
+        String catalog = getFromDataSource(dataSource, connection -> {
+            try {
+                return connection.getCatalog();
+            } catch (SQLException e) {
+                log.error(e.getMessage());
+                return "";
+            }
+        });
+        if (StringUtils.isBlank(catalog)) {
+            return "";
+        }
+        return catalog;
     }
 }

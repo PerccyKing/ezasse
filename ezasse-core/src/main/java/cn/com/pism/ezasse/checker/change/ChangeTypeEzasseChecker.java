@@ -27,7 +27,7 @@ public class ChangeTypeEzasseChecker extends ChangeEzasseChecker {
     @Override
     public boolean aloneCheck(List<EzasseTableInfo> tableInfo, String[] split) {
         //第三位为字段的目标类型
-        EzasseTableInfo ezasseTableInfo = IterableUtils.find(tableInfo, info -> info.getDataType().equals(split[3]));
+        EzasseTableInfo ezasseTableInfo = IterableUtils.find(tableInfo, info -> split[3].equals(info.getDataType()));
         return ezasseTableInfo == null;
     }
 

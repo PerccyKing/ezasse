@@ -26,7 +26,7 @@ public class ChangeLengthEzasseChecker extends ChangeEzasseChecker {
      */
     @Override
     public boolean aloneCheck(List<EzasseTableInfo> tableInfo, String[] split) {
-        EzasseTableInfo info = IterableUtils.find(tableInfo, t -> t.getCharacterMaximumLength().equals(split[3]));
+        EzasseTableInfo info = IterableUtils.find(tableInfo, t -> split[3].equals(t.getCharacterMaximumLength()));
         return info == null;
     }
 
