@@ -1,5 +1,6 @@
-package cn.com.pism.ezasse.checker;
+package cn.com.pism.ezasse.checker.change;
 
+import cn.com.pism.ezasse.checker.EzasseChecker;
 import cn.com.pism.ezasse.database.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
@@ -13,10 +14,10 @@ import static cn.com.pism.ezasse.EzasseConstants.REGX_POINT;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/09 下午 05:33
+ * @date 2022/04/09 下午 05:38
  * @since 0.0.1
  */
-public class ChangeAddEzasseChecker extends EzasseChecker {
+public class ChangeNameEzasseChecker extends EzasseChecker {
     /**
      * <p>
      * 判断代码块是否需要执行
@@ -35,7 +36,6 @@ public class ChangeAddEzasseChecker extends EzasseChecker {
             String[] split = checkContent.split(REGX_POINT);
             //第一位为表名，第二位为字段名
             List<EzasseTableInfo> tableInfo = executor.getTableInfo(split[0], split[1]);
-            //如果集合为空，可以执行脚本
             return CollectionUtils.isEmpty(tableInfo);
         });
     }
@@ -52,6 +52,6 @@ public class ChangeAddEzasseChecker extends EzasseChecker {
      */
     @Override
     public String getId(EzasseConfig config) {
-        return config.getChange() + "_" + config.getChangeAdd();
+        return config.getChange() + "_" + config.getChangeName();
     }
 }

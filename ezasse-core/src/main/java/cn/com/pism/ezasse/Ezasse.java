@@ -1,6 +1,7 @@
 package cn.com.pism.ezasse;
 
 import cn.com.pism.ezasse.checker.*;
+import cn.com.pism.ezasse.checker.change.*;
 import cn.com.pism.ezasse.database.EzasseExecutor;
 import cn.com.pism.ezasse.database.MysqlEzasseExecutor;
 import cn.com.pism.ezasse.enums.EzasseDatabaseType;
