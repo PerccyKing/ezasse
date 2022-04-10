@@ -1,4 +1,4 @@
-package cn.com.pism.ezasse;
+package cn.com.pism.ezasse.constants;
 
 /**
  * @author PerccyKing

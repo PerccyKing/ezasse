@@ -1,14 +1,13 @@
 package cn.com.pism.ezasse.util;
 
-import cn.com.pism.ezasse.enums.EzasseDatabaseType;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Locale;
 
-import static cn.com.pism.ezasse.enums.EzasseDatabaseType.UNKNOWN;
+import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.UNKNOWN;
 
 /**
  * @author PerccyKing
@@ -43,11 +42,10 @@ public class EzasseUtil {
         }
     }
 
-    public static EzasseDatabaseType getDatabaseTypeFromDataSource(DataSource dataSource) {
-        EzasseDatabaseType databaseType = getFromDataSource(dataSource, connection -> {
+    public static String getDatabaseTypeFromDataSource(DataSource dataSource) {
+        String databaseType = getFromDataSource(dataSource, connection -> {
             try {
-                String productName = connection.getMetaData().getDatabaseProductName();
-                return EzasseDatabaseType.valueOfName(productName);
+                return connection.getMetaData().getDatabaseProductName().toUpperCase(Locale.ROOT);
             } catch (SQLException e) {
                 log.error(e.getMessage());
                 return UNKNOWN;

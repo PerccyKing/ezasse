@@ -9,7 +9,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import javax.sql.DataSource;
 import java.util.List;
 
-import static cn.com.pism.ezasse.EzasseConstants.REGX_POINT;
+import static cn.com.pism.ezasse.constants.EzasseConstants.REGX_POINT;
 
 /**
  * @author PerccyKing

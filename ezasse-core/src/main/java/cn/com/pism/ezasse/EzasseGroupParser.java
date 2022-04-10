@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import static cn.com.pism.ezasse.EzasseConstants.LINE_COMMENT;
+import static cn.com.pism.ezasse.constants.EzasseConstants.LINE_COMMENT;
 
 /**
  * @author PerccyKing

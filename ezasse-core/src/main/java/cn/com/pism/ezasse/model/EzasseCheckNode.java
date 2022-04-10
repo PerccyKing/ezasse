@@ -8,8 +8,8 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 import static cn.com.pism.ezasse.Ezasse.MASTER_ID;
-import static cn.com.pism.ezasse.EzasseConstants.LEFT_BRACKET;
-import static cn.com.pism.ezasse.EzasseConstants.RIGHT_BRACKET;
+import static cn.com.pism.ezasse.constants.EzasseConstants.LEFT_BRACKET;
+import static cn.com.pism.ezasse.constants.EzasseConstants.RIGHT_BRACKET;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.SYNTAX_ERROR_EXCEPTION;
 
 /**

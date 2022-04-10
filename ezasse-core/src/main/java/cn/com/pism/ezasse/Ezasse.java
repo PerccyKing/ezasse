@@ -1,12 +1,12 @@
 package cn.com.pism.ezasse;
 
-import cn.com.pism.ezasse.checker.*;
+import cn.com.pism.ezasse.checker.DefaultKeyWordEzasseChecker;
+import cn.com.pism.ezasse.checker.EzasseChecker;
+import cn.com.pism.ezasse.checker.TableEzasseChecker;
 import cn.com.pism.ezasse.checker.change.*;
-import cn.com.pism.ezasse.executor.EzasseExecutor;
-import cn.com.pism.ezasse.executor.MysqlEzasseExecutor;
-import cn.com.pism.ezasse.enums.EzasseDatabaseType;
 import cn.com.pism.ezasse.exception.EzasseException;
-import cn.com.pism.ezasse.executor.OracleEzasseExecutor;
+import cn.com.pism.ezasse.executor.EzasseExecutor;
+import cn.com.pism.ezasse.executor.*;
 import cn.com.pism.ezasse.model.EzasseCheckNode;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseSql;
@@ -24,9 +24,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static cn.com.pism.ezasse.EzasseConstants.*;
-import static cn.com.pism.ezasse.enums.EzasseDatabaseType.MYSQL;
-import static cn.com.pism.ezasse.enums.EzasseDatabaseType.ORACLE;
+import static cn.com.pism.ezasse.constants.EzasseConstants.*;
+import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.*;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_FOLDER_EXCEPTION;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_GROUP_EXCEPTION;
 
@@ -59,13 +58,13 @@ public class Ezasse {
     /**
      * 执行器
      */
-    private Map<EzasseDatabaseType, EzasseExecutor> executorMap;
+    private Map<String, EzasseExecutor> executorMap;
 
     public static final String MASTER_ID = "master";
 
     public Ezasse() {
         this.dataSourceMap = new HashMap<>(0);
-        this.executorMap = new EnumMap<>(EzasseDatabaseType.class);
+        this.executorMap = new HashMap<>(0);
         this.checkerMap = new HashMap<>(0);
         initExecutor();
     }
@@ -296,7 +295,7 @@ public class Ezasse {
      * @author PerccyKing
      * @date 2022/04/09 下午 12:38
      */
-    public void addExecutor(EzasseDatabaseType databaseType, EzasseExecutor executor) {
+    public void addExecutor(String databaseType, EzasseExecutor executor) {
         executorMap.remove(databaseType);
         executorMap.put(databaseType, executor);
     }
@@ -336,5 +335,7 @@ public class Ezasse {
         //添加执行器
         addExecutor(MYSQL, new MysqlEzasseExecutor());
         addExecutor(ORACLE, new OracleEzasseExecutor());
+        addExecutor(H2, new H2EzasseExecutor());
+        addExecutor(MARIADB, new MariaDbEzasseExecutor());
     }
 }
