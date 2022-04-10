@@ -2,10 +2,11 @@ package cn.com.pism.ezasse;
 
 import cn.com.pism.ezasse.checker.*;
 import cn.com.pism.ezasse.checker.change.*;
-import cn.com.pism.ezasse.database.EzasseExecutor;
-import cn.com.pism.ezasse.database.MysqlEzasseExecutor;
+import cn.com.pism.ezasse.executor.EzasseExecutor;
+import cn.com.pism.ezasse.executor.MysqlEzasseExecutor;
 import cn.com.pism.ezasse.enums.EzasseDatabaseType;
 import cn.com.pism.ezasse.exception.EzasseException;
+import cn.com.pism.ezasse.executor.OracleEzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseCheckNode;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseSql;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 
 import static cn.com.pism.ezasse.EzasseConstants.*;
 import static cn.com.pism.ezasse.enums.EzasseDatabaseType.MYSQL;
+import static cn.com.pism.ezasse.enums.EzasseDatabaseType.ORACLE;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_FOLDER_EXCEPTION;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_GROUP_EXCEPTION;
 
@@ -65,9 +67,9 @@ public class Ezasse {
         this.dataSourceMap = new HashMap<>(0);
         this.executorMap = new EnumMap<>(EzasseDatabaseType.class);
         this.checkerMap = new HashMap<>(0);
-        //添加执行器
-        addExecutor(MYSQL, new MysqlEzasseExecutor());
+        initExecutor();
     }
+
 
     /**
      * <p>
@@ -305,7 +307,7 @@ public class Ezasse {
 
     /**
      * <p>
-     * 初始化默认校验器
+     * 初始化默认校验器，在实例化Ezasse，添加了Config后调用，在添加自定义校验器之前调用！！！
      * </p>
      *
      * @author PerccyKing
@@ -320,5 +322,19 @@ public class Ezasse {
         addChecker(new ChangeTypeEzasseChecker());
         addChecker(new ChangeLengthEzasseChecker());
         addChecker(new ChangeCommentEzasseChecker());
+    }
+
+    /**
+     * <p>
+     * 初始化执行器
+     * </p>
+     *
+     * @author PerccyKing
+     * @date 2022/04/10 上午 11:48
+     */
+    private void initExecutor() {
+        //添加执行器
+        addExecutor(MYSQL, new MysqlEzasseExecutor());
+        addExecutor(ORACLE, new OracleEzasseExecutor());
     }
 }

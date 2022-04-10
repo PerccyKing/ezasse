@@ -1,6 +1,6 @@
 package cn.com.pism.ezasse.checker;
 
-import cn.com.pism.ezasse.database.EzasseExecutor;
+import cn.com.pism.ezasse.executor.EzasseExecutor;
 import cn.com.pism.ezasse.exception.EzasseException;
 import cn.com.pism.ezasse.model.EzasseConfig;
 

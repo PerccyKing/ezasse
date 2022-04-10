@@ -1,16 +1,10 @@
 package cn.com.pism.ezasse.checker.change;
 
-import cn.com.pism.ezasse.checker.EzasseChecker;
-import cn.com.pism.ezasse.database.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
 
-import javax.sql.DataSource;
 import java.util.List;
-
-import static cn.com.pism.ezasse.EzasseConstants.REGX_POINT;
 
 /**
  * @author PerccyKing

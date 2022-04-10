@@ -1,4 +1,4 @@
-package cn.com.pism.ezasse.database;
+package cn.com.pism.ezasse.executor;
 
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import org.springframework.jdbc.core.JdbcTemplate;

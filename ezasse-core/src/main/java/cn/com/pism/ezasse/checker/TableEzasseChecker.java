@@ -1,6 +1,6 @@
 package cn.com.pism.ezasse.checker;
 
-import cn.com.pism.ezasse.database.EzasseExecutor;
+import cn.com.pism.ezasse.executor.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import org.apache.commons.collections4.CollectionUtils;
