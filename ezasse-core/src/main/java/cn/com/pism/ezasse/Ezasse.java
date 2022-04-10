@@ -317,5 +317,7 @@ public class Ezasse {
         addChecker(new ChangeAddEzasseChecker());
         addChecker(new ChangeNameEzasseChecker());
         addChecker(new ChangeTypeEzasseChecker());
+        addChecker(new ChangeLengthEzasseChecker());
+        addChecker(new ChangeCommentEzasseChecker());
     }
 }
