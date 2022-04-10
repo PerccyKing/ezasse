@@ -67,7 +67,7 @@ public class MysqlEzasseExecutor extends EzasseExecutor {
      * @author PerccyKing
      * @date 2022/04/07 下午 03:49
      */
-    private static String getDataBaseNameFromDataSource(DataSource dataSource) {
+    protected static String getDataBaseNameFromDataSource(DataSource dataSource) {
         String catalog = getFromDataSource(dataSource, connection -> {
             try {
                 return connection.getCatalog();
