@@ -1,5 +1,6 @@
 package cn.com.pism.ezasse.executor;
 
+import cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import com.alibaba.fastjson.JSON;
 
@@ -46,5 +47,19 @@ public class H2EzasseExecutor extends EzasseExecutor {
         String sql = "SELECT COLUMN_NAME columnName,DATA_TYPE dataType,CHARACTER_MAXIMUM_LENGTH characterMaximumLength,REMARKS columnComment FROM Information_schema.columns WHERE table_Name = ? AND TABLE_SCHEMA=? ";
         List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(sql, tableName, getDataBaseNameFromDataSource(this.dataSource));
         return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
+    }
+
+    /**
+     * <p>
+     * 获取id {@see cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants}
+     * </p>
+     *
+     * @return {@link String}
+     * @author PerccyKing
+     * @date 2022/04/11 下午 08:06
+     */
+    @Override
+    public String getId() {
+        return EzasseDatabaseTypeConstants.H2;
     }
 }

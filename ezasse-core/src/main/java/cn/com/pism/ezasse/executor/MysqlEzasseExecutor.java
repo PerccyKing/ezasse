@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 import java.util.Map;
 
+import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.MYSQL;
+
 /**
  * @author PerccyKing
  * @version 0.0.1
@@ -49,6 +51,20 @@ public class MysqlEzasseExecutor extends EzasseExecutor {
         String sql = "SELECT COLUMN_NAME columnName,DATA_TYPE dataType,CHARACTER_MAXIMUM_LENGTH characterMaximumLength,COLUMN_COMMENT columnComment FROM Information_schema.columns WHERE table_Name = ? AND TABLE_SCHEMA=? ";
         List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(sql, tableName, getDataBaseNameFromDataSource(this.dataSource));
         return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
+    }
+
+    /**
+     * <p>
+     * 获取id {@see cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants}
+     * </p>
+     *
+     * @return {@link String}
+     * @author PerccyKing
+     * @date 2022/04/11 下午 08:06
+     */
+    @Override
+    public String getId() {
+        return MYSQL;
     }
 
 }

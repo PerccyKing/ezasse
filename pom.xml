@@ -5,6 +5,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>ezasse-core</module>
+        <module>ezasse-spring-boot-starter</module>
     </modules>
 
     <groupId>cn.com.pism</groupId>

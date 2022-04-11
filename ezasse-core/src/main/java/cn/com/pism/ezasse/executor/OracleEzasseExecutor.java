@@ -6,6 +6,8 @@ import com.alibaba.fastjson.JSON;
 import java.util.List;
 import java.util.Map;
 
+import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.ORACLE;
+
 /**
  * @author PerccyKing
  * @version 0.0.1
@@ -54,5 +56,19 @@ public class OracleEzasseExecutor extends EzasseExecutor {
     public List<EzasseTableInfo> getTableInfo(String tableName) {
         List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(SQL, tableName);
         return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
+    }
+
+    /**
+     * <p>
+     * 获取id {@see cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants}
+     * </p>
+     *
+     * @return {@link String}
+     * @author PerccyKing
+     * @date 2022/04/11 下午 08:06
+     */
+    @Override
+    public String getId() {
+        return ORACLE;
     }
 }

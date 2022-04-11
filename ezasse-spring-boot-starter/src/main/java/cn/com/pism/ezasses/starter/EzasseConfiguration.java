@@ -1,0 +1,71 @@
+package cn.com.pism.ezasses.starter;
+
+import cn.com.pism.ezasse.Ezasse;
+import cn.com.pism.ezasse.checker.EzasseChecker;
+import cn.com.pism.ezasse.executor.EzasseExecutor;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.BeansException;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import javax.annotation.Resource;
+import java.util.Map;
+
+/**
+ * @author PerccyKing
+ * @version 0.0.1
+ * @date 2022/04/10 下午 11:07
+ * @since 0.0.1
+ */
+@Configuration
+@ConditionalOnClass(Ezasse.class)
+@EnableConfigurationProperties(EzasseProperties.class)
+@AutoConfigureAfter(DataSourceAutoConfiguration.class)
+public class EzasseConfiguration implements ApplicationContextAware {
+
+    private ApplicationContext applicationContext;
+
+    @Resource
+    private EzasseProperties ezasseProperties;
+
+    @Resource
+    private JdbcTemplate jdbcTemplate;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public Ezasse init() {
+        Ezasse ezasse = new Ezasse();
+        ezasse.setConfig(ezasseProperties);
+        ezasse.initChecker();
+        //添加自定义校验器
+        Map<String, EzasseChecker> ezasseCheckerMap = applicationContext.getBeansOfType(EzasseChecker.class);
+        ezasseCheckerMap.forEach((s, ezasseChecker) -> ezasse.addChecker(ezasseChecker));
+        //添加自定义执行器
+        Map<String, EzasseExecutor> ezasseExecutorMap = applicationContext.getBeansOfType(EzasseExecutor.class);
+        ezasseExecutorMap.forEach((s, ezasseExecutor) -> ezasse.addExecutor(ezasseExecutor));
+        ezasse.setMaster(jdbcTemplate.getDataSource());
+        String[] ezDatasource = applicationContext.getBeanNamesForType(EzasseDatasource.class);
+        if (ArrayUtils.isNotEmpty(ezDatasource)) {
+            EzasseDatasource ezasseDatasource = applicationContext.getBean(ezDatasource[0], EzasseDatasource.class);
+            ezasseDatasource.getDataSource().forEach(ezasse::addDataSource);
+            if (ezasseDatasource.getMaster() != null) {
+                ezasse.setMaster(ezasseDatasource.getMaster());
+            }
+        }
+        ezasse.executeScript();
+        return ezasse;
+    }
+}

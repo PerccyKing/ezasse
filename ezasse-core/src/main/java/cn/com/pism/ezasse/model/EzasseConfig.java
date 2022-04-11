@@ -2,7 +2,6 @@ package cn.com.pism.ezasse.model;
 
 import lombok.Data;
 
-import javax.sql.DataSource;
 import java.util.List;
 
 /**
@@ -29,11 +28,6 @@ public class EzasseConfig {
      * 分组顺序
      */
     private List<String> groupOrder;
-
-    /**
-     * 默认数据节点
-     */
-    private DataSource master;
 
     /**
      * 开始限定符

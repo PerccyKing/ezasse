@@ -5,7 +5,6 @@ import cn.com.pism.ezasse.checker.EzasseChecker;
 import cn.com.pism.ezasse.checker.TableEzasseChecker;
 import cn.com.pism.ezasse.checker.change.*;
 import cn.com.pism.ezasse.exception.EzasseException;
-import cn.com.pism.ezasse.executor.EzasseExecutor;
 import cn.com.pism.ezasse.executor.*;
 import cn.com.pism.ezasse.model.EzasseCheckNode;
 import cn.com.pism.ezasse.model.EzasseConfig;
@@ -25,7 +24,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static cn.com.pism.ezasse.constants.EzasseConstants.*;
-import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.*;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_FOLDER_EXCEPTION;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_GROUP_EXCEPTION;
 
@@ -60,6 +58,11 @@ public class Ezasse {
      */
     private Map<String, EzasseExecutor> executorMap;
 
+    /**
+     * 默认数据节点
+     */
+    private DataSource master;
+
     public static final String MASTER_ID = "master";
 
     public Ezasse() {
@@ -80,7 +83,7 @@ public class Ezasse {
      */
     public void executeScript() {
         //初始化master数据源
-        dataSourceMap.put(MASTER_ID, config.getMaster());
+        dataSourceMap.put(MASTER_ID, master);
         //获取SQL文件列表
         List<EzasseSql> ezasseSqls = getEzasseSqlList(config);
         //对文件分组排序
@@ -290,14 +293,13 @@ public class Ezasse {
      * 添加执行器
      * </p>
      *
-     * @param databaseType : 数据库类型
-     * @param executor     : 执行器
+     * @param executor : 执行器
      * @author PerccyKing
      * @date 2022/04/09 下午 12:38
      */
-    public void addExecutor(String databaseType, EzasseExecutor executor) {
-        executorMap.remove(databaseType);
-        executorMap.put(databaseType, executor);
+    public void addExecutor(EzasseExecutor executor) {
+        executorMap.remove(executor.getId());
+        executorMap.put(executor.getId(), executor);
     }
 
     public EzasseExecutor getExecutorByDatasource(DataSource dataSource) {
@@ -333,10 +335,10 @@ public class Ezasse {
      */
     private void initExecutor() {
         //添加执行器
-        addExecutor(MYSQL, new MysqlEzasseExecutor());
-        addExecutor(ORACLE, new OracleEzasseExecutor());
-        addExecutor(H2, new H2EzasseExecutor());
-        addExecutor(MARIADB, new MariaDbEzasseExecutor());
-        addExecutor(HSQLDB, new HsqlDbExecutor());
+        addExecutor(new MysqlEzasseExecutor());
+        addExecutor(new OracleEzasseExecutor());
+        addExecutor(new H2EzasseExecutor());
+        addExecutor(new MariaDbEzasseExecutor());
+        addExecutor(new HsqlDbExecutor());
     }
 }

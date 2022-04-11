@@ -134,4 +134,15 @@ public abstract class EzasseExecutor {
         }
         return catalog;
     }
+
+    /**
+     * <p>
+     * 获取id {@see cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants}
+     * </p>
+     *
+     * @return {@link String}
+     * @author PerccyKing
+     * @date 2022/04/11 下午 08:06
+     */
+    public abstract String getId();
 }

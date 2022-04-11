@@ -1,5 +1,6 @@
 package cn.com.pism.ezasse.executor;
 
+import cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import com.alibaba.fastjson.JSON;
 
@@ -56,5 +57,19 @@ public class HsqlDbExecutor extends EzasseExecutor {
     public List<EzasseTableInfo> getTableInfo(String tableName) {
         List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(SQL, tableName);
         return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
+    }
+
+    /**
+     * <p>
+     * 获取id {@see cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants}
+     * </p>
+     *
+     * @return {@link String}
+     * @author PerccyKing
+     * @date 2022/04/11 下午 08:06
+     */
+    @Override
+    public String getId() {
+        return EzasseDatabaseTypeConstants.HSQLDB;
     }
 }
