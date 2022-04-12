@@ -8,7 +8,7 @@
         <module>ezasse-spring-boot-starter</module>
     </modules>
 
-    <groupId>cn.com.pism</groupId>
+    <groupId>cn.com.pism.ezasse</groupId>
     <artifactId>ezasse</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ezasse</name>
