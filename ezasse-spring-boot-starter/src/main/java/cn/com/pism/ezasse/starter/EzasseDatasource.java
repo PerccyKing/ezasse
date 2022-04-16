@@ -1,4 +1,4 @@
-package cn.com.pism.ezasses.starter;
+package cn.com.pism.ezasse.starter;
 
 import javax.sql.DataSource;
 import java.util.Map;

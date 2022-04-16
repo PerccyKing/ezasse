@@ -1,3 +1,7 @@
+# 快速入门
+## 简介
+ezasse(Easy automatic SQL script executor)一个简单的自动SQL执行器
+## 立即体验
 ```text
 resources
     文件夹1_001

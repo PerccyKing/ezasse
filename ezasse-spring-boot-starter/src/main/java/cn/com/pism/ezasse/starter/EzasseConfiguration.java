@@ -1,4 +1,4 @@
-package cn.com.pism.ezasses.starter;
+package cn.com.pism.ezasse.starter;
 
 import cn.com.pism.ezasse.Ezasse;
 import cn.com.pism.ezasse.checker.EzasseChecker;

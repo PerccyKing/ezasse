@@ -1,6 +1,6 @@
-package cn.com.pism.ezasses.starter.annotation;
+package cn.com.pism.ezasse.starter.annotation;
 
-import cn.com.pism.ezasses.starter.EzasseConfiguration;
+import cn.com.pism.ezasse.starter.EzasseConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;

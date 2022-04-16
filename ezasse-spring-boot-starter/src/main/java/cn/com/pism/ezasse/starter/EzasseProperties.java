@@ -1,4 +1,4 @@
-package cn.com.pism.ezasses.starter;
+package cn.com.pism.ezasse.starter;
 
 import cn.com.pism.ezasse.model.EzasseConfig;
 import lombok.Data;
