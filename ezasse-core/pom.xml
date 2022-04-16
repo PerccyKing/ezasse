@@ -5,7 +5,7 @@
     <parent>
         <artifactId>ezasse</artifactId>
         <groupId>cn.com.pism.ezasse</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -31,9 +31,21 @@
         </dependency>
 
         <dependency>
-            <groupId>cn.com.pism</groupId>
+            <groupId>cn.com.pism.frc</groupId>
             <artifactId>flyway-resource-scanner</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-codec</groupId>
+                    <artifactId>commons-codec</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
         </dependency>
 
         <dependency>
