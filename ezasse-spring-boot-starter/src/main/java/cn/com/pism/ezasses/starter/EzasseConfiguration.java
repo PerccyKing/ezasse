@@ -3,12 +3,14 @@ package cn.com.pism.ezasses.starter;
 import cn.com.pism.ezasse.Ezasse;
 import cn.com.pism.ezasse.checker.EzasseChecker;
 import cn.com.pism.ezasse.executor.EzasseExecutor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -28,7 +30,8 @@ import java.util.Map;
 @Configuration
 @ConditionalOnClass(Ezasse.class)
 @EnableConfigurationProperties(EzasseProperties.class)
-@AutoConfigureAfter(DataSourceAutoConfiguration.class)
+@AutoConfigureAfter({DataSourceAutoConfiguration.class, JdbcTemplateAutoConfiguration.class})
+@Slf4j
 public class EzasseConfiguration implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
@@ -47,15 +50,22 @@ public class EzasseConfiguration implements ApplicationContextAware {
     @Bean
     @ConditionalOnMissingBean
     public Ezasse init() {
+        log.info("Ezasse - Starting...");
         Ezasse ezasse = new Ezasse();
         ezasse.setConfig(ezasseProperties);
         ezasse.initChecker();
         //添加自定义校验器
         Map<String, EzasseChecker> ezasseCheckerMap = applicationContext.getBeansOfType(EzasseChecker.class);
-        ezasseCheckerMap.forEach((s, ezasseChecker) -> ezasse.addChecker(ezasseChecker));
+        ezasseCheckerMap.forEach((s, ezasseChecker) -> {
+            log.info("Ezasse - Add custom Checker :{}", ezasseChecker.getId(ezasseProperties));
+            ezasse.addChecker(ezasseChecker);
+        });
         //添加自定义执行器
         Map<String, EzasseExecutor> ezasseExecutorMap = applicationContext.getBeansOfType(EzasseExecutor.class);
-        ezasseExecutorMap.forEach((s, ezasseExecutor) -> ezasse.addExecutor(ezasseExecutor));
+        ezasseExecutorMap.forEach((s, ezasseExecutor) -> {
+            log.info("Ezasse - Add custom Executor :{}", ezasseExecutor.getId());
+            ezasse.addExecutor(ezasseExecutor);
+        });
         ezasse.setMaster(jdbcTemplate.getDataSource());
         String[] ezDatasource = applicationContext.getBeanNamesForType(EzasseDatasource.class);
         if (ArrayUtils.isNotEmpty(ezDatasource)) {

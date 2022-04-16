@@ -12,6 +12,7 @@ import cn.com.pism.ezasse.model.EzasseSql;
 import cn.com.pism.ezasse.util.EzasseUtil;
 import cn.com.pism.frc.resourcescanner.Scanner;
 import cn.com.pism.frc.resourcescanner.*;
+import com.alibaba.fastjson.JSON;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -86,6 +87,7 @@ public class Ezasse {
         dataSourceMap.put(MASTER_ID, master);
         //获取SQL文件列表
         List<EzasseSql> ezasseSqls = getEzasseSqlList(config);
+        log.info("Ezasse - Identified file list :{}", JSON.toJSONString(ezasseSqls));
         //对文件分组排序
         Map<String, List<EzasseSql>> ezasseSqlMap = ezasseSqls.stream().collect(Collectors.groupingBy(EzasseSql::getGroup));
         //排序
@@ -157,6 +159,7 @@ public class Ezasse {
             EzasseExecutor checkEzasseExecutor = getExecutorByDatasource(ezasseCheckNode.getCheckNode());
             checkEzasseExecutor.setDataSource(ezasseCheckNode.getCheckNode());
             if (ezasseChecker.needToExecute(ezasseCheckNode.getCheckNode(), ezasseCheckNode.getCheckContent(), checkEzasseExecutor)) {
+                log.debug("Ezasse - execute code block :{}", checkLine);
                 //获取执行器并执行SQL
                 EzasseExecutor ezasseExecutor = getExecutorByDatasource(ezasseCheckNode.getExecNode());
                 ezasseExecutor.setDataSource(ezasseCheckNode.getExecNode());
