@@ -3,8 +3,10 @@ package cn.com.pism.ezasse.starter;
 import cn.com.pism.ezasse.Ezasse;
 import cn.com.pism.ezasse.checker.EzasseChecker;
 import cn.com.pism.ezasse.executor.EzasseExecutor;
+import cn.com.pism.ezasse.model.EzasseConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -52,12 +54,14 @@ public class EzasseConfiguration implements ApplicationContextAware {
     public Ezasse init() {
         log.info("Ezasse - Starting...");
         Ezasse ezasse = new Ezasse();
-        ezasse.setConfig(ezasseProperties);
+        EzasseConfig ezasseConfig = new EzasseConfig();
+        BeanUtils.copyProperties(ezasseProperties, ezasseConfig);
+        ezasse.setConfig(ezasseConfig);
         ezasse.initChecker();
         //添加自定义校验器
         Map<String, EzasseChecker> ezasseCheckerMap = applicationContext.getBeansOfType(EzasseChecker.class);
         ezasseCheckerMap.forEach((s, ezasseChecker) -> {
-            log.info("Ezasse - Add custom Checker :{}", ezasseChecker.getId(ezasseProperties));
+            log.info("Ezasse - Add custom Checker :{}", ezasseChecker.getId(ezasseConfig));
             ezasse.addChecker(ezasseChecker);
         });
         //添加自定义执行器
