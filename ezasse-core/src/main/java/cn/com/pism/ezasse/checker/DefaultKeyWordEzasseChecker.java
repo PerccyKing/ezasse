@@ -50,7 +50,7 @@ public class DefaultKeyWordEzasseChecker extends EzasseChecker {
      */
     @Override
     public String getId(EzasseConfig config) {
-        return config.getDefaultKeyWord();
+        return config.getKeyWords().getExec();
     }
 
 }

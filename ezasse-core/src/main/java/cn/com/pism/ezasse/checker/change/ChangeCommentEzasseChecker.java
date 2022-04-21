@@ -43,6 +43,6 @@ public class ChangeCommentEzasseChecker extends ChangeEzasseChecker {
      */
     @Override
     public String getId(EzasseConfig config) {
-        return config.getChange() + "_" + config.getChangeComment();
+        return config.getKeyWords().getField().getChangeComment();
     }
 }

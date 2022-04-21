@@ -52,6 +52,6 @@ public class ChangeNameEzasseChecker extends EzasseChecker {
      */
     @Override
     public String getId(EzasseConfig config) {
-        return config.getChange() + "_" + config.getChangeName();
+        return config.getKeyWords().getField().getChangeName();
     }
 }

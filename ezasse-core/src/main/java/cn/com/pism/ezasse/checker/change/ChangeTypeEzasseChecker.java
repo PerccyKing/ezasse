@@ -43,6 +43,6 @@ public class ChangeTypeEzasseChecker extends ChangeEzasseChecker {
      */
     @Override
     public String getId(EzasseConfig config) {
-        return config.getChange() + "_" + config.getChangeType();
+        return config.getKeyWords().getField().getChangeType();
     }
 }

@@ -47,6 +47,6 @@ public class TableEzasseChecker extends EzasseChecker {
      */
     @Override
     public String getId(EzasseConfig config) {
-        return config.getTable();
+        return config.getKeyWords().getTable().getCreateTable();
     }
 }

@@ -53,6 +53,6 @@ public class ChangeAddEzasseChecker extends EzasseChecker {
      */
     @Override
     public String getId(EzasseConfig config) {
-        return config.getChange() + "_" + config.getChangeAdd();
+        return config.getKeyWords().getField().getAdd();
     }
 }

@@ -42,6 +42,6 @@ public class ChangeLengthEzasseChecker extends ChangeEzasseChecker {
      */
     @Override
     public String getId(EzasseConfig config) {
-        return config.getChange() + "_" + config.getChangeLength();
+        return config.getKeyWords().getField().getChangeLength();
     }
 }

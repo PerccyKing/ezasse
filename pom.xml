@@ -19,7 +19,7 @@
     <scm>
         <url>https://github.com/PerccyKing/ezasse.git</url>
         <connection>scm:git:https://github.com/PerccyKing/ezasse.git</connection>
-        <tag>${version}</tag>
+        <tag>${project.version}</tag>
     </scm>
 
     <developers>

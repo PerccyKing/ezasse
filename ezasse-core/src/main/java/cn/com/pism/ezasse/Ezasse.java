@@ -134,7 +134,7 @@ public class Ezasse {
      * @date 2022/04/06 上午 11:24
      */
     private void doGroupParsing(EzasseConfig config, EzasseSql sql) {
-        EzasseGroupParser parser = new EzasseGroupParser(config, sql);
+        EzasseGroupParser parser = new EzasseGroupParser(config, sql, checkerMap.keySet());
         LinkedHashMap<String, String> scriptMap = parser.parser();
         scriptMap.forEach((k, v) -> doExecuteScript(k, v, sql));
     }
