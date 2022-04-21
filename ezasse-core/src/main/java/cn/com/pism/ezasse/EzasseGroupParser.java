@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 import static cn.com.pism.ezasse.constants.EzasseConstants.LINE_COMMENT;
 
@@ -18,13 +19,16 @@ import static cn.com.pism.ezasse.constants.EzasseConstants.LINE_COMMENT;
  * @since 0.0.1
  */
 public class EzasseGroupParser {
-    LinkedHashMap<String, String> scriptMap = new LinkedHashMap<>();
-    EzasseConfig config;
-    EzasseSql sql;
+    private final LinkedHashMap<String, String> scriptMap = new LinkedHashMap<>();
+    private final EzasseConfig config;
+    private final EzasseSql sql;
 
-    public EzasseGroupParser(EzasseConfig config, EzasseSql sql) {
+    private final Set<String> checkKeyWord;
+
+    public EzasseGroupParser(EzasseConfig config, EzasseSql sql, Set<String> checkKeyWord) {
         this.config = config;
         this.sql = sql;
+        this.checkKeyWord = checkKeyWord;
     }
 
     LinkedHashMap<String, String> parser() {
@@ -105,7 +109,7 @@ public class EzasseGroupParser {
         if (line.startsWith(LINE_COMMENT)) {
             //以-- 开头，并且包含各个校验关键字
             String checkLine = line.substring(LINE_COMMENT.length() + 1);
-            return StringUtils.startsWithAny(checkLine, config.getTable(), config.getChange(), config.getDefaultKeyWord());
+            return StringUtils.startsWithAny(checkLine, checkKeyWord.toArray(new String[0]));
         }
         return false;
     }
