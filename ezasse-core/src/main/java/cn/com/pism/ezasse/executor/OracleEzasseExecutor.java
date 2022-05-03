@@ -1,11 +1,20 @@
 package cn.com.pism.ezasse.executor;
 
 import cn.com.pism.ezasse.model.EzasseTableInfo;
+import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.PathResource;
+import org.springframework.core.io.support.EncodedResource;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 
+import java.io.File;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import static cn.com.pism.ezasse.constants.EzasseConstants.SQL_EXTENSION;
 import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.ORACLE;
 
 /**
@@ -14,6 +23,7 @@ import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.ORACLE;
  * @date 2022/04/10 上午 11:47
  * @since 0.0.1
  */
+@Slf4j
 public class OracleEzasseExecutor extends EzasseExecutor {
 
     private static final String SQL = "SELECT UTC.COLUMN_NAME columnName,\n" +
@@ -56,6 +66,19 @@ public class OracleEzasseExecutor extends EzasseExecutor {
     public List<EzasseTableInfo> getTableInfo(String tableName) {
         List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(SQL, tableName);
         return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
+    }
+
+    @Override
+    public void execute(String sql) {
+        try {
+            String tempFileName = UUID.randomUUID() + SQL_EXTENSION;
+            FileUtil.touch(tempFileName);
+            File file = FileUtil.writeBytes(sql.getBytes(), tempFileName);
+            ScriptUtils.executeSqlScript(super.getDataSource().getConnection(), new EncodedResource(new PathResource(file.getPath())));
+            FileUtil.del(file);
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
     }
 
     /**
