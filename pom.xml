@@ -10,7 +10,7 @@
 
     <groupId>cn.com.pism.ezasse</groupId>
     <artifactId>ezasse</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 
     <name>ezasse</name>
     <description>Easy automatic SQL script executor</description>
