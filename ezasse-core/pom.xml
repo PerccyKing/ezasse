@@ -33,7 +33,7 @@
         <dependency>
             <groupId>cn.com.pism.frc</groupId>
             <artifactId>flyway-resource-scanner</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-codec</groupId>
