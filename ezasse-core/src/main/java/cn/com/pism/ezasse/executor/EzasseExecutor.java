@@ -1,6 +1,7 @@
 package cn.com.pism.ezasse.executor;
 
 import cn.com.pism.ezasse.model.EzasseTableInfo;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,6 +20,7 @@ import static cn.com.pism.ezasse.util.EzasseUtil.getFromDataSource;
  * @since 0.0.1
  */
 @Slf4j
+@Data
 public abstract class EzasseExecutor {
 
 

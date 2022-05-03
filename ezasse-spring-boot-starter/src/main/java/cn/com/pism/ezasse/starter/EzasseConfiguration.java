@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.annotation.Resource;
 import java.util.Map;
 
 /**
@@ -38,12 +37,6 @@ public class EzasseConfiguration implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
-    @Resource
-    private EzasseProperties ezasseProperties;
-
-    @Resource
-    private JdbcTemplate jdbcTemplate;
-
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
@@ -54,6 +47,7 @@ public class EzasseConfiguration implements ApplicationContextAware {
     public Ezasse init() {
         log.info("Ezasse - Starting...");
         Ezasse ezasse = new Ezasse();
+        EzasseProperties ezasseProperties = applicationContext.getBean(EzasseProperties.class);
         EzasseConfig ezasseConfig = JSON.parseObject(JSON.toJSONString(ezasseProperties), EzasseConfig.class);
         ezasse.setConfig(ezasseConfig);
         ezasse.initChecker();
@@ -69,7 +63,6 @@ public class EzasseConfiguration implements ApplicationContextAware {
             log.info("Ezasse - Add custom Executor :{}", ezasseExecutor.getId());
             ezasse.addExecutor(ezasseExecutor);
         });
-        ezasse.setMaster(jdbcTemplate.getDataSource());
         String[] ezDatasource = applicationContext.getBeanNamesForType(EzasseDatasource.class);
         if (ArrayUtils.isNotEmpty(ezDatasource)) {
             EzasseDatasource ezasseDatasource = applicationContext.getBean(ezDatasource[0], EzasseDatasource.class);
@@ -77,6 +70,9 @@ public class EzasseConfiguration implements ApplicationContextAware {
             if (ezasseDatasource.getMaster() != null) {
                 ezasse.setMaster(ezasseDatasource.getMaster());
             }
+        } else {
+            JdbcTemplate jdbcTemplate = applicationContext.getBean(JdbcTemplate.class);
+            ezasse.setMaster(jdbcTemplate.getDataSource());
         }
         ezasse.executeScript();
         return ezasse;
