@@ -1,8 +1,9 @@
+![logo](/doc/image/logo.svg)
 # 快速入门
 ## 简介
 ezasse(Easy automatic SQL script executor)一个简单的自动SQL执行器
 
-[详细指南](https://perccyking.github.io/ezasse-doc/)
+[详细指南](https://ezasse.pism.com.cn)
 
 
 ### 立即体验(spring boot)
