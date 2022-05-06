@@ -27,7 +27,7 @@ public class ChangeCommentEzasseChecker extends ChangeEzasseChecker {
      */
     @Override
     public boolean aloneCheck(List<EzasseTableInfo> tableInfo, String[] split) {
-        EzasseTableInfo info = IterableUtils.find(tableInfo, t -> split[3].equalsIgnoreCase(t.getColumnComment()));
+        EzasseTableInfo info = IterableUtils.find(tableInfo, t -> split[2].equalsIgnoreCase(t.getColumnComment()));
         return info == null;
     }
 
