@@ -5,8 +5,7 @@ import lombok.Data;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/07 下午 08:57
- * @since 0.0.1
+ * @since 2022/04/07 下午 08:57
  */
 @Data
 public class EzasseTableInfo {

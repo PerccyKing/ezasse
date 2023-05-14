@@ -14,8 +14,7 @@ import static cn.com.pism.ezasse.constants.EzasseConstants.REGX_POINT;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/09 下午 05:38
- * @since 0.0.1
+ * @since 2022/04/09 下午 05:38
  */
 public class ChangeNameEzasseChecker extends EzasseChecker {
     /**
@@ -28,7 +27,7 @@ public class ChangeNameEzasseChecker extends EzasseChecker {
      * @param executor        :执行器
      * @return {@link boolean} true:执行代码块,false:跳过代码块
      * @author PerccyKing
-     * @date 2022/04/05 下午 12:23
+     * @since 2022/04/05 下午 12:23
      */
     @Override
     public boolean needToExecute(DataSource checkDataSource, String checkContent, EzasseExecutor executor) {
@@ -48,7 +47,7 @@ public class ChangeNameEzasseChecker extends EzasseChecker {
      * @param config : 配置
      * @return {@link String}  全局唯一id，与关键字对其
      * @author PerccyKing
-     * @date 2022/04/06 下午 02:45
+     * @since 2022/04/06 下午 02:45
      */
     @Override
     public String getId(EzasseConfig config) {

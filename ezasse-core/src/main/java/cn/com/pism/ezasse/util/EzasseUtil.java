@@ -12,8 +12,7 @@ import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.UNKNOWN;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/06 下午 11:35
- * @since 0.0.1
+ * @since 2022/04/06 下午 11:35
  */
 @Slf4j
 public class EzasseUtil {

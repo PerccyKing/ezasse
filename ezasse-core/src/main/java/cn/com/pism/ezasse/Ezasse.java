@@ -32,8 +32,7 @@ import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_GROUP_EXC
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/04 下午 10:49
- * @since 0.0.1
+ * @since 2022/04/04 下午 10:49
  */
 @Data
 @Slf4j
@@ -80,7 +79,7 @@ public class Ezasse {
      * </p>
      *
      * @author PerccyKing
-     * @date 2022/04/04 下午 11:18
+     * @since 2022/04/04 下午 11:18
      */
     public void executeScript() {
         //初始化master数据源
@@ -110,7 +109,7 @@ public class Ezasse {
      * @param config     : 配置
      * @param ezasseSqls : sql对象
      * @author PerccyKing
-     * @date 2022/04/06 上午 11:04
+     * @since 2022/04/06 上午 11:04
      */
     private void groupParsing(EzasseConfig config, List<EzasseSql> ezasseSqls) {
         if (CollectionUtils.isNotEmpty(ezasseSqls)) {
@@ -131,7 +130,7 @@ public class Ezasse {
      * @param config : 配置
      * @param sql    : sql脚本信息
      * @author PerccyKing
-     * @date 2022/04/06 上午 11:24
+     * @since 2022/04/06 上午 11:24
      */
     private void doGroupParsing(EzasseConfig config, EzasseSql sql) {
         EzasseGroupParser parser = new EzasseGroupParser(config, sql, checkerMap.keySet());
@@ -148,7 +147,7 @@ public class Ezasse {
      * @param sqlLine   : SQL行
      * @param ezasseSql : SQL文件信息
      * @author PerccyKing
-     * @date 2022/04/06 下午 03:29
+     * @since 2022/04/06 下午 03:29
      */
     private void doExecuteScript(String checkLine, String sqlLine, EzasseSql ezasseSql) {
         if (StringUtils.isNotBlank(sqlLine)) {
@@ -176,7 +175,7 @@ public class Ezasse {
      * @param config : 配置
      * @return {@link List<EzasseSql>}   sql文件对象集合
      * @author PerccyKing
-     * @date 2022/04/06 上午 09:49
+     * @since 2022/04/06 上午 09:49
      */
     private List<EzasseSql> getEzasseSqlList(EzasseConfig config) {
         String folder = config.getFolder();
@@ -234,7 +233,7 @@ public class Ezasse {
      * @param absolutePath : 文件路径
      * @return {@link EzasseSql}
      * @author PerccyKing
-     * @date 2022/04/05 下午 01:41
+     * @since 2022/04/05 下午 01:41
      */
     private EzasseSql absolutePathToEzasseSql(String absolutePath) {
         String[] absolutePathSplit = absolutePath.split(BACK_SLASH);
@@ -268,7 +267,7 @@ public class Ezasse {
      *
      * @param ezasseChecker : 校验器
      * @author PerccyKing
-     * @date 2022/04/06 下午 02:53
+     * @since 2022/04/06 下午 02:53
      */
     public void addChecker(EzasseChecker ezasseChecker) {
         String id = ezasseChecker.getId(config);
@@ -284,7 +283,7 @@ public class Ezasse {
      * @param id         : 数据源id
      * @param dataSource : 数据源
      * @author PerccyKing
-     * @date 2022/04/09 下午 12:36
+     * @since 2022/04/09 下午 12:36
      */
     public void addDataSource(String id, DataSource dataSource) {
         dataSourceMap.remove(id);
@@ -298,7 +297,7 @@ public class Ezasse {
      *
      * @param executor : 执行器
      * @author PerccyKing
-     * @date 2022/04/09 下午 12:38
+     * @since 2022/04/09 下午 12:38
      */
     public void addExecutor(EzasseExecutor executor) {
         executorMap.remove(executor.getId());
@@ -315,7 +314,7 @@ public class Ezasse {
      * </p>
      *
      * @author PerccyKing
-     * @date 2022/04/09 下午 04:40
+     * @since 2022/04/09 下午 04:40
      */
     public void initChecker() {
         //添加校验器
@@ -334,7 +333,7 @@ public class Ezasse {
      * </p>
      *
      * @author PerccyKing
-     * @date 2022/04/10 上午 11:48
+     * @since 2022/04/10 上午 11:48
      */
     private void initExecutor() {
         //添加执行器

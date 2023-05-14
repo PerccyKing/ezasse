@@ -20,8 +20,8 @@ import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.ORACLE;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/10 上午 11:47
- * @since 0.0.1
+ * @since 2022/04/10 上午 11:47
+ 
  */
 @Slf4j
 public class OracleEzasseExecutor extends EzasseExecutor {
@@ -43,7 +43,7 @@ public class OracleEzasseExecutor extends EzasseExecutor {
      * @param columnName : 列名
      * @return {@link List < EzasseTableInfo >} 表的基本信息
      * @author PerccyKing
-     * @date 2022/04/06 下午 11:22
+     * @since 2022/04/06 下午 11:22
      */
     @Override
     public List<EzasseTableInfo> getTableInfo(String tableName, String columnName) {
@@ -60,7 +60,7 @@ public class OracleEzasseExecutor extends EzasseExecutor {
      * @param tableName : 表名
      * @return {@link List<EzasseTableInfo>}
      * @author PerccyKing
-     * @date 2022/04/09 下午 04:03
+     * @since 2022/04/09 下午 04:03
      */
     @Override
     public List<EzasseTableInfo> getTableInfo(String tableName) {
@@ -88,7 +88,7 @@ public class OracleEzasseExecutor extends EzasseExecutor {
      *
      * @return {@link String}
      * @author PerccyKing
-     * @date 2022/04/11 下午 08:06
+     * @since 2022/04/11 下午 08:06
      */
     @Override
     public String getId() {

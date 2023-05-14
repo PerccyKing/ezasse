@@ -3,8 +3,7 @@ package cn.com.pism.ezasse.constants;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/04 下午 11:11
- * @since 0.0.1
+ * @since 2022/04/04 下午 11:11
  */
 public class EzasseConstants {
 

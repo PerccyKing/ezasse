@@ -23,8 +23,7 @@ import static cn.com.pism.ezasse.enums.EzasseExceptionCode.SYNTAX_ERROR_EXCEPTIO
  *
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/07 下午 04:23
- * @since 0.0.1
+ * @since 2022/04/07 下午 04:23
  */
 @Data
 public class EzasseCheckNode {

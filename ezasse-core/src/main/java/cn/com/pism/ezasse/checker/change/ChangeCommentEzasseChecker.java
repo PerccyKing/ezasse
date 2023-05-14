@@ -9,8 +9,7 @@ import java.util.List;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/10 上午 11:22
- * @since 0.0.1
+ * @since 2022/04/10 上午 11:22
  */
 public class ChangeCommentEzasseChecker extends ChangeEzasseChecker {
 
@@ -23,7 +22,7 @@ public class ChangeCommentEzasseChecker extends ChangeEzasseChecker {
      * @param split     : 解析到的关键字
      * @return {@link boolean}
      * @author PerccyKing
-     * @date 2022/04/10 上午 11:33
+     * @since 2022/04/10 上午 11:33
      */
     @Override
     public boolean aloneCheck(List<EzasseTableInfo> tableInfo, String[] split) {
@@ -39,7 +38,7 @@ public class ChangeCommentEzasseChecker extends ChangeEzasseChecker {
      * @param config : 配置
      * @return {@link String}  全局唯一id，与关键字对其
      * @author PerccyKing
-     * @date 2022/04/06 下午 02:45
+     * @since 2022/04/06 下午 02:45
      */
     @Override
     public String getId(EzasseConfig config) {

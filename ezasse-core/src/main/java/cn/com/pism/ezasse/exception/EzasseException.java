@@ -5,8 +5,7 @@ import cn.com.pism.ezasse.enums.EzasseExceptionCode;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/05 下午 12:50
- * @since 0.0.1
+ * @since 2022/04/05 下午 12:50
  */
 public class EzasseException extends RuntimeException {
     /**

@@ -8,7 +8,7 @@ import java.util.function.Consumer;
  * 集合扩展工具类
  *
  * @author PerccyKing
- * @date 2022/3/26 21:15
+ * @since 2022/3/26 21:15
  */
 public class CollectionUtil {
 
@@ -25,7 +25,7 @@ public class CollectionUtil {
      * @param item     : 元素
      * @param consumer : 回调
      * @author PerccyKing
-     * @date 2022/04/06 下午 02:51
+     * @since 2022/04/06 下午 02:51
      */
     public static <T> void addToList(List<T> list, T item, Consumer<List<T>> consumer) {
         boolean execConsumer = false;

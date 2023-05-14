@@ -5,8 +5,7 @@ import lombok.Data;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/20 下午 11:44
- * @since 0.0.1
+ * @since 2022/04/20 下午 11:44
  */
 @Data
 public class EzasseKeyWords {
@@ -32,7 +31,7 @@ public class EzasseKeyWords {
      * </p>
      *
      * @author PerccyKing
-     * @date 2022/04/20 下午 11:50
+     * @since 2022/04/20 下午 11:50
      */
     @Data
     public static class Table {
@@ -48,7 +47,7 @@ public class EzasseKeyWords {
      * </p>
      *
      * @author PerccyKing
-     * @date 2022/04/20 下午 11:51
+     * @since 2022/04/20 下午 11:51
      */
     @Data
     public static class Field {

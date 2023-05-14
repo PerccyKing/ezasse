@@ -8,8 +8,8 @@ import java.lang.annotation.*;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/10 下午 11:08
- * @since 0.0.1
+ * @since 2022/04/10 下午 11:08
+ 
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

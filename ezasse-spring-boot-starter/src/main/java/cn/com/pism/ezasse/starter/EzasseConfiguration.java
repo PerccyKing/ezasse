@@ -25,8 +25,8 @@ import java.util.Map;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/10 下午 11:07
- * @since 0.0.1
+ * @since 2022/04/10 下午 11:07
+ 
  */
 @Configuration
 @ConditionalOnClass(Ezasse.class)

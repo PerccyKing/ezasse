@@ -13,8 +13,7 @@ import static cn.com.pism.ezasse.constants.EzasseConstants.REGX_POINT;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/10 上午 11:30
- * @since 0.0.1
+ * @since 2022/04/10 上午 11:30
  */
 public abstract class ChangeEzasseChecker extends EzasseChecker {
     /**
@@ -27,7 +26,7 @@ public abstract class ChangeEzasseChecker extends EzasseChecker {
      * @param executor        :执行器
      * @return {@link boolean} true:执行代码块,false:跳过代码块
      * @author PerccyKing
-     * @date 2022/04/05 下午 12:23
+     * @since 2022/04/05 下午 12:23
      */
     @Override
     public boolean needToExecute(DataSource checkDataSource, String checkContent, EzasseExecutor executor) {
@@ -50,7 +49,7 @@ public abstract class ChangeEzasseChecker extends EzasseChecker {
      * @param split     : 解析到的关键字
      * @return {@link boolean}
      * @author PerccyKing
-     * @date 2022/04/10 上午 11:33
+     * @since 2022/04/10 上午 11:33
      */
     public abstract boolean aloneCheck(List<EzasseTableInfo> tableInfo, String[] split);
 }

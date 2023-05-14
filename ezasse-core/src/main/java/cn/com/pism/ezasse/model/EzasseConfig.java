@@ -9,8 +9,7 @@ import java.util.List;
  *
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/05 下午 12:08
- * @since 0.0.1
+ * @since 2022/04/05 下午 12:08
  */
 @Data
 public class EzasseConfig {

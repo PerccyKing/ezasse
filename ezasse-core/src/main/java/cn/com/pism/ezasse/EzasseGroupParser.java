@@ -18,8 +18,7 @@ import static cn.com.pism.ezasse.constants.EzasseConstants.LINE_COMMENT;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/07 下午 04:55
- * @since 0.0.1
+ * @since 2022/04/07 下午 04:55
  */
 @Slf4j
 public class EzasseGroupParser {
@@ -109,7 +108,7 @@ public class EzasseGroupParser {
      * @param line : 处理行信息
      * @return {@link boolean} true:是校验行，false：不是校验行
      * @author PerccyKing
-     * @date 2022/04/06 下午 01:53
+     * @since 2022/04/06 下午 01:53
      */
     private boolean isCheckLine(String line) {
         if (line.startsWith(LINE_COMMENT)) {

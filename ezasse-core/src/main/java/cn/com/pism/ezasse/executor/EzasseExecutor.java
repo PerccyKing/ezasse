@@ -16,8 +16,7 @@ import static cn.com.pism.ezasse.util.EzasseUtil.getFromDataSource;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/04 下午 10:52
- * @since 0.0.1
+ * @since 2022/04/04 下午 10:52
  */
 @Slf4j
 @Data
@@ -35,7 +34,7 @@ public abstract class EzasseExecutor {
      *
      * @param dataSource : 数据源
      * @author PerccyKing
-     * @date 2022/04/07 下午 05:54
+     * @since 2022/04/07 下午 05:54
      */
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -51,7 +50,7 @@ public abstract class EzasseExecutor {
      * @param clazz : 对象类型
      * @return {@link T} 对象
      * @author PerccyKing
-     * @date 2022/04/06 下午 08:56
+     * @since 2022/04/06 下午 08:56
      */
     public <T> T queryForObject(String sql, Class<T> clazz) {
         return jdbcTemplate.queryForObject(sql, clazz);
@@ -67,7 +66,7 @@ public abstract class EzasseExecutor {
      * @param args  : 参数
      * @return {@link List<T>} 查询到的数据列表
      * @author PerccyKing
-     * @date 2022/04/06 下午 11:19
+     * @since 2022/04/06 下午 11:19
      */
     public <T> List<T> queryForList(Class<T> clazz, String sql, Objects... args) {
         return jdbcTemplate.queryForList(sql, clazz, (Object[]) args);
@@ -82,7 +81,7 @@ public abstract class EzasseExecutor {
      * @param columnName : 列名
      * @return {@link List<EzasseTableInfo>} 表的基本信息
      * @author PerccyKing
-     * @date 2022/04/06 下午 11:22
+     * @since 2022/04/06 下午 11:22
      */
     public abstract List<EzasseTableInfo> getTableInfo(String tableName, String columnName);
 
@@ -94,7 +93,7 @@ public abstract class EzasseExecutor {
      * @param tableName : 表名
      * @return {@link List<EzasseTableInfo>}
      * @author PerccyKing
-     * @date 2022/04/09 下午 04:03
+     * @since 2022/04/09 下午 04:03
      */
     public abstract List<EzasseTableInfo> getTableInfo(String tableName);
 
@@ -105,7 +104,7 @@ public abstract class EzasseExecutor {
      *
      * @param sql : 需要执行的SQL
      * @author PerccyKing
-     * @date 2022/04/06 下午 11:23
+     * @since 2022/04/06 下午 11:23
      */
     public void execute(String sql) {
         jdbcTemplate.execute(sql);
@@ -120,7 +119,7 @@ public abstract class EzasseExecutor {
      * @param dataSource : datasource
      * @return {@link String} 数据库名称
      * @author PerccyKing
-     * @date 2022/04/07 下午 03:49
+     * @since 2022/04/07 下午 03:49
      */
     protected static String getDataBaseNameFromDataSource(DataSource dataSource) {
         String catalog = getFromDataSource(dataSource, connection -> {
@@ -144,7 +143,7 @@ public abstract class EzasseExecutor {
      *
      * @return {@link String}
      * @author PerccyKing
-     * @date 2022/04/11 下午 08:06
+     * @since 2022/04/11 下午 08:06
      */
     public abstract String getId();
 }

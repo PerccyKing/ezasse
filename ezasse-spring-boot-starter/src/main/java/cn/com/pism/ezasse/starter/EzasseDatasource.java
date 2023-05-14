@@ -6,8 +6,8 @@ import java.util.Map;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/11 上午 12:20
- * @since 0.0.1
+ * @since 2022/04/11 上午 12:20
+ 
  */
 public interface EzasseDatasource {
 
@@ -18,7 +18,7 @@ public interface EzasseDatasource {
      *
      * @return {@link Map<String,DataSource>}
      * @author PerccyKing
-     * @date 2022/04/11 下午 08:00
+     * @since 2022/04/11 下午 08:00
      */
     Map<String, DataSource> getDataSource();
 
@@ -29,7 +29,7 @@ public interface EzasseDatasource {
      *
      * @return {@link DataSource}
      * @author PerccyKing
-     * @date 2022/04/11 下午 08:01
+     * @since 2022/04/11 下午 08:01
      */
     DataSource getMaster();
 

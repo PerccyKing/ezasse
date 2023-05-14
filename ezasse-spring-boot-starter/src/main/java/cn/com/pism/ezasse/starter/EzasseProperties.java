@@ -9,8 +9,8 @@ import java.util.List;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @date 2022/04/10 下午 11:09
- * @since 0.0.1
+ * @since 2022/04/10 下午 11:09
+ 
  */
 @ConfigurationProperties(prefix = "spring.ezasse")
 @Data
@@ -70,7 +70,7 @@ public class EzasseProperties {
          * </p>
          *
          * @author PerccyKing
-         * @date 2022/04/20 下午 11:50
+         * @since 2022/04/20 下午 11:50
          */
         @Data
         public static class Table {
@@ -86,7 +86,7 @@ public class EzasseProperties {
          * </p>
          *
          * @author PerccyKing
-         * @date 2022/04/20 下午 11:51
+         * @since 2022/04/20 下午 11:51
          */
         @Data
         public static class Field {
