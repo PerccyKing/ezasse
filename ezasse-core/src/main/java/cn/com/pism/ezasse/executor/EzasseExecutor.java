@@ -4,6 +4,8 @@ import cn.com.pism.ezasse.model.EzasseTableInfo;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
@@ -18,9 +20,10 @@ import static cn.com.pism.ezasse.util.EzasseUtil.getFromDataSource;
  * @version 0.0.1
  * @since 2022/04/04 下午 10:52
  */
-@Slf4j
 @Data
 public abstract class EzasseExecutor {
+
+    protected static final Log log = LogFactory.getLog(EzasseExecutor.class);
 
 
     protected JdbcTemplate jdbcTemplate;

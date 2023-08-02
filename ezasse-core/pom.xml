@@ -31,18 +31,6 @@
         </dependency>
 
         <dependency>
-            <groupId>cn.com.pism.frc</groupId>
-            <artifactId>flyway-resource-scanner</artifactId>
-            <version>1.0.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-codec</groupId>
-                    <artifactId>commons-codec</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.15</version>
@@ -60,11 +48,6 @@
             <version>5.8.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
-            <version>2.0.5</version>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>

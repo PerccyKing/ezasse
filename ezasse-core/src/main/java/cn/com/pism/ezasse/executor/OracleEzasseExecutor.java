@@ -2,8 +2,6 @@ package cn.com.pism.ezasse.executor;
 
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import cn.hutool.core.io.FileUtil;
-import com.alibaba.fastjson2.JSON;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.PathResource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
@@ -11,7 +9,6 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import static cn.com.pism.ezasse.constants.EzasseConstants.SQL_EXTENSION;
@@ -21,9 +18,7 @@ import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.ORACLE;
  * @author PerccyKing
  * @version 0.0.1
  * @since 2022/04/10 上午 11:47
- 
  */
-@Slf4j
 public class OracleEzasseExecutor extends EzasseExecutor {
 
     private static final String SQL = "SELECT UTC.COLUMN_NAME columnName,\n" +
@@ -48,8 +43,7 @@ public class OracleEzasseExecutor extends EzasseExecutor {
     @Override
     public List<EzasseTableInfo> getTableInfo(String tableName, String columnName) {
         String querySql = SQL + "AND UTC.COLUMN_NAME = ?";
-        List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(querySql, tableName, columnName);
-        return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
+        return jdbcTemplate.queryForList(querySql, EzasseTableInfo.class, tableName, columnName);
     }
 
     /**
@@ -64,8 +58,7 @@ public class OracleEzasseExecutor extends EzasseExecutor {
      */
     @Override
     public List<EzasseTableInfo> getTableInfo(String tableName) {
-        List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(SQL, tableName);
-        return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
+        return jdbcTemplate.queryForList(SQL, EzasseTableInfo.class, tableName);
     }
 
     @Override

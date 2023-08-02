@@ -10,23 +10,22 @@ import cn.com.pism.ezasse.model.EzasseCheckNode;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseSql;
 import cn.com.pism.ezasse.util.EzasseUtil;
-import cn.com.pism.frc.resourcescanner.Scanner;
-import cn.com.pism.frc.resourcescanner.*;
-import com.alibaba.fastjson2.JSON;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.core.io.Resource;
 
 import javax.sql.DataSource;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static cn.com.pism.ezasse.constants.EzasseConstants.*;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_FOLDER_EXCEPTION;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_GROUP_EXCEPTION;
+import static cn.com.pism.ezasse.util.EzasseUtil.loadSqlFile;
 
 
 /**
@@ -35,8 +34,9 @@ import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_GROUP_EXC
  * @since 2022/04/04 下午 10:49
  */
 @Data
-@Slf4j
 public class Ezasse {
+
+    private static final Log log = LogFactory.getLog(Ezasse.class);
 
     /**
      * 配置
@@ -86,7 +86,15 @@ public class Ezasse {
         dataSourceMap.put(MASTER_ID, master);
         //获取SQL文件列表
         List<EzasseSql> ezasseSqls = getEzasseSqlList(config);
-        log.info("Ezasse - Identified file list :{}", JSON.toJSONString(ezasseSqls));
+        ezasseSqls.forEach(sql -> {
+            log.info("+-------------------------------------------------------------------------------------------------------+");
+            log.info("|                                     Ezasse - Identified file list                                     |");
+            log.info("+-------------------------------------------------------------------------------------------------------+");
+            log.info("|-----group-----|-------name-------|-----order-----|-----node-----|-parentPath-|----------path----------|");
+            log.info(String.format("| %-15s | %-18s | %-15s | %-15s | %-12s | %-24s |",
+                    sql.getGroup(), sql.getName(), sql.getOrder(), sql.getNode(), sql.getParentPath(), sql.getPath()));
+            log.info("|---------------|------------------|---------------|--------------|------------|------------------------|");
+        });
         //对文件分组排序
         Map<String, List<EzasseSql>> ezasseSqlMap = ezasseSqls.stream().collect(Collectors.groupingBy(EzasseSql::getGroup));
         //排序
@@ -158,7 +166,7 @@ public class Ezasse {
             EzasseExecutor checkEzasseExecutor = getExecutorByDatasource(ezasseCheckNode.getCheckNode());
             checkEzasseExecutor.setDataSource(ezasseCheckNode.getCheckNode());
             if (ezasseChecker.needToExecute(ezasseCheckNode.getCheckNode(), ezasseCheckNode.getCheckContent(), checkEzasseExecutor)) {
-                log.debug("Ezasse - execute code block :{}", checkLine);
+                log.debug("Ezasse - execute code block :" + checkLine);
                 //获取执行器并执行SQL
                 EzasseExecutor ezasseExecutor = getExecutorByDatasource(ezasseCheckNode.getExecNode());
                 ezasseExecutor.setDataSource(ezasseCheckNode.getExecNode());
@@ -183,22 +191,13 @@ public class Ezasse {
         if (StringUtils.isBlank(folder)) {
             throw new EzasseException(UNSPECIFIED_FOLDER_EXCEPTION);
         }
-        List<Location> locations = new ArrayList<>();
+        List<Resource> resources;
         if (folder.startsWith(CLASSPATH_PREFIX)) {
-            locations.add(new Location(folder));
+            resources = loadSqlFile(folder);
         } else {
-            locations.add(new Location(CLASSPATH_PREFIX + folder));
+            resources = loadSqlFile(CLASSPATH_PREFIX + folder);
         }
-        //找到文件夹下的所有SQL文件
-        Scanner<JavaMigration> scanner = new Scanner<>(
-                JavaMigration.class,
-                locations,
-                Thread.currentThread().getContextClassLoader(),
-                StandardCharsets.UTF_8,
-                new ResourceNameCache(),
-                new LocationScannerCache()
-        );
-        Collection<LoadableResource> resources = scanner.getResources("", SQL_EXTENSION);
+
         //过滤一次
         List<String> fileList = config.getFileList();
         if (CollectionUtils.isNotEmpty(fileList)) {
@@ -212,7 +211,7 @@ public class Ezasse {
             }).collect(Collectors.toCollection(ArrayList::new));
         }
         List<EzasseSql> ezasseSqls = new ArrayList<>();
-        resources.forEach(r -> ezasseSqls.add(absolutePathToEzasseSql(r.getAbsolutePath())));
+        resources.forEach(r -> ezasseSqls.add(absolutePathToEzasseSql(r.getFilename())));
         return ezasseSqls;
     }
 

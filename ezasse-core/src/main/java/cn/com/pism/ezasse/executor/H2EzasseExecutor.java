@@ -2,10 +2,8 @@ package cn.com.pism.ezasse.executor;
 
 import cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
-import com.alibaba.fastjson2.JSON;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author PerccyKing
@@ -27,8 +25,7 @@ public class H2EzasseExecutor extends EzasseExecutor {
     @Override
     public List<EzasseTableInfo> getTableInfo(String tableName, String columnName) {
         String getTableInfoSql = "SELECT COLUMN_NAME columnName,DATA_TYPE dataType,CHARACTER_MAXIMUM_LENGTH characterMaximumLength,REMARKS columnComment FROM Information_schema.columns WHERE table_Name = ? AND TABLE_SCHEMA=? AND COLUMN_NAME=? ";
-        List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(getTableInfoSql, tableName, getDataBaseNameFromDataSource(this.dataSource), columnName);
-        return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
+        return jdbcTemplate.queryForList(getTableInfoSql, EzasseTableInfo.class, tableName, getDataBaseNameFromDataSource(this.dataSource), columnName);
     }
 
     /**
@@ -44,8 +41,7 @@ public class H2EzasseExecutor extends EzasseExecutor {
     @Override
     public List<EzasseTableInfo> getTableInfo(String tableName) {
         String sql = "SELECT COLUMN_NAME columnName,DATA_TYPE dataType,CHARACTER_MAXIMUM_LENGTH characterMaximumLength,REMARKS columnComment FROM Information_schema.columns WHERE table_Name = ? AND TABLE_SCHEMA=? ";
-        List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(sql, tableName, getDataBaseNameFromDataSource(this.dataSource));
-        return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
+        return jdbcTemplate.queryForList(sql, EzasseTableInfo.class, tableName, getDataBaseNameFromDataSource(this.dataSource));
     }
 
     /**
