@@ -1,7 +1,6 @@
 package cn.com.pism.ezasse.executor;
 
 import cn.com.pism.ezasse.model.EzasseTableInfo;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,6 @@ import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.MYSQL;
  * @version 0.0.1
  * @since 2022/04/07 下午 05:57
  */
-@Slf4j
 public class MysqlEzasseExecutor extends EzasseExecutor {
 
     /**

@@ -1,6 +1,8 @@
 package cn.com.pism.ezasse.util;
 
-import lombok.extern.slf4j.Slf4j;
+import cn.com.pism.ezasse.executor.EzasseExecutor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -14,8 +16,10 @@ import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.UNKNOWN;
  * @version 0.0.1
  * @since 2022/04/06 下午 11:35
  */
-@Slf4j
 public class EzasseUtil {
+
+    private static final Log log = LogFactory.getLog(EzasseExecutor.class);
+
     private EzasseUtil() {
     }
 
@@ -28,14 +32,14 @@ public class EzasseUtil {
             connection = dataSource.getConnection();
             return callback.call(connection);
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            EzasseLogUtil.error(log, e.getMessage());
             return null;
         } finally {
             if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    log.error(e.getMessage());
+                    EzasseLogUtil.error(log, e.getMessage());
                 }
             }
         }
@@ -46,7 +50,7 @@ public class EzasseUtil {
             try {
                 return connection.getMetaData().getDatabaseProductName().toUpperCase(Locale.ROOT);
             } catch (SQLException e) {
-                log.error(e.getMessage());
+                EzasseLogUtil.error(log, e.getMessage());
                 return UNKNOWN;
             }
         });

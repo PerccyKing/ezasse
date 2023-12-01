@@ -34,7 +34,7 @@ import java.util.Map;
 @AutoConfigureAfter({DataSourceAutoConfiguration.class, JdbcTemplateAutoConfiguration.class})
 public class EzasseConfiguration implements ApplicationContextAware {
 
-    private final Log log = LogFactory.getLog(EzasseConfiguration.class);
+    private static final Log log = LogFactory.getLog(EzasseConfiguration.class);
 
     private ApplicationContext applicationContext;
 

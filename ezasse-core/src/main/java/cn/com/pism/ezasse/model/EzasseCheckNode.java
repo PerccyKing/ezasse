@@ -25,7 +25,6 @@ import static cn.com.pism.ezasse.enums.EzasseExceptionCode.SYNTAX_ERROR_EXCEPTIO
  * @version 0.0.1
  * @since 2022/04/07 下午 04:23
  */
-@Data
 public class EzasseCheckNode {
     /**
      * 校验节点
@@ -85,5 +84,38 @@ public class EzasseCheckNode {
                 throw new EzasseException(SYNTAX_ERROR_EXCEPTION);
         }
 
+    }
+
+
+    public DataSource getCheckNode() {
+        return checkNode;
+    }
+
+    public void setCheckNode(DataSource checkNode) {
+        this.checkNode = checkNode;
+    }
+
+    public DataSource getExecNode() {
+        return execNode;
+    }
+
+    public void setExecNode(DataSource execNode) {
+        this.execNode = execNode;
+    }
+
+    public String getCheckKey() {
+        return checkKey;
+    }
+
+    public void setCheckKey(String checkKey) {
+        this.checkKey = checkKey;
+    }
+
+    public String getCheckContent() {
+        return checkContent;
+    }
+
+    public void setCheckContent(String checkContent) {
+        this.checkContent = checkContent;
     }
 }

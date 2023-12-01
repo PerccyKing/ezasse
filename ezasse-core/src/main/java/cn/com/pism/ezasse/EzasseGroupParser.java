@@ -1,10 +1,14 @@
 package cn.com.pism.ezasse;
 
+import cn.com.pism.ezasse.executor.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseSql;
 import cn.com.pism.ezasse.util.EzasseIoUtil;
+import cn.com.pism.ezasse.util.EzasseLogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.InputStream;
 import java.util.LinkedHashMap;
@@ -18,8 +22,9 @@ import static cn.com.pism.ezasse.constants.EzasseConstants.LINE_COMMENT;
  * @version 0.0.1
  * @since 2022/04/07 下午 04:55
  */
-@Slf4j
 public class EzasseGroupParser {
+    private static final Log log = LogFactory.getLog(EzasseExecutor.class);
+
     private final LinkedHashMap<String, String> scriptMap = new LinkedHashMap<>();
     private final EzasseConfig config;
     private final EzasseSql sql;
@@ -33,7 +38,7 @@ public class EzasseGroupParser {
     }
 
     LinkedHashMap<String, String> parser() {
-        log.debug("Ezasse - group parser path : {}", sql.getPath());
+        EzasseLogUtil.debug(log, "Ezasse - group parser path : " + sql.getPath());
         //获取SQL文件
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(sql.getPath());
         List<String> lines = EzasseIoUtil.readLines(inputStream);

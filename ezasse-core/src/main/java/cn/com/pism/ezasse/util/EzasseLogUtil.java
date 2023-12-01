@@ -24,4 +24,10 @@ public class EzasseLogUtil {
             log.debug(msg);
         }
     }
+
+    public static void error(Log log, String message) {
+        if (log.isErrorEnabled()) {
+            log.error(message);
+        }
+    }
 }

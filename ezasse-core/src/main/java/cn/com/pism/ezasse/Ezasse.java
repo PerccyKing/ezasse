@@ -36,7 +36,7 @@ import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_GROUP_EXC
  */
 public class Ezasse {
 
-    private final Log log = LogFactory.getLog(this.getClass());
+    private static final Log log = LogFactory.getLog(Ezasse.class);
 
     /**
      * 配置

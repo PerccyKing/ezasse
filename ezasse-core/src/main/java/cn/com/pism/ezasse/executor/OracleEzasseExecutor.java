@@ -1,7 +1,7 @@
 package cn.com.pism.ezasse.executor;
 
 import cn.com.pism.ezasse.model.EzasseTableInfo;
-import lombok.extern.slf4j.Slf4j;
+import cn.com.pism.ezasse.util.EzasseLogUtil;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 
@@ -16,7 +16,6 @@ import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.ORACLE;
  * @version 0.0.1
  * @since 2022/04/10 上午 11:47
  */
-@Slf4j
 public class OracleEzasseExecutor extends EzasseExecutor {
 
     private static final String SQL = "SELECT UTC.COLUMN_NAME columnName,\n" +
@@ -67,7 +66,7 @@ public class OracleEzasseExecutor extends EzasseExecutor {
             ByteArrayResource resource = new ByteArrayResource(sql.getBytes());
             ScriptUtils.executeSqlScript(super.getDataSource().getConnection(), resource);
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            EzasseLogUtil.error(log, e.getMessage());
         }
     }
 
