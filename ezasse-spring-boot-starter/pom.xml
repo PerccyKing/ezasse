@@ -5,10 +5,10 @@
     <parent>
         <artifactId>ezasse</artifactId>
         <groupId>cn.com.pism.ezasse</groupId>
-        <version>0.0.8</version>
+        <version>${revision}</version>
     </parent>
     <artifactId>ezasse-spring-boot-starter</artifactId>
-    <version>0.0.8</version>
+
     <name>ezasse-spring-boot-starter</name>
     <description>ezasse-spring-boot-starter</description>
     <properties>
@@ -40,7 +40,6 @@
         <dependency>
             <groupId>cn.com.pism.ezasse</groupId>
             <artifactId>ezasse-core</artifactId>
-            <version>0.0.8</version>
         </dependency>
     </dependencies>
 

@@ -9,15 +9,16 @@ import cn.com.pism.ezasse.executor.*;
 import cn.com.pism.ezasse.model.EzasseCheckNode;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseSql;
+import cn.com.pism.ezasse.util.EzasseLogUtil;
 import cn.com.pism.ezasse.util.EzasseUtil;
 import cn.com.pism.frc.resourcescanner.Scanner;
 import cn.com.pism.frc.resourcescanner.*;
-import com.alibaba.fastjson2.JSON;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
@@ -35,8 +36,9 @@ import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_GROUP_EXC
  * @since 2022/04/04 下午 10:49
  */
 @Data
-@Slf4j
 public class Ezasse {
+
+    private final Log log = LogFactory.getLog(this.getClass());
 
     /**
      * 配置
@@ -86,7 +88,8 @@ public class Ezasse {
         dataSourceMap.put(MASTER_ID, master);
         //获取SQL文件列表
         List<EzasseSql> ezasseSqls = getEzasseSqlList(config);
-        log.info("Ezasse - Identified file list :{}", JSON.toJSONString(ezasseSqls));
+
+        printLog(ezasseSqls);
         //对文件分组排序
         Map<String, List<EzasseSql>> ezasseSqlMap = ezasseSqls.stream().collect(Collectors.groupingBy(EzasseSql::getGroup));
         //排序
@@ -98,6 +101,21 @@ public class Ezasse {
             ezasseSqlMap.forEach((k, v) -> groupParsing(config, v));
         } else {
             groupOrder.forEach(order -> groupParsing(config, ezasseSqlMap.get(order)));
+        }
+    }
+
+    private void printLog(List<EzasseSql> ezasseSqls) {
+        EzasseLogUtil.info(log, "Ezasse - Identified file list");
+        EzasseLogUtil.info(log, String.format("%-8s %-8s %-8s %-20s %-20s", "group", "order", "node", "name", "path"));
+
+        // 输出表格内容
+        for (EzasseSql ezasseSql : ezasseSqls) {
+            EzasseLogUtil.info(log, String.format("%-8s %-8s %-8s %-20s %-20s",
+                    ezasseSql.getGroup(),
+                    ezasseSql.getOrder(),
+                    ezasseSql.getNode(),
+                    ezasseSql.getName(),
+                    ezasseSql.getPath()));
         }
     }
 
@@ -158,7 +176,7 @@ public class Ezasse {
             EzasseExecutor checkEzasseExecutor = getExecutorByDatasource(ezasseCheckNode.getCheckNode());
             checkEzasseExecutor.setDataSource(ezasseCheckNode.getCheckNode());
             if (ezasseChecker.needToExecute(ezasseCheckNode.getCheckNode(), ezasseCheckNode.getCheckContent(), checkEzasseExecutor)) {
-                log.debug("Ezasse - execute code block :{}", checkLine);
+                EzasseLogUtil.debug(log, "Ezasse - execute code block :" + checkLine);
                 //获取执行器并执行SQL
                 EzasseExecutor ezasseExecutor = getExecutorByDatasource(ezasseCheckNode.getExecNode());
                 ezasseExecutor.setDataSource(ezasseCheckNode.getExecNode());
