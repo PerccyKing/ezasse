@@ -5,7 +5,6 @@ import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseSql;
 import cn.com.pism.ezasse.util.EzasseIoUtil;
 import cn.com.pism.ezasse.util.EzasseLogUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

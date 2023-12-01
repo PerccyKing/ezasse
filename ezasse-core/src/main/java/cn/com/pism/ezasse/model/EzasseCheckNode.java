@@ -1,7 +1,6 @@
 package cn.com.pism.ezasse.model;
 
 import cn.com.pism.ezasse.exception.EzasseException;
-import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.sql.DataSource;
