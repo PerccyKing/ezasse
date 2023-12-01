@@ -1,7 +1,5 @@
 package cn.com.pism.ezasse.model;
 
-import lombok.Data;
-
 /**
  * @author PerccyKing
  * @version 0.0.1
