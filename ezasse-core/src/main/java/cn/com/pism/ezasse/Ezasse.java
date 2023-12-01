@@ -13,7 +13,6 @@ import cn.com.pism.ezasse.util.EzasseLogUtil;
 import cn.com.pism.ezasse.util.EzasseUtil;
 import cn.com.pism.frc.resourcescanner.Scanner;
 import cn.com.pism.frc.resourcescanner.*;
-import lombok.Data;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -35,7 +34,6 @@ import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_GROUP_EXC
  * @version 0.0.1
  * @since 2022/04/04 下午 10:49
  */
-@Data
 public class Ezasse {
 
     private final Log log = LogFactory.getLog(this.getClass());
@@ -48,17 +46,17 @@ public class Ezasse {
     /**
      * 数据源
      */
-    private Map<String, DataSource> dataSourceMap;
+    private final Map<String, DataSource> dataSourceMap;
 
     /**
      * 校验器
      */
-    private Map<String, EzasseChecker> checkerMap;
+    private final Map<String, EzasseChecker> checkerMap;
 
     /**
      * 执行器
      */
-    private Map<String, EzasseExecutor> executorMap;
+    private final Map<String, EzasseExecutor> executorMap;
 
     /**
      * 默认数据节点
@@ -66,6 +64,15 @@ public class Ezasse {
     private DataSource master;
 
     public static final String MASTER_ID = "master";
+
+
+    public void setConfig(EzasseConfig config) {
+        this.config = config;
+    }
+
+    public void setMaster(DataSource master) {
+        this.master = master;
+    }
 
     public Ezasse() {
         this.dataSourceMap = new HashMap<>(0);
