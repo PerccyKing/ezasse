@@ -1,7 +1,6 @@
 package cn.com.pism.ezasse.executor;
 
 import cn.com.pism.ezasse.model.EzasseTableInfo;
-import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -32,7 +31,7 @@ public class MysqlEzasseExecutor extends EzasseExecutor {
     public List<EzasseTableInfo> getTableInfo(String tableName, String columnName) {
         String getTableInfoSql = "SELECT COLUMN_NAME columnName,DATA_TYPE dataType,CHARACTER_MAXIMUM_LENGTH characterMaximumLength,COLUMN_COMMENT columnComment FROM Information_schema.columns WHERE table_Name = ? AND TABLE_SCHEMA=? AND COLUMN_NAME=? ";
         List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(getTableInfoSql, tableName, getDataBaseNameFromDataSource(this.dataSource), columnName);
-        return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
+        return toTableInfo(queryForList);
     }
 
     /**
@@ -49,7 +48,7 @@ public class MysqlEzasseExecutor extends EzasseExecutor {
     public List<EzasseTableInfo> getTableInfo(String tableName) {
         String sql = "SELECT COLUMN_NAME columnName,DATA_TYPE dataType,CHARACTER_MAXIMUM_LENGTH characterMaximumLength,COLUMN_COMMENT columnComment FROM Information_schema.columns WHERE table_Name = ? AND TABLE_SCHEMA=? ";
         List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(sql, tableName, getDataBaseNameFromDataSource(this.dataSource));
-        return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
+        return toTableInfo(queryForList);
     }
 
     /**

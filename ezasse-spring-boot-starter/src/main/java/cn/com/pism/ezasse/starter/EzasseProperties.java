@@ -1,6 +1,6 @@
 package cn.com.pism.ezasse.starter;
 
-import lombok.Data;
+import cn.com.pism.ezasse.model.EzasseKeyWords;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -10,10 +10,8 @@ import java.util.List;
  * @author PerccyKing
  * @version 0.0.1
  * @since 2022/04/10 下午 11:09
- 
  */
 @ConfigurationProperties(prefix = "spring.ezasse")
-@Data
 @Component
 public class EzasseProperties {
     /**
@@ -46,74 +44,52 @@ public class EzasseProperties {
      */
     private EzasseKeyWords keyWords = new EzasseKeyWords();
 
-    @Data
-    public static class EzasseKeyWords {
 
-        /**
-         * 默认校验关键字 校验语句，返回0时，执行SQL
-         */
-        private String exec = "EXEC";
+    public String getFolder() {
+        return folder;
+    }
 
-        /**
-         * 表操作关键字
-         */
-        private Table table = new Table();
+    public void setFolder(String folder) {
+        this.folder = folder;
+    }
 
-        /**
-         * 表字段操作关键字
-         */
-        private Field field = new Field();
+    public List<String> getFileList() {
+        return fileList;
+    }
 
-        /**
-         * <p>
-         * 表操作相关
-         * </p>
-         *
-         * @author PerccyKing
-         * @since 2022/04/20 下午 11:50
-         */
-        @Data
-        public static class Table {
-            /**
-             * 创建表关键字
-             */
-            private String createTable = "TABLE";
-        }
+    public void setFileList(List<String> fileList) {
+        this.fileList = fileList;
+    }
 
-        /**
-         * <p>
-         * 表字段相关
-         * </p>
-         *
-         * @author PerccyKing
-         * @since 2022/04/20 下午 11:51
-         */
-        @Data
-        public static class Field {
-            /**
-             * 添加字段
-             */
-            private String add = "ADD";
+    public List<String> getGroupOrder() {
+        return groupOrder;
+    }
 
-            /**
-             * 修改字段名称
-             */
-            private String changeName = "CHANGE_NAME";
+    public void setGroupOrder(List<String> groupOrder) {
+        this.groupOrder = groupOrder;
+    }
 
-            /**
-             * 修改字段类型
-             */
-            private String changeType = "CHANGE_TYPE";
+    public String getDelimiterStart() {
+        return delimiterStart;
+    }
 
-            /**
-             * 修改字段长度
-             */
-            private String changeLength = "CHANGE_LENGTH";
+    public void setDelimiterStart(String delimiterStart) {
+        this.delimiterStart = delimiterStart;
+    }
 
-            /**
-             * 修改字段备注
-             */
-            private String changeComment = "CHANGE_COMMENT";
-        }
+    public String getDelimiterEnd() {
+        return delimiterEnd;
+    }
+
+    public void setDelimiterEnd(String delimiterEnd) {
+        this.delimiterEnd = delimiterEnd;
+    }
+
+    public EzasseKeyWords getKeyWords() {
+        return keyWords;
+    }
+
+    public void setKeyWords(EzasseKeyWords keyWords) {
+        this.keyWords = keyWords;
     }
 }

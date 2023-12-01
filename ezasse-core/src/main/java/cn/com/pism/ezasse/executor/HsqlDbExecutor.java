@@ -2,7 +2,6 @@ package cn.com.pism.ezasse.executor;
 
 import cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
-import com.alibaba.fastjson2.JSON;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,6 @@ import java.util.Map;
  * @author PerccyKing
  * @version 0.0.1
  * @since 2022/04/10 下午 07:16
- 
  */
 public class HsqlDbExecutor extends EzasseExecutor {
     private static final String SQL = "select ISC.COLUMN_NAME              columnName,\n" +
@@ -40,7 +38,7 @@ public class HsqlDbExecutor extends EzasseExecutor {
     public List<EzasseTableInfo> getTableInfo(String tableName, String columnName) {
         String querySql = SQL + "AND ISC.COLUMN_NAME = ?";
         List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(querySql, tableName, columnName);
-        return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
+        return toTableInfo(queryForList);
     }
 
     /**
@@ -56,7 +54,7 @@ public class HsqlDbExecutor extends EzasseExecutor {
     @Override
     public List<EzasseTableInfo> getTableInfo(String tableName) {
         List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(SQL, tableName);
-        return JSON.parseArray(JSON.toJSONString(queryForList), EzasseTableInfo.class);
+        return toTableInfo(queryForList);
     }
 
     /**

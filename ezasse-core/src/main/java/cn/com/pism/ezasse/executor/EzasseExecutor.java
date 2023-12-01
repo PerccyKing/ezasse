@@ -3,13 +3,14 @@ package cn.com.pism.ezasse.executor;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.util.CollectionUtils;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static cn.com.pism.ezasse.util.EzasseUtil.getFromDataSource;
 
@@ -146,4 +147,26 @@ public abstract class EzasseExecutor {
      * @since 2022/04/11 下午 08:06
      */
     public abstract String getId();
+
+    /**
+     * 将maplist 转换为list对象
+     *
+     * @param mapList 查询出来的表基本信息
+     * @return tableInfo 对象
+     */
+    protected List<EzasseTableInfo> toTableInfo(List<Map<String, Object>> mapList) {
+        if (CollectionUtils.isEmpty(mapList)) {
+            return Collections.emptyList();
+        }
+        List<EzasseTableInfo> tableInfos = new ArrayList<>();
+        mapList.forEach(map -> {
+            EzasseTableInfo tableInfo = new EzasseTableInfo();
+            tableInfo.setColumnName(MapUtils.getString(map, "columnName"));
+            tableInfo.setDataType(MapUtils.getString(map, "dataType"));
+            tableInfo.setCharacterMaximumLength(MapUtils.getString(map, "characterMaximumLength"));
+            tableInfo.setColumnComment(MapUtils.getString(map, "columnComment"));
+            tableInfos.add(tableInfo);
+        });
+        return tableInfos;
+    }
 }

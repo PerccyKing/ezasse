@@ -7,7 +7,6 @@ import lombok.Data;
  * @version 0.0.1
  * @since 2022/04/20 下午 11:44
  */
-@Data
 public class EzasseKeyWords {
 
     /**
@@ -33,12 +32,19 @@ public class EzasseKeyWords {
      * @author PerccyKing
      * @since 2022/04/20 下午 11:50
      */
-    @Data
     public static class Table {
         /**
          * 创建表关键字
          */
         private String createTable = "TABLE";
+
+        public String getCreateTable() {
+            return createTable;
+        }
+
+        public void setCreateTable(String createTable) {
+            this.createTable = createTable;
+        }
     }
 
     /**
@@ -49,7 +55,6 @@ public class EzasseKeyWords {
      * @author PerccyKing
      * @since 2022/04/20 下午 11:51
      */
-    @Data
     public static class Field {
         /**
          * 添加字段
@@ -75,5 +80,70 @@ public class EzasseKeyWords {
          * 修改字段备注
          */
         private String changeComment = "CHANGE_COMMENT";
+
+        public String getAdd() {
+            return add;
+        }
+
+        public void setAdd(String add) {
+            this.add = add;
+        }
+
+        public String getChangeName() {
+            return changeName;
+        }
+
+        public void setChangeName(String changeName) {
+            this.changeName = changeName;
+        }
+
+        public String getChangeType() {
+            return changeType;
+        }
+
+        public void setChangeType(String changeType) {
+            this.changeType = changeType;
+        }
+
+        public String getChangeLength() {
+            return changeLength;
+        }
+
+        public void setChangeLength(String changeLength) {
+            this.changeLength = changeLength;
+        }
+
+        public String getChangeComment() {
+            return changeComment;
+        }
+
+        public void setChangeComment(String changeComment) {
+            this.changeComment = changeComment;
+        }
+    }
+
+
+    public String getExec() {
+        return exec;
+    }
+
+    public void setExec(String exec) {
+        this.exec = exec;
+    }
+
+    public Table getTable() {
+        return table;
+    }
+
+    public void setTable(Table table) {
+        this.table = table;
+    }
+
+    public Field getField() {
+        return field;
+    }
+
+    public void setField(Field field) {
+        this.field = field;
     }
 }
