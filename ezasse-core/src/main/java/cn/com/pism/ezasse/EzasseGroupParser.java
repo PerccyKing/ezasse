@@ -2,13 +2,11 @@ package cn.com.pism.ezasse;
 
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseSql;
-import cn.hutool.core.io.IoUtil;
+import cn.com.pism.ezasse.util.EzasseIoUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
@@ -38,7 +36,7 @@ public class EzasseGroupParser {
         log.debug("Ezasse - group parser path : {}", sql.getPath());
         //获取SQL文件
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(sql.getPath());
-        List<String> lines = IoUtil.readLines(inputStream, StandardCharsets.UTF_8, new ArrayList<>());
+        List<String> lines = EzasseIoUtil.readLines(inputStream);
         //标记以下行是否全部都是SQL执行体
         boolean isSqlBody = false;
         //存放当前的SQL执行体

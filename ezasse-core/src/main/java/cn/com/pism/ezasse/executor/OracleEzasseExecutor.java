@@ -1,27 +1,21 @@
 package cn.com.pism.ezasse.executor;
 
 import cn.com.pism.ezasse.model.EzasseTableInfo;
-import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.PathResource;
-import org.springframework.core.io.support.EncodedResource;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 
-import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-import static cn.com.pism.ezasse.constants.EzasseConstants.SQL_EXTENSION;
 import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.ORACLE;
 
 /**
  * @author PerccyKing
  * @version 0.0.1
  * @since 2022/04/10 上午 11:47
- 
  */
 @Slf4j
 public class OracleEzasseExecutor extends EzasseExecutor {
@@ -71,11 +65,8 @@ public class OracleEzasseExecutor extends EzasseExecutor {
     @Override
     public void execute(String sql) {
         try {
-            String tempFileName = UUID.randomUUID() + SQL_EXTENSION;
-            FileUtil.touch(tempFileName);
-            File file = FileUtil.writeBytes(sql.getBytes(), tempFileName);
-            ScriptUtils.executeSqlScript(super.getDataSource().getConnection(), new EncodedResource(new PathResource(file.getPath())));
-            FileUtil.del(file);
+            ByteArrayResource resource = new ByteArrayResource(sql.getBytes());
+            ScriptUtils.executeSqlScript(super.getDataSource().getConnection(), resource);
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
