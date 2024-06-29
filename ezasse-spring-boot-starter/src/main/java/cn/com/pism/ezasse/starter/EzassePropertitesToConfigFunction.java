@@ -19,6 +19,12 @@ public class EzassePropertitesToConfigFunction implements Function<EzassePropert
         config.setDelimiterStart(ezasseProperties.getDelimiterStart());
         config.setDelimiterEnd(ezasseProperties.getDelimiterEnd());
         EzasseProperties.EzasseKeyWords keyWords = ezasseProperties.getKeyWords();
+        EzasseKeyWords ezasseKeyWords = buildKeyWords(keyWords);
+        config.setKeyWords(ezasseKeyWords);
+        return config;
+    }
+
+    private EzasseKeyWords buildKeyWords(EzasseProperties.EzasseKeyWords keyWords) {
         EzasseKeyWords ezasseKeyWords = new EzasseKeyWords();
         ezasseKeyWords.setExec(keyWords.getExec());
 
@@ -35,7 +41,6 @@ public class EzassePropertitesToConfigFunction implements Function<EzassePropert
         EzasseKeyWords.Table wTable = new EzasseKeyWords.Table();
         wTable.setCreateTable(table.getCreateTable());
         ezasseKeyWords.setTable(wTable);
-        config.setKeyWords(ezasseKeyWords);
-        return config;
+        return ezasseKeyWords;
     }
 }

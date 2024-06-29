@@ -1,13 +1,11 @@
 package cn.com.pism.ezasse.enums;
 
-import lombok.Getter;
 
 /**
  * @author PerccyKing
  * @version 0.0.1
  * @since 2022/04/05 下午 12:50
  */
-@Getter
 public enum EzasseExceptionCode {
     /**
      * 未指定目录异常
@@ -34,4 +32,12 @@ public enum EzasseExceptionCode {
      * 异常代码
      */
     private final String code;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String getCode() {
+        return code;
+    }
 }

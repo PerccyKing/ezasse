@@ -11,7 +11,7 @@ ezasse(Easy automatic SQL script executor)一个简单的自动SQL执行器
 
 ```xml
 <dependency>
-    <groupId>cn.com.pism.ezasse</groupId>
+    <groupId>cn.com.pism</groupId>
     <artifactId>ezasse-spring-boot-starter</artifactId>
     <version>0.0.4</version>
 </dependency>
