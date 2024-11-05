@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author wangyihuai@meb.com
+ * @author PerccyKing
  * @since 2023/12/1 10:39
  */
 public class EzasseIoUtil {

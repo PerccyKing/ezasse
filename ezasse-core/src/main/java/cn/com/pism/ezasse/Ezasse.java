@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 import static cn.com.pism.ezasse.constants.EzasseConstants.*;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_FOLDER_EXCEPTION;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_GROUP_EXCEPTION;
+import static cn.com.pism.ezasse.util.EzasseUtil.getResourcesFromFolder;
 
 
 /**
@@ -34,6 +35,7 @@ import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_GROUP_EXC
  * @version 0.0.1
  * @since 2022/04/04 下午 10:49
  */
+@Deprecated
 public class Ezasse {
 
     private static final Log log = LogFactory.getLog(Ezasse.class);
@@ -204,26 +206,7 @@ public class Ezasse {
      */
     private List<EzasseSql> getEzasseSqlList(EzasseConfig config) {
         String folder = config.getFolder();
-        //没有指定文件时，抛出异常
-        if (StringUtils.isBlank(folder)) {
-            throw new EzasseException(UNSPECIFIED_FOLDER_EXCEPTION);
-        }
-        List<Location> locations = new ArrayList<>();
-        if (folder.startsWith(CLASSPATH_PREFIX)) {
-            locations.add(new Location(folder));
-        } else {
-            locations.add(new Location(CLASSPATH_PREFIX + folder));
-        }
-        //找到文件夹下的所有SQL文件
-        Scanner<JavaMigration> scanner = new Scanner<>(
-                JavaMigration.class,
-                locations,
-                Thread.currentThread().getContextClassLoader(),
-                StandardCharsets.UTF_8,
-                new ResourceNameCache(),
-                new LocationScannerCache()
-        );
-        Collection<LoadableResource> resources = scanner.getResources("", SQL_EXTENSION);
+        Collection<LoadableResource> resources = getResourcesFromFolder(folder);
         //过滤一次
         List<String> fileList = config.getFileList();
         if (CollectionUtils.isNotEmpty(fileList)) {

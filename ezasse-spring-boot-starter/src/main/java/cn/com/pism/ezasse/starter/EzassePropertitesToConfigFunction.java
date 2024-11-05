@@ -6,7 +6,7 @@ import cn.com.pism.ezasse.model.EzasseKeyWords;
 import java.util.function.Function;
 
 /**
- * @author wangyihuai@meb.com
+ * @author PerccyKing
  * @since 2023/12/1 15:51
  */
 public class EzassePropertitesToConfigFunction implements Function<EzasseProperties, EzasseConfig> {

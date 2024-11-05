@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -45,12 +46,16 @@ public class EzasseConfiguration implements ApplicationContextAware {
 
     @Bean
     @ConditionalOnMissingBean
-    public Ezasse init() {
+    public Ezasse ezasse() {
         EzasseLogUtil.info(log, "Ezasse - Starting...");
         Ezasse ezasse = new Ezasse();
         EzasseProperties ezasseProperties = applicationContext.getBean(EzasseProperties.class);
         EzassePropertitesToConfigFunction function = new EzassePropertitesToConfigFunction();
         EzasseConfig ezasseConfig = function.apply(ezasseProperties);
+        Collection<EzasseConfigPostProcessor> ezasseConfigPostProcessors = applicationContext.getBeansOfType(EzasseConfigPostProcessor.class).values();
+        if (!ezasseConfigPostProcessors.isEmpty()) {
+            ezasseConfigPostProcessors.forEach(ezasseConfigPostProcessor -> ezasseConfigPostProcessor.postProcessAfterInitialization(ezasseConfig));
+        }
         ezasse.setConfig(ezasseConfig);
         ezasse.initChecker();
         //添加自定义校验器

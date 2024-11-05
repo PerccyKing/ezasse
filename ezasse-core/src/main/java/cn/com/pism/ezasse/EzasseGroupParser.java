@@ -1,6 +1,5 @@
 package cn.com.pism.ezasse;
 
-import cn.com.pism.ezasse.executor.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseSql;
 import cn.com.pism.ezasse.util.EzasseIoUtil;
@@ -21,8 +20,9 @@ import static cn.com.pism.ezasse.constants.EzasseConstants.LINE_COMMENT;
  * @version 0.0.1
  * @since 2022/04/07 下午 04:55
  */
+@Deprecated
 public class EzasseGroupParser {
-    private static final Log log = LogFactory.getLog(EzasseExecutor.class);
+    private static final Log log = LogFactory.getLog(EzasseGroupParser.class);
 
     private final LinkedHashMap<String, String> scriptMap = new LinkedHashMap<>();
     private final EzasseConfig config;
