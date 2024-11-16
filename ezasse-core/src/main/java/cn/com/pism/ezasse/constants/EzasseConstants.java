@@ -40,4 +40,9 @@ public class EzasseConstants {
      * 结束界定符
      */
     public static final String END_DEFINER = "-- ]";
+
+    /**
+     * 校验行正则
+     */
+    public static final String CHECK_LINE_PATTERN = "^%s\\s*(%s)\\s*\\((?!\\s*\\))(.*?)\\);?$";
 }

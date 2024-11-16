@@ -9,6 +9,7 @@ import cn.com.pism.ezasse.resource.EzasseResource;
 import cn.com.pism.ezasse.resource.factory.EzasseResourceLoaderFactory;
 import cn.com.pism.ezasse.resource.factory.EzasseResourceParserFactory;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -81,6 +82,11 @@ public class DefaultEzasseContext implements EzasseContext {
     @Override
     public void registerChecker(String checkerId, EzasseChecker checker) {
 
+    }
+
+    @Override
+    public List<String> getCheckerKeys() {
+        return Arrays.asList("EXEC","TABLE");
     }
 
     @Override

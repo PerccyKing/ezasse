@@ -1,5 +1,6 @@
 package cn.com.pism.ezasse.resource;
 
+import cn.com.pism.ezasse.model.EzasseCheckLineContent;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -15,6 +16,9 @@ public class EzasseFileResourceData implements EzasseResourceData {
     private List<ResourceData> fileData = new ArrayList<>();
 
     public void addFileData(ResourceData resourceData) {
+        if (resourceData == null) {
+            return;
+        }
         fileData.add(resourceData);
     }
 
@@ -23,17 +27,20 @@ public class EzasseFileResourceData implements EzasseResourceData {
         /**
          * 文件数据
          */
-        private List<String> data;
+        private List<EzasseFileLine> fileLines = new ArrayList<>();
 
         /**
-         * 检查行
+         * 所有的校验行和内容
          */
-        private String checkLine;
+        private List<EzasseCheckLineContent> checkLineContents = new ArrayList<>();
 
-        /**
-         * 内容
-         */
-        private String content;
+        public void addFileLine(EzasseFileLine fileLine) {
+            fileLines.add(fileLine);
+        }
+
+        public void addCheckLineContent(EzasseCheckLineContent checkLineContent) {
+            checkLineContents.add(checkLineContent);
+        }
     }
 
 }

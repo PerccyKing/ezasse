@@ -25,6 +25,7 @@ public class FileEzasse extends AbstractEzasse {
                 .getResourceLoaderFactory()
                 .registerResourceLoader(EzasseFileResource.class, new EzasseFileResourceLoader());
 
+        //注册资源解析器
         context
                 .getResourceParserFactory()
                 .registerResourceParser(EzasseFileResource.class, EzasseFileResourceParser.class);

@@ -65,6 +65,8 @@ public interface EzasseContext {
 
     void registerChecker(String checkerId, EzasseChecker checker);
 
+    List<String> getCheckerKeys();
+
     //====================>  执行器
 
     EzasseExecutor getExecutor(String executorId);
@@ -106,4 +108,5 @@ public interface EzasseContext {
     void putEzassea(Class<? extends EzasseResource> resourceClass, EzasseResourceData ezasseResourceData);
 
     EzasseResourceData getEzassea(Class<? extends EzasseResource> resourceClass);
+
 }

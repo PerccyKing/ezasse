@@ -1,10 +1,8 @@
 package cn.com.pism.ezasse.util;
 
 import cn.com.pism.ezasse.exception.EzasseException;
-import cn.com.pism.ezasse.model.EzasseSql;
 import cn.com.pism.frc.resourcescanner.*;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -18,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static cn.com.pism.ezasse.constants.EzasseConstants.*;
+import static cn.com.pism.ezasse.constants.EzasseConstants.LINE_COMMENT;
 import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.UNKNOWN;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_FOLDER_EXCEPTION;
 

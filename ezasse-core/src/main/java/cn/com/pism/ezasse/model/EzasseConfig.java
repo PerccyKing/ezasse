@@ -1,6 +1,7 @@
 package cn.com.pism.ezasse.model;
 
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -47,4 +48,13 @@ public class EzasseConfig {
      * 异步执行
      */
     private boolean async;
+
+    /**
+     * 行注释标记
+     */
+    private String lineComment = "--";
+
+    public boolean isDelimiter() {
+        return !StringUtils.isAnyBlank(delimiterStart, delimiterEnd);
+    }
 }

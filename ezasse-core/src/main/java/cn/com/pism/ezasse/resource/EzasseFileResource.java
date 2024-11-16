@@ -16,5 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 public class EzasseFileResource implements EzasseResource {
 
-    List<EzasseFile> sqls;
+    private List<EzasseFile> files;
+
 }

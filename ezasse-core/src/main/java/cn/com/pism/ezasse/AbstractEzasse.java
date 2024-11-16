@@ -25,8 +25,15 @@ public abstract class AbstractEzasse {
         this.resourceClass = resourceClass;
     }
 
-    protected void preProcess() {
-        //default do nothing
+    public void execute() {
+        //加载并解析资源
+        loadAndParse();
+
+        //对资源进行校验
+        check(EzasseContextHolder.getContext().getEzassea(this.resourceClass));
+
+        //执行动作
+        doExecute();
     }
 
     /**
@@ -59,16 +66,11 @@ public abstract class AbstractEzasse {
 
     }
 
-    public void execute() {
-        //加载并解析资源
-        loadAndParse();
 
-        //对资源进行校验
-        check(EzasseContextHolder.getContext().getEzassea(this.resourceClass));
-
-        //执行动作
-        doExecute();
+    protected void preProcess() {
+        //default do nothing
     }
+
 
     protected abstract void check(EzasseResourceData ezasseResourceData);
 
