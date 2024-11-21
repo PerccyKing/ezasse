@@ -1,4 +1,6 @@
-![logo](/doc/image/logo.svg)
+![logo](/doc/image/logo.svg#gh-light-mode-only)
+![logo](/doc/image/logo-light.svg#gh-dark-mode-only)
+
 # 快速入门
 ## 简介
 ezasse(Easy automatic SQL script executor)一个简单的自动SQL执行器
