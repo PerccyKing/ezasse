@@ -13,13 +13,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Navigate to docs directory
+        run: cd about/ezasse-doc
+
       - uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: yarn
-
-      - name: Navigate to docs directory
-        run: cd about/ezasse-doc
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
