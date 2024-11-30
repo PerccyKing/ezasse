@@ -18,6 +18,8 @@ jobs:
         with:
           node-version: 18
           cache: yarn
+
+      - name: Install and Build
         run: |
           cd about/ezasse-doc
           yarn install --frozen-lockfile
@@ -26,7 +28,7 @@ jobs:
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: build
+          path: about/ezasse-doc/build
 
   deploy:
     name: Deploy to GitHub Pages
