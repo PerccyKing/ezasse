@@ -29,11 +29,23 @@ jobs:
           yarn install --frozen-lockfile
           yarn build
 
+      # 验证构建产物是否存在
+      - name: Verify build directory
+        run: |
+          if [ -d "about/ezasse-doc/build" ]; then
+            echo "Build directory exists."
+            ls -alh about/ezasse-doc/build
+          else
+            echo "Build directory not found."
+            exit 1
+          fi
+
+      # 上传构建产物
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
           name: server-build
-          path: about/ezasse-doc/build
+          path: about/ezasse-doc/build/*
 
   deploy:
     name: Deploy to Server
@@ -48,9 +60,17 @@ jobs:
           name: server-build
 
       # 验证下载的构建产物是否存在
-      - name: List downloaded artifact contents
-        run: ls -alh server-build
+      - name: Verify downloaded artifact
+        run: |
+          if [ -d "server-build" ]; then
+            echo "Downloaded artifact exists."
+            ls -alh server-build
+          else
+            echo "Downloaded artifact not found."
+            exit 1
+          fi
 
+      # 使用 SCP 通过密码将文件上传到远程服务器
       - name: Deploy to Remote Server using SCP
         uses: appleboy/scp-action@v0.1.0
         with:
