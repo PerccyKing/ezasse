@@ -1,0 +1,58 @@
+name: Deploy to server
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build Docusaurus
+    runs-on: ubuntu-latest
+    steps:
+      # 检出代码
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 配置 Node.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: yarn
+          cache-dependency-path: about/ezasse-doc/yarn.lock
+
+      # 安装依赖并构建项目
+      - name: Install and Build
+        working-directory: about/ezasse-doc
+        run: |
+          yarn install --frozen-lockfile
+          yarn build
+
+      # 上传构建产物以供部署步骤使用
+      - name: Upload Build Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: about/ezasse-doc/build
+
+  deploy:
+    name: Deploy to Server
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      # 下载构建的产物
+      - name: Download Build Artifact
+        uses: actions/download-pages-artifact@v3
+
+      # 使用 SCP 通过密码将文件上传到远程服务器
+      - name: Deploy to Remote Server using SCP
+        uses: appleboy/scp-action@v0.1.0
+        with:
+          host: ${{ secrets.TEN_HOST }}
+          username: ${{ secrets.TEN_USER }}
+          password: ${{ secrets.TEN_PASSWORD }}
+          port: ${{secrets.TEN_PORT}}
+          source: "about/ezasse-doc/build/*"
+          target: ${{ secrets.EZASSES_PATH }}
+
