@@ -18,8 +18,12 @@ jobs:
           node-version: 18
           cache: yarn
 
+      - name: Navigate to docs directory
+        run: cd about/ezasse-doc
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+
       - name: Build website
         run: yarn build
 
