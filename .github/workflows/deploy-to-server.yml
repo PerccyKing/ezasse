@@ -48,6 +48,10 @@ jobs:
         with:
           name: server-build
 
+      # 验证下载的构建产物是否存在
+      - name: List downloaded artifact contents
+        run: ls -alh server-build
+
       # 使用 SCP 通过密码将文件上传到远程服务器
       - name: Deploy to Remote Server using SCP
         uses: appleboy/scp-action@v0.1.0
@@ -55,6 +59,6 @@ jobs:
           host: ${{ secrets.TEN_HOST }}
           username: ${{ secrets.TEN_USER }}
           password: ${{ secrets.TEN_PASSWORD }}
-          port: ${{secrets.TEN_PORT}}
-          source: "./build/*"
+          port: ${{ secrets.TEN_PORT }}
+          source: "server-build/*"
           target: ${{ secrets.EZASSES_PATH }}
