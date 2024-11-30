@@ -29,11 +29,6 @@ jobs:
           yarn install --frozen-lockfile
           yarn build
 
-      # 确认构建产物是否存在
-      - name: List build directory contents
-        run: ls -alh about/ezasse-doc/build
-
-      # 上传构建产物以供部署步骤使用
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -56,7 +51,6 @@ jobs:
       - name: List downloaded artifact contents
         run: ls -alh server-build
 
-      # 使用 SCP 通过密码将文件上传到远程服务器
       - name: Deploy to Remote Server using SCP
         uses: appleboy/scp-action@v0.1.0
         with:
