@@ -17,6 +17,12 @@ jobs:
       - name: Navigate to docs directory
         run: cd about/ezasse-doc
 
+      - name: Log current directory and list files
+        run: |
+          pwd
+          echo "Files in current directory:"
+          ls -al
+
       - uses: actions/setup-node@v4
         with:
           node-version: 18
