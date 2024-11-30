@@ -46,7 +46,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: server-build
-          path: ./downloaded-artifact  # 将文件下载到指定路径
+          path: ./downloaded-artifact  # 指定下载路径
 
       # 列出下载的文件，确保文件存在
       - name: List downloaded artifact files
@@ -62,5 +62,5 @@ jobs:
           username: ${{ secrets.TEN_USER }}
           password: ${{ secrets.TEN_PASSWORD }}
           port: ${{ secrets.TEN_PORT }}
-          source: "./downloaded-artifact/server-build/*"  # 上传下载的文件
+          source: "./downloaded-artifact/*"  # 上传下载的文件
           target: ${{ secrets.EZASSES_PATH }}
