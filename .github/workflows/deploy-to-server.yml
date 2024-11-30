@@ -29,23 +29,12 @@ jobs:
           yarn install --frozen-lockfile
           yarn build
 
-      # 验证构建产物是否存在
-      - name: Verify build directory
-        run: |
-          if [ -d "about/ezasse-doc/build" ]; then
-            echo "Build directory exists."
-            ls -alh about/ezasse-doc/build
-          else
-            echo "Build directory not found."
-            exit 1
-          fi
-
-      # 上传构建产物
+      # 上传构建产物以供部署步骤使用
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
           name: server-build
-          path: about/ezasse-doc/build/*
+          path: about/ezasse-doc/build
 
   deploy:
     name: Deploy to Server
@@ -58,17 +47,16 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: server-build
+        # 指定一个临时路径来保存下载的产物
+        path: /tmp/server-build
 
       # 验证下载的构建产物是否存在
       - name: Verify downloaded artifact
         run: |
-          if [ -d "server-build" ]; then
-            echo "Downloaded artifact exists."
-            ls -alh server-build
-          else
-            echo "Downloaded artifact not found."
-            exit 1
-          fi
+          echo "Listing contents of current directory"
+          ls -alh
+          echo "Listing contents of '/tmp/server-build' directory"
+          ls -alh /tmp/server-build || echo "/tmp/server-build directory not found"
 
       # 使用 SCP 通过密码将文件上传到远程服务器
       - name: Deploy to Remote Server using SCP
@@ -78,5 +66,5 @@ jobs:
           username: ${{ secrets.TEN_USER }}
           password: ${{ secrets.TEN_PASSWORD }}
           port: ${{ secrets.TEN_PORT }}
-          source: "server-build/*"
+          source: "/tmp/server-build/*"
           target: ${{ secrets.EZASSES_PATH }}
