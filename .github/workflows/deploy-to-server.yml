@@ -36,39 +36,19 @@ jobs:
           name: server-build
           path: about/ezasse-doc/build
 
-  deploy:
-    name: Deploy to Server
+  confirm-upload:
+    name: Confirm Upload and List Download URL
     needs: build
     runs-on: ubuntu-latest
-
     steps:
-      # 下载构建的产物
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: server-build
-
-      # 创建目标目录并移动文件
-      - name: Create directory for build
+      # 列出上传的构建产物
+      - name: List uploaded artifact
         run: |
-          mkdir -p /tmp/server-build
-          mv ./server-build/* /tmp/server-build/
-
-      # 验证下载的构建产物是否存在
-      - name: Verify downloaded artifact
-        run: |
-          echo "Listing contents of current directory"
+          echo "Listing the uploaded artifact"
           ls -alh
-          echo "Listing contents of '/tmp/server-build' directory"
-          ls -alh /tmp/server-build || echo "/tmp/server-build directory not found"
 
-      # 使用 SCP 通过密码将文件上传到远程服务器
-      - name: Deploy to Remote Server using SCP
-        uses: appleboy/scp-action@v0.1.0
-        with:
-          host: ${{ secrets.TEN_HOST }}
-          username: ${{ secrets.TEN_USER }}
-          password: ${{ secrets.TEN_PASSWORD }}
-          port: ${{ secrets.TEN_PORT }}
-          source: "/tmp/server-build/*"
-          target: ${{ secrets.EZASSES_PATH }}
+      # 获取并列出上传的构建产物的下载 URL
+      - name: List artifact download URL
+        run: |
+          echo "To download the artifact, use the following URL:"
+          echo "https://github.com/${{ github.repository }}/actions/artifacts/${{ steps.upload.outputs.artifact_id }}"
