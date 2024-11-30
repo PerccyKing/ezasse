@@ -47,16 +47,16 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: server-build
-        # 指定一个临时路径来保存下载的产物
-        path: /tmp/server-build
+        # 推荐使用相对路径而非绝对路径
+        path: ./server-build
 
       # 验证下载的构建产物是否存在
       - name: Verify downloaded artifact
         run: |
           echo "Listing contents of current directory"
           ls -alh
-          echo "Listing contents of '/tmp/server-build' directory"
-          ls -alh /tmp/server-build || echo "/tmp/server-build directory not found"
+          echo "Listing contents of './server-build' directory"
+          ls -alh ./server-build || echo "./server-build directory not found"
 
       # 使用 SCP 通过密码将文件上传到远程服务器
       - name: Deploy to Remote Server using SCP
@@ -66,5 +66,5 @@ jobs:
           username: ${{ secrets.TEN_USER }}
           password: ${{ secrets.TEN_PASSWORD }}
           port: ${{ secrets.TEN_PORT }}
-          source: "/tmp/server-build/*"
+          source: "./server-build/*"
           target: ${{ secrets.EZASSES_PATH }}
