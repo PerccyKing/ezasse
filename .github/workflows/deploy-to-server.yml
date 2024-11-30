@@ -29,6 +29,10 @@ jobs:
           yarn install --frozen-lockfile
           yarn build
 
+      # 确认构建产物是否存在
+      - name: List build directory contents
+        run: ls -alh about/ezasse-doc/build
+
       # 上传构建产物以供部署步骤使用
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
