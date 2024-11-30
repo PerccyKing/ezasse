@@ -14,27 +14,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Navigate to docs directory
-        run: cd about/ezasse-doc
-
-      - name: Log current directory and list files
-        run: |
-          pwd
-          echo "Files in current directory:"
-          ls -al
-
       - uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: yarn
-
-      - name: Install dependencies
         run: |
-          pwd
+          cd about/ezasse-doc
           yarn install --frozen-lockfile
-
-      - name: Build website
-        run: yarn build
+          yarn build
 
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
