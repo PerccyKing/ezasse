@@ -54,6 +54,16 @@ jobs:
           echo "Listing the downloaded artifact files"
           ls -alh ./downloaded-artifact  # 使用指定的路径
 
+      - name: Clear target folder on server
+        uses: appleboy/ssh-action@v0.1.0
+        with:
+          host: ${{ secrets.TEN_HOST }}
+          username: ${{ secrets.TEN_USER }}
+          password: ${{ secrets.TEN_PASSWORD }}
+          port: ${{ secrets.TEN_PORT }}
+          script: |
+            rm -rf ${{ secrets.EZASSES_PATH }}/*  # 清空目标文件夹内容
+
       # 使用 SCP 通过密码将文件上传到远程服务器
       - name: Deploy to Remote Server using SCP
         uses: appleboy/scp-action@v0.1.0
@@ -62,5 +72,5 @@ jobs:
           username: ${{ secrets.TEN_USER }}
           password: ${{ secrets.TEN_PASSWORD }}
           port: ${{ secrets.TEN_PORT }}
-          source: "./downloaded-artifact/*"  # 上传下载的文件
+          source: "./downloaded-artifact/**"
           target: ${{ secrets.EZASSES_PATH }}
