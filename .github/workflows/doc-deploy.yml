@@ -20,9 +20,17 @@ jobs:
           cache: yarn
           cache-dependency-path: about/ezasse-doc/yarn.lock
 
-      - name: Install and Build
+      - name: Set Environment Variables
         run: |
-          cd about/ezasse-doc
+          echo "DEPLOY_URL=https://perccyking.github.io" >> $GITHUB_ENV
+          echo "BASE_URL=/ezasse" >> $GITHUB_ENV
+
+      - name: Install and Build
+        working-directory: about/ezasse-doc
+        env:
+          DEPLOY_URL: ${{ env.DEPLOY_URL }}
+          BASE_URL: ${{ env.BASE_URL }}
+        run: |
           yarn install --frozen-lockfile
           yarn build
 
