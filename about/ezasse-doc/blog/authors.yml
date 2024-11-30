@@ -1,0 +1,14 @@
+PISM:
+  name: PISM Open Source Software
+  title: organization
+  image_url: https://github.com/pism-oss.png
+  page: true
+  socials:
+    github: pism-oss
+PerccyKing:
+  name: PerccyKing
+  title: 开发者
+  image_url: https://github.com/PerccyKing.png
+  page: true
+  socials:
+    github: PerccyKing

@@ -37,3 +37,4 @@ build/
 /.mvn/
 
 *.flattened-pom.xml
+/ezasse-example/
