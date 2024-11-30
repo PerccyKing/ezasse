@@ -74,3 +74,16 @@ jobs:
           port: ${{ secrets.TEN_PORT }}
           source: "./site/**"
           target: ${{ secrets.EZASSES_PATH }}
+
+            # 使用 SSH 执行远程脚本
+      - name: Execute script on remote server
+        uses: appleboy/ssh-action@v0.1.0
+        with:
+          host: ${{ secrets.TEN_HOST }}
+          username: ${{ secrets.TEN_USER }}
+          password: ${{ secrets.TEN_PASSWORD }}
+          port: 22
+          script: |
+            # 示例：进入目标目录并执行自定义脚本
+            cd ${{ secrets.SHELL_PATH }}
+            docker-compose restart

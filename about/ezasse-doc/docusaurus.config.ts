@@ -74,7 +74,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/ezasse-social-card.svg',
+    image: 'img/ezasse-social-card.png',
     colorMode: {
       respectPrefersColorScheme: true
     },
@@ -97,6 +97,12 @@ const config: Config = {
           sidebarId: 'tutorialSidebar',
           position: 'left',
           label: '文档',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'tutorialSidebar',
+          position: 'left',
+          label: '0.x文档',
           href: ezasseConfig.v0xHref
         },
         {to: '/blog', label: '博客', position: 'left'},
