@@ -31,8 +31,9 @@ jobs:
 
       # 上传构建产物以供部署步骤使用
       - name: Upload Build Artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-artifact@v3
         with:
+          name: server-build
           path: about/ezasse-doc/build
 
   deploy:
@@ -43,7 +44,9 @@ jobs:
     steps:
       # 下载构建的产物
       - name: Download Build Artifact
-        uses: actions/download-pages-artifact@v3
+        uses: actions/download-artifact@v3
+        with:
+          name: server-build
 
       # 使用 SCP 通过密码将文件上传到远程服务器
       - name: Deploy to Remote Server using SCP
@@ -53,6 +56,5 @@ jobs:
           username: ${{ secrets.TEN_USER }}
           password: ${{ secrets.TEN_PASSWORD }}
           port: ${{secrets.TEN_PORT}}
-          source: "about/ezasse-doc/build/*"
+          source: "./build/*"
           target: ${{ secrets.EZASSES_PATH }}
-
