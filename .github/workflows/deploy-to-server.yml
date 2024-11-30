@@ -46,13 +46,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: server-build
-          path: ./downloaded-artifact  # 指定下载路径
+          path: ./site  # 指定下载路径
 
       # 列出下载的文件，确保文件存在
       - name: List downloaded artifact files
         run: |
           echo "Listing the downloaded artifact files"
-          ls -alh ./downloaded-artifact  # 使用指定的路径
+          ls -alh ./site  # 使用指定的路径
 
       - name: Clear target folder on server
         uses: appleboy/ssh-action@v0.1.0
@@ -72,5 +72,5 @@ jobs:
           username: ${{ secrets.TEN_USER }}
           password: ${{ secrets.TEN_PASSWORD }}
           port: ${{ secrets.TEN_PORT }}
-          source: "./downloaded-artifact/**"
+          source: "./site/**"
           target: ${{ secrets.EZASSES_PATH }}
