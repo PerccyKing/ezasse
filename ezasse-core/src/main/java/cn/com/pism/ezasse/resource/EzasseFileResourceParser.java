@@ -55,7 +55,7 @@ public class EzasseFileResourceParser extends EzasseResourceParser {
 
     /**
      * <p>
-     * 解析文件内容
+     * 解析文件内容，先按照校验行进行拆分
      * </p>
      * by perccyking
      *
@@ -64,61 +64,47 @@ public class EzasseFileResourceParser extends EzasseResourceParser {
      * @since 24-11-17 00:09
      */
     private EzasseFileResourceData.ResourceData parseFileLines(List<String> lines) {
-
-        //空文件不做处理
+        // 空文件不做处理
         if (CollectionUtils.isEmpty(lines)) {
             return null;
         }
 
-        //创建数据对象，一个文件一个对象
+        // 创建数据对象，一个文件一个对象
         EzasseFileResourceData.ResourceData fileData = new EzasseFileResourceData.ResourceData();
 
-        //遍历中 当前的校验行
+        // 当前解析到的校验行
         EzasseFileLine currentCheckLine = null;
+        EzasseCheckLineContent currentCheckLineContent = null;
 
-        //校验行对应的内容
-        EzasseCheckLineContent checkLineContent = null;
-
-        //遍历文件内容
         for (String line : lines) {
             EzasseFileLine ezasseFileLine = new EzasseFileLine(line);
             fileData.addFileLine(ezasseFileLine);
 
-            //当前行为校验行
+            // 如果当前行校验行
             if (ezasseFileLine.isCheckLine()) {
-
-                //当前循环中的校验行不为空，并且当前行为校验行，标示当前校验行对应的内容已经完成解析
-                //需要进行下一个校验行对应内容的解析
-                if (currentCheckLine != null) {
-                    fileData.addCheckLineContent(checkLineContent);
-                }
-
-                //重置当前的校验行 和 校验行对应的内容
+                // 设置当前行为当前解析过程中的校验行
                 currentCheckLine = ezasseFileLine;
-                checkLineContent = createCheckLineContent(currentCheckLine);
+
+                // 创建clc
+                currentCheckLineContent = new EzasseCheckLineContent(ezasseFileLine);
+
+                // 将当前clc对象添加到文件数据中
+                fileData.addCheckLineContent(currentCheckLineContent);
             } else {
 
-                //当前行不是校验行 并且当前校验行不为空，添加到checkLineContent
+                // 当前行不是校验行
+                // 如果解析中的校验行为空，不做处理
+                // 如果解析中的校验行不为空，将当前行加入到clc中
                 if (currentCheckLine != null) {
-
-                    //将当前行数据追加到 checkLineContent
-                    checkLineContent.appendContent(line);
+                    currentCheckLineContent.appendContent(ezasseFileLine);
                 }
-
             }
 
         }
+
         return fileData;
     }
 
-    private EzasseCheckLineContent createCheckLineContent(EzasseFileLine currentCheckLine) {
-        EzasseCheckLineContent checkLineContent;
-        checkLineContent = new EzasseCheckLineContent();
-        checkLineContent.setCheckKey(currentCheckLine.getCheckKey());
-        checkLineContent.setCheckContent(currentCheckLine.getCheckContent());
-        checkLineContent.setCheckLine(currentCheckLine.getLine());
-        return checkLineContent;
-    }
 
     /**
      * <p>

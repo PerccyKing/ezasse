@@ -86,7 +86,7 @@ public class DefaultEzasseContext implements EzasseContext {
 
     @Override
     public List<String> getCheckerKeys() {
-        return Arrays.asList("EXEC","TABLE");
+        return Arrays.asList("EXEC", "TABLE", "ADD");
     }
 
     @Override

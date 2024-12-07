@@ -13,13 +13,13 @@ import java.util.List;
 @Data
 public class EzasseFileResourceData implements EzasseResourceData {
 
-    private List<ResourceData> fileData = new ArrayList<>();
+    private List<ResourceData> fileDataList = new ArrayList<>();
 
     public void addFileData(ResourceData resourceData) {
         if (resourceData == null) {
             return;
         }
-        fileData.add(resourceData);
+        fileDataList.add(resourceData);
     }
 
     @Data
