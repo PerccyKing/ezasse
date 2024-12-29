@@ -1,17 +1,18 @@
 package cn.com.pism.ezasse.model;
 
 import cn.com.pism.ezasse.context.EzasseContext;
-import cn.com.pism.ezasse.resource.EzasseResourceData;
-import cn.com.pism.ezasse.resource.factory.impl.DefaultEzasseResourceLoaderFactory;
-import cn.com.pism.ezasse.resource.factory.impl.DefaultEzasseResourceParserFactory;
-import cn.com.pism.ezasse.executor.EzasseExecutor;
 import cn.com.pism.ezasse.resource.EzasseResource;
+import cn.com.pism.ezasse.resource.EzasseResourceData;
 import cn.com.pism.ezasse.resource.factory.EzasseResourceLoaderFactory;
 import cn.com.pism.ezasse.resource.factory.EzasseResourceParserFactory;
+import cn.com.pism.ezasse.resource.factory.impl.DefaultEzasseResourceLoaderFactory;
+import cn.com.pism.ezasse.resource.factory.impl.DefaultEzasseResourceParserFactory;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author PerccyKing
@@ -25,10 +26,14 @@ public class DefaultEzasseContext implements EzasseContext {
 
     private EzasseConfig config;
 
+    private final Map<Class<? extends EzasseResource>, EzasseResourceData> ezasseResourceDataMap = new ConcurrentHashMap<>(16);
+
     public DefaultEzasseContext() {
         this.loaderFactory = new DefaultEzasseResourceLoaderFactory();
         this.parserFactory = new DefaultEzasseResourceParserFactory();
     }
+
+    private final Map<String, EzasseDataSource> dataSourceMap = new ConcurrentHashMap<>(16);
 
     /**
      * <p>
@@ -40,7 +45,7 @@ public class DefaultEzasseContext implements EzasseContext {
      * @since 24-10-21 22:35
      */
     @Override
-    public List<AbstractEzasseDataSource<?>> getDataSources() {
+    public List<EzasseDataSource> getDataSources() {
         return Collections.emptyList();
     }
 
@@ -55,8 +60,8 @@ public class DefaultEzasseContext implements EzasseContext {
      * @since 24-10-21 22:35
      */
     @Override
-    public AbstractEzasseDataSource<?> getDataSource(String dataSourceId) {
-        return null;
+    public EzasseDataSource getDataSource(String dataSourceId) {
+        return dataSourceMap.get(dataSourceId);
     }
 
     /**
@@ -70,13 +75,13 @@ public class DefaultEzasseContext implements EzasseContext {
      * @since 24-10-21 22:35
      */
     @Override
-    public void registerDataSource(String dataSourceId, AbstractEzasseDataSource<?> dataSource) {
-
+    public void registerDataSource(String dataSourceId, EzasseDataSource dataSource) {
+        dataSourceMap.put(dataSourceId, dataSource);
     }
 
     @Override
     public EzasseChecker getChecker(String checkerId) {
-        return null;
+        return new ExecChecker();
     }
 
     @Override
@@ -90,8 +95,8 @@ public class DefaultEzasseContext implements EzasseContext {
     }
 
     @Override
-    public EzasseExecutor getExecutor(String executorId) {
-        return null;
+    public EzasseExecutor getExecutor(EzasseDataSource dataSource) {
+        return new MysqlEzasseExecutor(dataSource);
     }
 
     @Override
@@ -148,12 +153,12 @@ public class DefaultEzasseContext implements EzasseContext {
     }
 
     @Override
-    public void putEzassea(Class<? extends EzasseResource> resourceClass, EzasseResourceData ezasseResourceData) {
-
+    public void putEzasseResource(Class<? extends EzasseResource> resourceClass, EzasseResourceData ezasseResourceData) {
+        ezasseResourceDataMap.put(resourceClass, ezasseResourceData);
     }
 
     @Override
-    public EzasseResourceData getEzassea(Class<? extends EzasseResource> resourceClass) {
-        return null;
+    public EzasseResourceData getEzasseResource(Class<? extends EzasseResource> resourceClass) {
+        return ezasseResourceDataMap.get(resourceClass);
     }
 }

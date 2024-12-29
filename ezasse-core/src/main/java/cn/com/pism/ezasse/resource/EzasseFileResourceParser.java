@@ -1,15 +1,22 @@
 package cn.com.pism.ezasse.resource;
 
+import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.model.EzasseCheckLineContent;
+import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseFile;
 import cn.com.pism.ezasse.util.EzasseIoUtil;
 import cn.com.pism.ezasse.util.EzasseLogUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.CollectionUtils;
 
 import java.io.InputStream;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author PerccyKing
@@ -40,17 +47,70 @@ public class EzasseFileResourceParser extends EzasseResourceParser {
             return resourceData;
         }
 
+        sqlFiles = filterSqlFiles(sqlFiles);
+
+        EzasseFileResourceData groupParsedData = groupParsed(sqlFiles, resourceData);
+        if (groupParsedData != null) {
+            return groupParsedData;
+        }
+
         //遍历文件
-        sqlFiles.forEach(sqlFile -> parseSqlFile(sqlFile, resourceData));
-        //读取数据
+        sortedFile(sqlFiles).forEach(sqlFile -> parseSqlFile(sqlFile, resourceData));
+
         return resourceData;
+    }
+
+    private EzasseFileResourceData groupParsed(List<EzasseFile> sqlFiles, EzasseFileResourceData resourceData) {
+        //配置
+        EzasseConfig config = EzasseContextHolder.getContext().getConfig();
+        List<String> groupOrder = config.getGroupOrder();
+
+        //如果指定了分组，按分组顺序解析文件
+        if (CollectionUtils.isEmpty(groupOrder)) {
+            return null;
+        }
+
+        Map<String, List<EzasseFile>> groupFileMap = sqlFiles.stream().collect(Collectors.groupingBy(EzasseFile::getGroup));
+
+        groupOrder.forEach(group -> {
+            List<EzasseFile> groupFiles = groupFileMap.get(group);
+            //文件排序
+            sortedFile(groupFiles).forEach(sqlFile -> parseSqlFile(sqlFile, resourceData));
+        });
+        return resourceData;
+    }
+
+    private List<EzasseFile> filterSqlFiles(List<EzasseFile> sqlFiles) {
+        //配置
+        EzasseConfig config = EzasseContextHolder.getContext().getConfig();
+
+        //过滤指定文件
+        List<String> fileList = config.getFileList();
+        if (!CollectionUtils.isEmpty(fileList)) {
+            sqlFiles = sqlFiles.stream()
+                    .filter(sqlFile -> fileList.stream().anyMatch(sqlFile.getName()::contains))
+                    .collect(Collectors.toList());
+        }
+
+        //如果指定了分组
+        if (!CollectionUtils.isEmpty(config.getGroupOrder())) {
+            //过滤出指定分组的文件
+            sqlFiles = sqlFiles.stream()
+                    .filter(sqlFile -> config.getGroupOrder().contains(sqlFile.getGroup()))
+                    .collect(Collectors.toList());
+        }
+        return sqlFiles;
+    }
+
+    private Stream<EzasseFile> sortedFile(List<EzasseFile> sqlFiles) {
+        return sqlFiles.stream().sorted(Comparator.comparingInt(o -> Integer.parseInt(o.getOrder())));
     }
 
     private void parseSqlFile(EzasseFile sqlFile, EzasseFileResourceData resourceData) {
         //读取文件内容
         List<String> lines = readFile(sqlFile.getPath());
 
-        resourceData.addFileData(parseFileLines(lines));
+        resourceData.addFileData(parseFileLines(sqlFile, lines));
     }
 
     /**
@@ -59,11 +119,12 @@ public class EzasseFileResourceParser extends EzasseResourceParser {
      * </p>
      * by perccyking
      *
-     * @param lines : 文件内容所有行
+     * @param sqlFile : 文件对象
+     * @param lines   : 文件内容所有行
      * @return {@link EzasseFileResourceData.ResourceData}
      * @since 24-11-17 00:09
      */
-    private EzasseFileResourceData.ResourceData parseFileLines(List<String> lines) {
+    private EzasseFileResourceData.ResourceData parseFileLines(EzasseFile sqlFile, List<String> lines) {
         // 空文件不做处理
         if (CollectionUtils.isEmpty(lines)) {
             return null;
@@ -85,8 +146,11 @@ public class EzasseFileResourceParser extends EzasseResourceParser {
                 // 设置当前行为当前解析过程中的校验行
                 currentCheckLine = ezasseFileLine;
 
+                // 添加节点信息
+                populateNodeInfo(sqlFile, currentCheckLine);
+
                 // 创建clc
-                currentCheckLineContent = new EzasseCheckLineContent(ezasseFileLine);
+                currentCheckLineContent = new EzasseCheckLineContent(currentCheckLine);
 
                 // 将当前clc对象添加到文件数据中
                 fileData.addCheckLineContent(currentCheckLineContent);
@@ -103,6 +167,19 @@ public class EzasseFileResourceParser extends EzasseResourceParser {
         }
 
         return fileData;
+    }
+
+    private void populateNodeInfo(EzasseFile sqlFile, EzasseFileLine currentCheckLine) {
+        // 如果校验行没有指定校验节点和执行节点，并且文件指定了校验和执行节点，将文件节点赋值给校验行
+        String fileNode = sqlFile.getNode();
+        if (StringUtils.isNotBlank(fileNode)) {
+            if (StringUtils.isBlank(currentCheckLine.getCheckNode())) {
+                currentCheckLine.setCheckNode(fileNode);
+            }
+            if (StringUtils.isBlank(currentCheckLine.getExecuteNode())) {
+                currentCheckLine.setExecuteNode(fileNode);
+            }
+        }
     }
 
 

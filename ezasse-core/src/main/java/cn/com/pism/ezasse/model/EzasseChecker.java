@@ -6,5 +6,5 @@ package cn.com.pism.ezasse.model;
  */
 public interface EzasseChecker {
 
-    boolean check(AbstractEzasseDataSource<?> dataSource, String checkContent);
+    boolean check(EzasseDataSource dataSource, String checkContent);
 }

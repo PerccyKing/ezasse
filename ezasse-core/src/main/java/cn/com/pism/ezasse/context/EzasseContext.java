@@ -1,9 +1,9 @@
 package cn.com.pism.ezasse.context;
 
-import cn.com.pism.ezasse.model.AbstractEzasseDataSource;
+import cn.com.pism.ezasse.model.EzasseDataSource;
 import cn.com.pism.ezasse.model.EzasseChecker;
+import cn.com.pism.ezasse.model.EzasseExecutor;
 import cn.com.pism.ezasse.resource.EzasseResourceData;
-import cn.com.pism.ezasse.executor.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.resource.EzasseResource;
 import cn.com.pism.ezasse.resource.factory.EzasseResourceLoaderFactory;
@@ -33,7 +33,7 @@ public interface EzasseContext {
      * @return 所有数据源列表
      * @since 24-10-21 22:35
      */
-    List<AbstractEzasseDataSource<?>> getDataSources();
+    List<EzasseDataSource> getDataSources();
 
     /**
      * <p>
@@ -45,7 +45,7 @@ public interface EzasseContext {
      * @return 数据源
      * @since 24-10-21 22:35
      */
-    AbstractEzasseDataSource<?> getDataSource(String dataSourceId);
+    EzasseDataSource getDataSource(String dataSourceId);
 
     /**
      * <p>
@@ -57,7 +57,7 @@ public interface EzasseContext {
      * @param dataSource   : 数据源
      * @since 24-10-21 22:35
      */
-    void registerDataSource(String dataSourceId, AbstractEzasseDataSource<?> dataSource);
+    void registerDataSource(String dataSourceId, EzasseDataSource dataSource);
 
     //====================>  校验器
 
@@ -69,7 +69,7 @@ public interface EzasseContext {
 
     //====================>  执行器
 
-    EzasseExecutor getExecutor(String executorId);
+    EzasseExecutor getExecutor(EzasseDataSource dataSource);
 
     void registerExecutor(String executorId, EzasseExecutor executor);
 
@@ -105,8 +105,8 @@ public interface EzasseContext {
 
     void registerEzasseResourceParserFactory(EzasseResourceParserFactory parserFactory);
 
-    void putEzassea(Class<? extends EzasseResource> resourceClass, EzasseResourceData ezasseResourceData);
+    void putEzasseResource(Class<? extends EzasseResource> resourceClass, EzasseResourceData ezasseResourceData);
 
-    EzasseResourceData getEzassea(Class<? extends EzasseResource> resourceClass);
+    EzasseResourceData getEzasseResource(Class<? extends EzasseResource> resourceClass);
 
 }

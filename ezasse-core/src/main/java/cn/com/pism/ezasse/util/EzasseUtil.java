@@ -1,22 +1,23 @@
 package cn.com.pism.ezasse.util;
 
 import cn.com.pism.ezasse.exception.EzasseException;
+import cn.com.pism.ezasse.model.EzasseTableInfo;
+import cn.com.pism.frc.resourcescanner.Scanner;
 import cn.com.pism.frc.resourcescanner.*;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.util.CollectionUtils;
 
 import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
-import static cn.com.pism.ezasse.constants.EzasseConstants.*;
-import static cn.com.pism.ezasse.constants.EzasseConstants.LINE_COMMENT;
+import static cn.com.pism.ezasse.constants.EzasseConstants.CLASSPATH_PREFIX;
+import static cn.com.pism.ezasse.constants.EzasseConstants.SQL_EXTENSION;
 import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.UNKNOWN;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_FOLDER_EXCEPTION;
 
@@ -31,6 +32,58 @@ public class EzasseUtil {
 
     private EzasseUtil() {
     }
+
+
+    /**
+     * <p>
+     * 从databse中获取 数据库名称
+     * </p>
+     *
+     * @param dataSource : datasource
+     * @return {@link String} 数据库名称
+     * @author PerccyKing
+     * @since 2022/04/07 下午 03:49
+     */
+    public static String getDataBaseNameFromDataSource(DataSource dataSource) {
+        String catalog = getFromDataSource(dataSource, connection -> {
+            try {
+                return connection.getCatalog();
+            } catch (SQLException e) {
+                if (log.isErrorEnabled()) {
+                    log.error(e.getMessage(), e);
+                }
+                return "";
+            }
+        });
+        if (StringUtils.isBlank(catalog)) {
+            return "";
+        }
+        return catalog;
+    }
+
+
+    /**
+     * 将maplist 转换为list对象
+     *
+     * @param mapList 查询出来的表基本信息
+     * @return tableInfo 对象
+     */
+    public static List<EzasseTableInfo> toTableInfo(List<Map<String, Object>> mapList) {
+        if (CollectionUtils.isEmpty(mapList)) {
+            return Collections.emptyList();
+        }
+        List<EzasseTableInfo> tableInfos = new ArrayList<>();
+        mapList.forEach(map -> {
+            EzasseTableInfo tableInfo = new EzasseTableInfo();
+            tableInfo.setColumnName(MapUtils.getString(map, "columnName"));
+            tableInfo.setDataType(MapUtils.getString(map, "dataType"));
+            tableInfo.setCharacterMaximumLength(MapUtils.getString(map, "characterMaximumLength"));
+            tableInfo.setColumnComment(MapUtils.getString(map, "columnComment"));
+            tableInfos.add(tableInfo);
+        });
+        return tableInfos;
+    }
+
 
     public static <T> T getFromDataSource(DataSource dataSource, Callback<Connection, T> callback) {
         if (dataSource == null) {

@@ -6,8 +6,8 @@ package cn.com.pism.ezasse.model;
  * @since 24-10-21 22:46
  */
 @FunctionalInterface
-public interface AbstractEzasseDataSource<T> {
+public interface EzasseDataSource {
 
-    T getDataSource();
+    <T> T getDataSource();
 
 }

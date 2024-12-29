@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.ORACLE;
+import static cn.com.pism.ezasse.util.EzasseUtil.toTableInfo;
 
 /**
  * @author PerccyKing

@@ -6,6 +6,8 @@ import cn.com.pism.ezasse.model.EzasseTableInfo;
 import java.util.List;
 import java.util.Map;
 
+import static cn.com.pism.ezasse.util.EzasseUtil.toTableInfo;
+
 /**
  * @author PerccyKing
  * @version 0.0.1

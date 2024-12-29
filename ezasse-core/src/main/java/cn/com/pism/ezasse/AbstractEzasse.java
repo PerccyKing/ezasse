@@ -1,8 +1,8 @@
 package cn.com.pism.ezasse;
 
-import cn.com.pism.ezasse.resource.EzasseResourceData;
 import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
+import cn.com.pism.ezasse.model.ExecChecker;
 import cn.com.pism.ezasse.resource.EzasseResource;
 import cn.com.pism.ezasse.resource.factory.EzasseResourceLoaderFactory;
 import cn.com.pism.ezasse.resource.factory.EzasseResourceParserFactory;
@@ -23,16 +23,14 @@ public abstract class AbstractEzasse {
 
     protected AbstractEzasse(Class<? extends EzasseResource> resourceClass) {
         this.resourceClass = resourceClass;
+        //注册校验器
+        EzasseContextHolder.getContext().registerChecker("EXEC", new ExecChecker());
     }
 
     public void execute() {
         //加载并解析资源
         loadAndParse();
 
-        //对资源进行校验
-        check(EzasseContextHolder.getContext().getEzassea(this.resourceClass));
-
-        //执行动作
         doExecute();
     }
 
@@ -62,7 +60,7 @@ public abstract class AbstractEzasse {
         EzasseResourceParserFactory resourceParserFactory = context.getResourceParserFactory();
 
         //将解析出来的数据放入上下文
-        context.putEzassea(this.resourceClass, resourceParserFactory.getResourceParser(ezasseResource).parse());
+        context.putEzasseResource(this.resourceClass, resourceParserFactory.getResourceParser(ezasseResource).parse());
 
     }
 
@@ -70,9 +68,6 @@ public abstract class AbstractEzasse {
     protected void preProcess() {
         //default do nothing
     }
-
-
-    protected abstract void check(EzasseResourceData ezasseResourceData);
 
     protected abstract void doExecute();
 

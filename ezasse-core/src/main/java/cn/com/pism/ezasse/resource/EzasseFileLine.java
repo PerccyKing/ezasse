@@ -3,6 +3,7 @@ package cn.com.pism.ezasse.resource;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -51,6 +52,18 @@ public class EzasseFileLine {
      */
     private String checkContent;
 
+    /**
+     * 校验节点
+     */
+    @Setter
+    private String checkNode;
+
+    /**
+     * 执行节点
+     */
+    @Setter
+    private String executeNode;
+
     public EzasseFileLine(String line) {
         this.line = line;
 
@@ -67,16 +80,32 @@ public class EzasseFileLine {
                 this.delimiterEnd = line.endsWith(config.getDelimiterEnd());
             }
             if (!CollectionUtils.isEmpty(checkerKeys)) {
-                Matcher matcher = Pattern.compile(String.format(CHECK_LINE_PATTERN, config.getLineComment(), String.join("|", checkerKeys))).matcher(line);
-                if (matcher.matches()) {
-                    this.checkLine = true;
-                    this.checkKey = matcher.group(1);
-                    this.checkContent = matcher.group(2);
-                }
+                checkLineParse(line, config, checkerKeys);
             }
         }
 
 
+    }
+
+    private void checkLineParse(String line, EzasseConfig config, List<String> checkerKeys) {
+        Matcher matcher = Pattern.compile(String.format(CHECK_LINE_PATTERN, config.getLineComment(), String.join("|", checkerKeys))).matcher(line);
+        boolean matches = matcher.matches();
+        if (matches) {
+            this.checkLine = true;
+            this.checkKey = matcher.group(1);
+            String group = matcher.group(2);
+            if (StringUtils.isNotBlank(group)) {
+                String[] nodes = group.split("\\.");
+                if (nodes.length > 1) {
+                    this.checkNode = nodes[1];
+                }
+                if (nodes.length > 2) {
+                    this.executeNode = nodes[2];
+                }
+
+            }
+            this.checkContent = matcher.group(3);
+        }
     }
 
 }
