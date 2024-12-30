@@ -3,9 +3,12 @@ package cn.com.pism.ezasse;
 import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.model.ExecChecker;
+import cn.com.pism.ezasse.model.MysqlEzasseExecutor;
 import cn.com.pism.ezasse.resource.EzasseResource;
 import cn.com.pism.ezasse.resource.factory.EzasseResourceLoaderFactory;
 import cn.com.pism.ezasse.resource.factory.EzasseResourceParserFactory;
+
+import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.MYSQL;
 
 /**
  * 加载文件
@@ -25,6 +28,8 @@ public abstract class AbstractEzasse {
         this.resourceClass = resourceClass;
         //注册校验器
         EzasseContextHolder.getContext().registerChecker("EXEC", new ExecChecker());
+
+        EzasseContextHolder.getContext().registerExecutor(MYSQL, MysqlEzasseExecutor.class);
     }
 
     public void execute() {

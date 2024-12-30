@@ -54,8 +54,7 @@ public class FileEzasse extends AbstractEzasse {
                     // 判断校验结果
                     if (check) {
                         // 如果校验通过，获取执行节点使用的数据源
-                        EzasseDataSource executeDataSource = context.getDataSource(checkLineContent.getCheckLine().getExecuteNode());
-                        EzasseExecutor executor = context.getExecutor(executeDataSource);
+                        EzasseExecutor executor = context.getExecutor(checkLineContent.getCheckLine().getExecuteNode());
                         executor.execute(checkLineContent.getExecuteContent());
                     }
                 }));
