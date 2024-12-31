@@ -134,16 +134,72 @@ public interface EzasseContext {
      */
     EzasseConfig getConfig();
 
+    /**
+     * <p>
+     * 获取资源加载器工厂
+     * </p>
+     * by perccyking
+     *
+     * @return {@link EzasseResourceLoaderFactory} 资源加载器工厂
+     * @since 25-01-01 00:38
+     */
     EzasseResourceLoaderFactory getResourceLoaderFactory();
 
+    /**
+     * <p>
+     * 注册一个资源加载器工厂
+     * </p>
+     * by perccyking
+     *
+     * @param loaderFactory : 资源加载器工厂
+     * @since 25-01-01 00:39
+     */
     void registerEzasseResourceLoaderFactory(EzasseResourceLoaderFactory loaderFactory);
 
+    /**
+     * <p>
+     * 获取资源解析器工厂
+     * </p>
+     * by perccyking
+     *
+     * @return {@link EzasseResourceParserFactory} 资源解析器工厂
+     * @since 25-01-01 00:39
+     */
     EzasseResourceParserFactory getResourceParserFactory();
 
+    /**
+     * <p>
+     * 注册资源解析器工厂
+     * </p>
+     * by perccyking
+     *
+     * @param parserFactory : 资源解析器工厂
+     * @since 25-01-01 00:39
+     */
     void registerEzasseResourceParserFactory(EzasseResourceParserFactory parserFactory);
 
+    /**
+     * <p>
+     * 缓存资源解析后的数据
+     * </p>
+     * by perccyking
+     *
+     * @param resourceClass      : 资源类型
+     * @param ezasseResourceData : 解析后的资源数据
+     * @since 25-01-01 00:40
+     */
     void putEzasseResource(Class<? extends EzasseResource> resourceClass, EzasseResourceData ezasseResourceData);
 
+    /**
+     * <p>
+     * 获取资源解析器解析后的数据
+     * </p>
+     * by perccyking
+     *
+     * @param resourceClass : 资源类型
+     * @return {@link EzasseResourceData} 解析后的资源数据
+     * @since 25-01-01 00:41
+     */
     EzasseResourceData getEzasseResource(Class<? extends EzasseResource> resourceClass);
 
 }

@@ -36,6 +36,22 @@ public class DefaultEzasseContext implements EzasseContext {
     private EzasseConfig config;
 
     /**
+     * 数据源map [id,数据源]
+     */
+    private final Map<String, EzasseDataSource> dataSourceMap = new ConcurrentHashMap<>(16);
+
+    /**
+     * 校验器map [id,校验器]
+     */
+    private final Map<String, EzasseChecker> checkerMap = new ConcurrentHashMap<>(16);
+
+    /**
+     * 执行器map [id,执行器]
+     */
+    private final Map<String, EzasseExecutor> executorMap = new ConcurrentHashMap<>(16);
+
+
+    /**
      * 资源 源数据对应资源实体
      */
     private final Map<Class<? extends EzasseResource>, EzasseResourceData> ezasseResourceDataMap = new ConcurrentHashMap<>(16);
@@ -49,11 +65,6 @@ public class DefaultEzasseContext implements EzasseContext {
         // 初始化默认资源解析工厂
         this.parserFactory = new DefaultEzasseResourceParserFactory();
     }
-
-    /**
-     * 数据源map [id,数据源]
-     */
-    private final Map<String, EzasseDataSource> dataSourceMap = new ConcurrentHashMap<>(16);
 
     /**
      * <p>
@@ -84,8 +95,6 @@ public class DefaultEzasseContext implements EzasseContext {
         dataSourceMap.put(dataSource.getId(), dataSource);
     }
 
-    private final Map<String, EzasseChecker> checkerMap = new ConcurrentHashMap<>(16);
-
     @Override
     public EzasseChecker getChecker(String checkerId) {
         return checkerMap.get(checkerId);
@@ -100,8 +109,6 @@ public class DefaultEzasseContext implements EzasseContext {
     public List<String> getCheckerKeys() {
         return new ArrayList<>(checkerMap.keySet());
     }
-
-    private final Map<String, EzasseExecutor> executorMap = new ConcurrentHashMap<>(16);
 
     /**
      * 数据源类型，对应的执行器类型
