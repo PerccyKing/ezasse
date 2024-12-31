@@ -2,7 +2,9 @@ package cn.com.pism.ezasse.model;
 
 import cn.com.pism.ezasse.action.EzasseExecutorAction;
 import cn.com.pism.ezasse.action.EzasseExecutorActionParam;
+import cn.com.pism.ezasse.context.EzasseContextHolder;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -18,6 +20,29 @@ public abstract class EzasseExecutor {
 
     protected EzasseExecutor(EzasseDataSource ezasseDataSource) {
         this.ezasseDataSource = ezasseDataSource;
+
+        preProcess(ezasseDataSource);
+
+        // 获取注册的执行器
+        List<EzasseExecutorAction<? extends EzasseExecutorActionParam, ?>> executorActions
+                = EzasseContextHolder.getContext().getExecutorAction(this.getClass());
+        executorActions.forEach(this::registerAction);
+    }
+
+    /**
+     * <p>
+     * 执行器实例化的前置处理
+     * </p>
+     * <p>
+     * 执行器可以在这里预先注册默认的执行动作
+     * </p>
+     * by perccyking
+     *
+     * @param dataSource : 数据源
+     * @since 25-01-01 01:24
+     */
+    protected void preProcess(EzasseDataSource dataSource) {
+        // default do nothing
     }
 
     @SuppressWarnings("unchecked")
@@ -26,11 +51,7 @@ public abstract class EzasseExecutor {
         return (R) ezasseExecutorAction.doAction(param);
     }
 
-
-    public void execute(Object content) {
-        execute("", null);
-    }
-
+    @SuppressWarnings("all")
     public EzasseExecutorAction<? extends EzasseExecutorActionParam, ?> getEzasseExecutorAction(String action) {
         return ezasseExecutorActionMap.get(action);
     }

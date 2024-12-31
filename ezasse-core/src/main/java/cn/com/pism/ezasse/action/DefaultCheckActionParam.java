@@ -7,7 +7,7 @@ import lombok.Data;
  * @since 24-12-29 17:06
  */
 @Data
-public class DbCheckActionParam implements EzasseExecutorActionParam{
+public class DefaultCheckActionParam implements EzasseExecutorActionParam {
 
     private String checkContent;
 }

@@ -9,17 +9,17 @@ import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.DEFAULT
  * @author PerccyKing
  * @since 24-12-29 17:05
  */
-public class DbCheckExecutorAction implements EzasseExecutorAction<DbCheckActionParam, Boolean> {
+public class DefaultCheckExecutorAction implements EzasseExecutorAction<DefaultCheckActionParam, Boolean> {
 
 
     private final JdbcTemplate jdbcTemplate;
 
-    public DbCheckExecutorAction(JdbcTemplate jdbcTemplate) {
+    public DefaultCheckExecutorAction(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public Boolean doAction(DbCheckActionParam actionParam) {
+    public Boolean doAction(DefaultCheckActionParam actionParam) {
         Integer res;
         try {
             res = jdbcTemplate.queryForObject(actionParam.getCheckContent(), Integer.class);

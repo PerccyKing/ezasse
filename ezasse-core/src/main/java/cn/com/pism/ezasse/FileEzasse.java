@@ -10,6 +10,8 @@ import cn.com.pism.ezasse.resource.EzasseFileResource;
 import cn.com.pism.ezasse.resource.EzasseFileResourceData;
 import cn.com.pism.ezasse.resource.EzasseFileResourceParser;
 
+import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.DO_EXECUTE;
+
 /**
  * @author PerccyKing
  * @since 24-10-27 00:46
@@ -55,7 +57,7 @@ public class FileEzasse extends AbstractEzasse {
                     if (check) {
                         // 如果校验通过，获取执行节点使用的数据源
                         EzasseExecutor executor = context.getExecutor(checkLineContent.getCheckLine().getExecuteNode());
-                        executor.execute(checkLineContent.getExecuteContent());
+//                        executor.execute(DO_EXECUTE,checkLineContent.getExecuteContent());
                     }
                 }));
     }

@@ -1,5 +1,7 @@
 package cn.com.pism.ezasse.model;
 
+import cn.com.pism.ezasse.action.EzasseExecutorAction;
+import cn.com.pism.ezasse.action.EzasseExecutorActionParam;
 import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.exception.EzasseException;
 import cn.com.pism.ezasse.resource.EzasseResource;
@@ -8,8 +10,10 @@ import cn.com.pism.ezasse.resource.factory.EzasseResourceLoaderFactory;
 import cn.com.pism.ezasse.resource.factory.EzasseResourceParserFactory;
 import cn.com.pism.ezasse.resource.factory.impl.DefaultEzasseResourceLoaderFactory;
 import cn.com.pism.ezasse.resource.factory.impl.DefaultEzasseResourceParserFactory;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -55,6 +59,11 @@ public class DefaultEzasseContext implements EzasseContext {
      * 资源 源数据对应资源实体
      */
     private final Map<Class<? extends EzasseResource>, EzasseResourceData> ezasseResourceDataMap = new ConcurrentHashMap<>(16);
+
+    /**
+     * 执行器对应的执行动作map
+     */
+    private final Map<Class<? extends EzasseExecutor>, List<EzasseExecutorAction<? extends EzasseExecutorActionParam, ?>>> executorActionMap = new ConcurrentHashMap<>(16);
 
     /**
      * 默认构造器
@@ -187,12 +196,48 @@ public class DefaultEzasseContext implements EzasseContext {
     }
 
     @Override
-    public void putEzasseResource(Class<? extends EzasseResource> resourceClass, EzasseResourceData ezasseResourceData) {
+    public void cacheEzasseResource(Class<? extends EzasseResource> resourceClass, EzasseResourceData ezasseResourceData) {
         ezasseResourceDataMap.put(resourceClass, ezasseResourceData);
     }
 
     @Override
     public EzasseResourceData getEzasseResource(Class<? extends EzasseResource> resourceClass) {
         return ezasseResourceDataMap.get(resourceClass);
+    }
+
+    /**
+     * <p>
+     * 向执行器注册动作
+     * </p>
+     * by perccyking
+     *
+     * @param executorType   : 执行器类型
+     * @param executorAction : 动作
+     * @since 25-01-01 01:08
+     */
+    @Override
+    public void registerExecutorAction(Class<? extends EzasseExecutor> executorType, EzasseExecutorAction<? extends EzasseExecutorActionParam, ?> executorAction) {
+        List<EzasseExecutorAction<? extends EzasseExecutorActionParam, ?>> ezasseExecutorActions =
+                executorActionMap.computeIfAbsent(executorType, k -> new ArrayList<>());
+        ezasseExecutorActions.add(executorAction);
+    }
+
+    /**
+     * <p>
+     * 获取已注册的执行器动作
+     * </p>
+     * by perccyking
+     *
+     * @param executorType : 执行器类型
+     * @return 动作列表
+     * @since 25-01-01 01:09
+     */
+    @Override
+    public List<EzasseExecutorAction<? extends EzasseExecutorActionParam, ?>> getExecutorAction(Class<? extends EzasseExecutor> executorType) {
+        List<EzasseExecutorAction<? extends EzasseExecutorActionParam, ?>> ezasseExecutorActions = executorActionMap.get(executorType);
+        if (CollectionUtils.isEmpty(ezasseExecutorActions)) {
+            return Collections.emptyList();
+        }
+        return ezasseExecutorActions;
     }
 }

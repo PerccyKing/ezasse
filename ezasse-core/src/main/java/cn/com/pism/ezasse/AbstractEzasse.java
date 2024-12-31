@@ -65,7 +65,7 @@ public abstract class AbstractEzasse {
         EzasseResourceParserFactory resourceParserFactory = context.getResourceParserFactory();
 
         //将解析出来的数据放入上下文
-        context.putEzasseResource(this.resourceClass, resourceParserFactory.getResourceParser(ezasseResource).parse());
+        context.cacheEzasseResource(this.resourceClass, resourceParserFactory.getResourceParser(ezasseResource).parse());
 
     }
 

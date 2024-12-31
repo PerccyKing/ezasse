@@ -1,7 +1,7 @@
 package cn.com.pism.ezasse.model;
 
 
-import cn.com.pism.ezasse.action.DbCheckActionParam;
+import cn.com.pism.ezasse.action.DefaultCheckActionParam;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
 
 import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.DEFAULT_CHECK;
@@ -20,8 +20,8 @@ public class ExecChecker implements EzasseChecker {
 
         // 通过数据源获取到执行器，具体实现的JDBC实现执行器
         // 每个JDBC执行器都需要有默认的几个action
-        DbCheckActionParam dbCheckActionParam = new DbCheckActionParam();
-        dbCheckActionParam.setCheckContent(checkContent);
-        return Boolean.TRUE.equals(executor.execute(DEFAULT_CHECK, dbCheckActionParam));
+        DefaultCheckActionParam defaultCheckActionParam = new DefaultCheckActionParam();
+        defaultCheckActionParam.setCheckContent(checkContent);
+        return Boolean.TRUE.equals(executor.execute(DEFAULT_CHECK, defaultCheckActionParam));
     }
 }
