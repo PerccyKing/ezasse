@@ -1,7 +1,7 @@
 package cn.com.pism.ezasse.context;
 
 import cn.com.pism.ezasse.action.EzasseExecutorAction;
-import cn.com.pism.ezasse.action.EzasseExecutorActionParam;
+import cn.com.pism.ezasse.action.ActionParam;
 import cn.com.pism.ezasse.model.EzasseChecker;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseDataSource;
@@ -214,7 +214,7 @@ public interface EzasseContext {
      * @param executorAction : 动作
      * @since 25-01-01 01:08
      */
-    void registerExecutorAction(Class<? extends EzasseExecutor> executorType, EzasseExecutorAction<? extends EzasseExecutorActionParam, ?> executorAction);
+    void registerExecutorAction(Class<? extends EzasseExecutor> executorType, EzasseExecutorAction<? extends ActionParam, ?> executorAction);
 
     /**
      * <p>
@@ -226,5 +226,6 @@ public interface EzasseContext {
      * @return 动作列表
      * @since 25-01-01 01:09
      */
-    List<EzasseExecutorAction<? extends EzasseExecutorActionParam, ?>> getExecutorAction(Class<? extends EzasseExecutor> executorType);
+    @SuppressWarnings("all")
+    List<EzasseExecutorAction<? extends ActionParam, ?>> getExecutorAction(Class<? extends EzasseExecutor> executorType);
 }

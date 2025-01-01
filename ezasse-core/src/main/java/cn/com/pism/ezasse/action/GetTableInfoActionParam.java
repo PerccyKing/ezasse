@@ -7,7 +7,7 @@ import lombok.Data;
  * @since 24-12-29 15:45
  */
 @Data
-public class EzasseExecutorGetTableInfoActionParam implements EzasseExecutorActionParam {
+public class GetTableInfoActionParam implements ActionParam {
 
     /**
      * 表名

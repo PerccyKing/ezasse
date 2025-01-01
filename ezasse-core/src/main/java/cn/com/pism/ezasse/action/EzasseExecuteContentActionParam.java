@@ -7,7 +7,7 @@ import lombok.Data;
  * @since 24-12-29 16:47
  */
 @Data
-public class EzasseExecuteContentActionParam implements EzasseExecutorActionParam{
+public class EzasseExecuteContentActionParam implements ActionParam {
 
     private String content;
 }

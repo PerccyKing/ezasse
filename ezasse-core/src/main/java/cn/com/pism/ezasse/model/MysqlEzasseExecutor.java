@@ -6,6 +6,7 @@ import cn.com.pism.ezasse.action.mysql.MysqlGetTableInfoEzasseExecutorAction;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
+ * 执行器的mysql实现
  * @author PerccyKing
  * @since 24-12-14 14:28
  */

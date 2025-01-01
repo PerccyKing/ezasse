@@ -27,6 +27,7 @@ public class MysqlExecuteContentEzasseExecutorAction implements EzasseExecutorAc
     }
 
     @Override
+    @SuppressWarnings("all")
     public Object doAction(EzasseExecuteContentActionParam actionParam) {
         try {
             ByteArrayResource resource = new ByteArrayResource(actionParam.getContent().getBytes());

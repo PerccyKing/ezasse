@@ -1,7 +1,7 @@
 package cn.com.pism.ezasse.model;
 
+import cn.com.pism.ezasse.action.ActionParam;
 import cn.com.pism.ezasse.action.EzasseExecutorAction;
-import cn.com.pism.ezasse.action.EzasseExecutorActionParam;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
 
 import java.util.List;
@@ -9,22 +9,30 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 执行器
+ *
  * @author PerccyKing
  * @since 24-12-14 12:33
  */
 public abstract class EzasseExecutor {
 
+    /**
+     * 执行器依赖的数据源
+     */
     protected EzasseDataSource ezasseDataSource;
 
-    protected Map<String, EzasseExecutorAction<? extends EzasseExecutorActionParam, ?>> ezasseExecutorActionMap = new ConcurrentHashMap<>(16);
+    /**
+     * 执行器动作库
+     */
+    protected Map<String, EzasseExecutorAction<? extends ActionParam, ?>> ezasseExecutorActionMap = new ConcurrentHashMap<>(16);
 
     protected EzasseExecutor(EzasseDataSource ezasseDataSource) {
         this.ezasseDataSource = ezasseDataSource;
 
         preProcess(ezasseDataSource);
 
-        // 获取注册的执行器
-        List<EzasseExecutorAction<? extends EzasseExecutorActionParam, ?>> executorActions
+        // 获取当前执行器的动作
+        List<EzasseExecutorAction<? extends ActionParam, ?>> executorActions
                 = EzasseContextHolder.getContext().getExecutorAction(this.getClass());
         executorActions.forEach(this::registerAction);
     }
@@ -46,21 +54,21 @@ public abstract class EzasseExecutor {
     }
 
     @SuppressWarnings("unchecked")
-    public <R, P extends EzasseExecutorActionParam> R execute(String action, P param) {
+    public <R, P extends ActionParam> R execute(String action, P param) {
         EzasseExecutorAction<P, ?> ezasseExecutorAction = (EzasseExecutorAction<P, ?>) getEzasseExecutorAction(action);
         return (R) ezasseExecutorAction.doAction(param);
     }
 
     @SuppressWarnings("all")
-    public EzasseExecutorAction<? extends EzasseExecutorActionParam, ?> getEzasseExecutorAction(String action) {
+    public EzasseExecutorAction<? extends ActionParam, ?> getEzasseExecutorAction(String action) {
         return ezasseExecutorActionMap.get(action);
     }
 
-    public void registerAction(EzasseExecutorAction<? extends EzasseExecutorActionParam, ?> ezasseExecutorAction) {
+    public void registerAction(EzasseExecutorAction<? extends ActionParam, ?> ezasseExecutorAction) {
         registerAction(ezasseExecutorAction.getId(), ezasseExecutorAction);
     }
 
-    public void registerAction(String action, EzasseExecutorAction<? extends EzasseExecutorActionParam, ?> ezasseExecutorAction) {
+    public void registerAction(String action, EzasseExecutorAction<? extends ActionParam, ?> ezasseExecutorAction) {
         ezasseExecutorActionMap.put(action, ezasseExecutorAction);
     }
 

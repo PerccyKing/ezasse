@@ -1,7 +1,7 @@
 package cn.com.pism.ezasse.model;
 
 import cn.com.pism.ezasse.action.EzasseExecutorAction;
-import cn.com.pism.ezasse.action.EzasseExecutorActionParam;
+import cn.com.pism.ezasse.action.ActionParam;
 import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.exception.EzasseException;
 import cn.com.pism.ezasse.resource.EzasseResource;
@@ -63,7 +63,7 @@ public class DefaultEzasseContext implements EzasseContext {
     /**
      * 执行器对应的执行动作map
      */
-    private final Map<Class<? extends EzasseExecutor>, List<EzasseExecutorAction<? extends EzasseExecutorActionParam, ?>>> executorActionMap = new ConcurrentHashMap<>(16);
+    private final Map<Class<? extends EzasseExecutor>, List<EzasseExecutorAction<? extends ActionParam, ?>>> executorActionMap = new ConcurrentHashMap<>(16);
 
     /**
      * 默认构造器
@@ -216,8 +216,8 @@ public class DefaultEzasseContext implements EzasseContext {
      * @since 25-01-01 01:08
      */
     @Override
-    public void registerExecutorAction(Class<? extends EzasseExecutor> executorType, EzasseExecutorAction<? extends EzasseExecutorActionParam, ?> executorAction) {
-        List<EzasseExecutorAction<? extends EzasseExecutorActionParam, ?>> ezasseExecutorActions =
+    public void registerExecutorAction(Class<? extends EzasseExecutor> executorType, EzasseExecutorAction<? extends ActionParam, ?> executorAction) {
+        List<EzasseExecutorAction<? extends ActionParam, ?>> ezasseExecutorActions =
                 executorActionMap.computeIfAbsent(executorType, k -> new ArrayList<>());
         ezasseExecutorActions.add(executorAction);
     }
@@ -233,8 +233,8 @@ public class DefaultEzasseContext implements EzasseContext {
      * @since 25-01-01 01:09
      */
     @Override
-    public List<EzasseExecutorAction<? extends EzasseExecutorActionParam, ?>> getExecutorAction(Class<? extends EzasseExecutor> executorType) {
-        List<EzasseExecutorAction<? extends EzasseExecutorActionParam, ?>> ezasseExecutorActions = executorActionMap.get(executorType);
+    public List<EzasseExecutorAction<? extends ActionParam, ?>> getExecutorAction(Class<? extends EzasseExecutor> executorType) {
+        List<EzasseExecutorAction<? extends ActionParam, ?>> ezasseExecutorActions = executorActionMap.get(executorType);
         if (CollectionUtils.isEmpty(ezasseExecutorActions)) {
             return Collections.emptyList();
         }
