@@ -10,8 +10,6 @@ import cn.com.pism.ezasse.resource.EzasseFileResource;
 import cn.com.pism.ezasse.resource.EzasseFileResourceData;
 import cn.com.pism.ezasse.resource.EzasseFileResourceParser;
 
-import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.DO_EXECUTE;
-
 /**
  * @author PerccyKing
  * @since 24-10-27 00:46
@@ -27,12 +25,12 @@ public class FileEzasse extends AbstractEzasse {
 
         //注册资源加载器
         context
-                .getResourceLoaderFactory()
+                .resourceLoaderManager()
                 .registerResourceLoader(EzasseFileResource.class, new EzasseFileResourceLoader());
 
         //注册资源解析器
         context
-                .getResourceParserFactory()
+                .resourceParserManger()
                 .registerResourceParser(EzasseFileResource.class, EzasseFileResourceParser.class);
     }
 
@@ -43,20 +41,20 @@ public class FileEzasse extends AbstractEzasse {
         EzasseContext context = EzasseContextHolder.getContext();
 
         // 解析到的数据
-        EzasseFileResourceData ezasseFileResourceData = (EzasseFileResourceData) context.getEzasseResource(EzasseFileResource.class);
+        EzasseFileResourceData ezasseFileResourceData = (EzasseFileResourceData) context.resourceManger().getEzasseResource(EzasseFileResource.class);
         ezasseFileResourceData.getFileDataList().forEach(resourceData ->
                 resourceData.getCheckLineContents().forEach(checkLineContent -> {
                     String checkNode = checkLineContent.getCheckLine().getCheckNode();
                     // 获取校验节点使用的数据源
-                    EzasseDataSource dataSource = context.getDataSource(checkNode);
+                    EzasseDataSource dataSource = context.datasourceManager().getDataSource(checkNode);
                     // 通过校验行获取校验器
-                    EzasseChecker ezasseChecker = context.getChecker(checkLineContent.getCheckLine().getCheckKey());
+                    EzasseChecker ezasseChecker = context.checkerManager().getChecker(checkLineContent.getCheckLine().getCheckKey());
                     // 校验
                     boolean check = ezasseChecker.check(dataSource, checkLineContent.getCheckLine().getCheckContent());
                     // 判断校验结果
                     if (check) {
                         // 如果校验通过，获取执行节点使用的数据源
-                        EzasseExecutor executor = context.getExecutor(checkLineContent.getCheckLine().getExecuteNode());
+                        EzasseExecutor executor = context.executorManager().getExecutor(checkLineContent.getCheckLine().getExecuteNode());
 //                        executor.execute(DO_EXECUTE,checkLineContent.getExecuteContent());
                     }
                 }));

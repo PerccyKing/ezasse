@@ -1,7 +1,5 @@
 package cn.com.pism.ezasse.context;
 
-import cn.com.pism.ezasse.model.DefaultEzasseContext;
-
 import java.util.concurrent.atomic.AtomicReference;
 
 /**

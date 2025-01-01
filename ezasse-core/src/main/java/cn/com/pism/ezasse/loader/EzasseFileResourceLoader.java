@@ -27,7 +27,7 @@ public class EzasseFileResourceLoader implements EzasseResourceLoader<EzasseFile
     @Override
     public EzasseFileResource load() {
         //配置
-        EzasseConfig config = EzasseContextHolder.getContext().getConfig();
+        EzasseConfig config = EzasseContextHolder.getContext().configManger().getConfig();
 
         //脚本文件位置
         String folder = config.getFolder();
@@ -67,7 +67,7 @@ public class EzasseFileResourceLoader implements EzasseResourceLoader<EzasseFile
             }
 
             //如果分段能匹配到数据源，则认为当前分段为数据源
-            if (EzasseContextHolder.getContext().getDataSource(split) != null) {
+            if (EzasseContextHolder.getContext().datasourceManager().getDataSource(split) != null) {
                 ezasseFile.setNode(split);
             }
         });

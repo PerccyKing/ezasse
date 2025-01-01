@@ -69,10 +69,10 @@ public class EzasseFileLine {
 
         this.emptyLine = StringUtils.isBlank(line);
 
-        List<String> checkerKeys = EzasseContextHolder.getContext().getCheckerKeys();
+        List<String> checkerKeys = EzasseContextHolder.getContext().checkerManager().getCheckerKeys();
 
         if (!this.emptyLine) {
-            EzasseConfig config = EzasseContextHolder.getContext().getConfig();
+            EzasseConfig config = EzasseContextHolder.getContext().configManger().getConfig();
 
             //如果开起了限定符，则判断是否是限定符开始或结束行
             if (config.isDelimiter()) {

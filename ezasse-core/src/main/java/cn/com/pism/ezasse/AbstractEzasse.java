@@ -5,8 +5,8 @@ import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.model.ExecChecker;
 import cn.com.pism.ezasse.model.MysqlEzasseExecutor;
 import cn.com.pism.ezasse.resource.EzasseResource;
-import cn.com.pism.ezasse.resource.factory.EzasseResourceLoaderFactory;
-import cn.com.pism.ezasse.resource.factory.EzasseResourceParserFactory;
+import cn.com.pism.ezasse.manager.ResourceLoaderManager;
+import cn.com.pism.ezasse.manager.ResourceParserManager;
 
 import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.MYSQL;
 
@@ -26,10 +26,12 @@ public abstract class AbstractEzasse {
 
     protected AbstractEzasse(Class<? extends EzasseResource> resourceClass) {
         this.resourceClass = resourceClass;
-        //注册校验器
-        EzasseContextHolder.getContext().registerChecker("EXEC", new ExecChecker());
+        EzasseContext context = EzasseContextHolder.getContext();
 
-        EzasseContextHolder.getContext().registerExecutor(MYSQL, MysqlEzasseExecutor.class);
+        //注册校验器
+        context.checkerManager().registerChecker("EXEC", new ExecChecker());
+
+        context.executorManager().registerExecutor(MYSQL, MysqlEzasseExecutor.class);
     }
 
     public void execute() {
@@ -56,16 +58,16 @@ public abstract class AbstractEzasse {
 
 
         //获取资源加载器
-        EzasseResourceLoaderFactory resourceLoaderFactory = context.getResourceLoaderFactory();
+        ResourceLoaderManager resourceLoaderFactory = context.resourceLoaderManager();
 
         //加载资源
         EzasseResource ezasseResource = resourceLoaderFactory.getResourceLoader(this.resourceClass).load();
 
         //获取资源的解析器
-        EzasseResourceParserFactory resourceParserFactory = context.getResourceParserFactory();
+        ResourceParserManager resourceParserFactory = context.resourceParserManger();
 
         //将解析出来的数据放入上下文
-        context.cacheEzasseResource(this.resourceClass, resourceParserFactory.getResourceParser(ezasseResource).parse());
+        context.resourceManger().cacheEzasseResource(this.resourceClass, resourceParserFactory.getResourceParser(ezasseResource).parse());
 
     }
 

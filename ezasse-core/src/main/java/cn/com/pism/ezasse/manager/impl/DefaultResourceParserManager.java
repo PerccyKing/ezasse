@@ -1,9 +1,9 @@
-package cn.com.pism.ezasse.resource.factory.impl;
+package cn.com.pism.ezasse.manager.impl;
 
 import cn.com.pism.ezasse.exception.EzasseException;
 import cn.com.pism.ezasse.resource.EzasseResource;
 import cn.com.pism.ezasse.resource.EzasseResourceParser;
-import cn.com.pism.ezasse.resource.factory.EzasseResourceParserFactory;
+import cn.com.pism.ezasse.manager.ResourceParserManager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author PerccyKing
  * @since 24-10-27 01:04
  */
-public class DefaultEzasseResourceParserFactory implements EzasseResourceParserFactory {
+public class DefaultResourceParserManager implements ResourceParserManager {
 
     private final Map<Class<? extends EzasseResource>, Constructor<? extends EzasseResourceParser>> parserConstructorMap = new ConcurrentHashMap<>(256);
 

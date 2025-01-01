@@ -1,22 +1,17 @@
 package cn.com.pism.ezasse.context;
 
-import cn.com.pism.ezasse.action.EzasseExecutorAction;
-import cn.com.pism.ezasse.action.ActionParam;
-import cn.com.pism.ezasse.model.EzasseChecker;
-import cn.com.pism.ezasse.model.EzasseConfig;
-import cn.com.pism.ezasse.model.EzasseDataSource;
-import cn.com.pism.ezasse.model.EzasseExecutor;
-import cn.com.pism.ezasse.resource.EzasseResource;
-import cn.com.pism.ezasse.resource.EzasseResourceData;
-import cn.com.pism.ezasse.resource.factory.EzasseResourceLoaderFactory;
-import cn.com.pism.ezasse.resource.factory.EzasseResourceParserFactory;
-
-import java.util.List;
+import cn.com.pism.ezasse.manager.*;
 
 /**
  * ezasse 上下文
  * <ul>
  *     <li>数据源</li>
+ *     <li>校验器</li>
+ *     <li>执行器</li>
+ *     <li>配置</li>
+ *     <li>资源加载器</li>
+ *     <li>资源解析器</li>
+ *     <li></li>
  * </ul>
  *
  * @author PerccyKing
@@ -28,113 +23,97 @@ public interface EzasseContext {
 
     /**
      * <p>
-     * 根据数据源id获取数据源
+     * 数据源管理器
      * </p>
      * by perccyking
      *
-     * @param dataSourceId : 数据源id
-     * @return 数据源
-     * @since 24-10-21 22:35
+     * @return {@link DatasourceManager} 数据源管理器
+     * @since 25-01-01 11:33
      */
-    EzasseDataSource getDataSource(String dataSourceId);
+    DatasourceManager datasourceManager();
 
     /**
      * <p>
-     * 注册数据源
+     * 添加数据源管理器
      * </p>
      * by perccyking
      *
-     * @param dataSource : 数据源
-     * @since 24-10-21 22:35
+     * @param datasourceManager : 数据源管理器
+     * @since 25-01-01 11:41
      */
-    void registerDataSource(EzasseDataSource dataSource);
+    void datasourceManager(DatasourceManager datasourceManager);
 
     //====================>  校验器
 
     /**
      * <p>
-     * 通过校验器id获取校验器实例
+     * 获取校验器管理器
      * </p>
      * by perccyking
      *
-     * @param checkerId : 校验器id
-     * @return {@link EzasseChecker} 校验器
-     * @since 24-12-29 17:47
+     * @return {@link CheckerManager} 校验器管理器
+     * @since 25-01-01 12:36
      */
-    EzasseChecker getChecker(String checkerId);
+    CheckerManager checkerManager();
 
     /**
      * <p>
-     * 注册校验器
+     * 添加校验器管理器
      * </p>
      * by perccyking
      *
-     * @param checkerId : 校验器id
-     * @param checker   : 校验器
-     * @since 24-12-29 17:47
+     * @param checkManager :校验器管理器
+     * @since 25-01-01 12:36
      */
-    void registerChecker(String checkerId, EzasseChecker checker);
-
-    /**
-     * <p>
-     * 获取所有校验器的校验key
-     * </p>
-     * by perccyking
-     *
-     * @return 校验key
-     * @since 24-12-29 17:48
-     */
-    List<String> getCheckerKeys();
+    void checkerManager(CheckerManager checkManager);
 
     //====================>  执行器
 
     /**
      * <p>
-     * 根据数据源id获取执行器
+     * 获取执行器管理器
      * </p>
      * by perccyking
      *
-     * @param dataSourceId : 数据源id
-     * @return {@link EzasseExecutor} 执行器
-     * @since 24-12-29 17:52
+     * @return {@link ExecutorManager} 执行器管理器
+     * @since 25-01-01 12:55
      */
-    EzasseExecutor getExecutor(String dataSourceId);
+    ExecutorManager executorManager();
 
     /**
      * <p>
-     * 注册执行器
+     * 添加执行器管理器
      * </p>
      * by perccyking
      *
-     * @param dataSourceType : 数据源类型
-     * @param executorClass  : 执行器类型
-     * @since 24-12-29 17:52
+     * @param executorManager : 执行器管理器
+     * @since 25-01-01 12:56
      */
-    void registerExecutor(String dataSourceType, Class<? extends EzasseExecutor> executorClass);
+    void executorManager(ExecutorManager executorManager);
 
     //====================>  配置
 
     /**
      * <p>
-     * 设置配置
+     * 获取配置管理器
      * </p>
      * by perccyking
      *
-     * @param config : ezasse配置
-     * @since 24-10-22 00:10
+     * @return {@link ConfigManager} 配置管理器
+     * @since 25-01-01 13:04
      */
-    void setConfig(EzasseConfig config);
+    ConfigManager configManger();
 
     /**
      * <p>
-     * 获取ezasse配置
+     * 添加配置管理器
      * </p>
      * by perccyking
      *
-     * @return {@link EzasseConfig} ezasse配置
-     * @since 24-10-22 00:11
+     * @param configManager : 配置管理器
+     * @since 25-01-01 13:04
      */
-    EzasseConfig getConfig();
+    void configManager(ConfigManager configManager);
 
     /**
      * <p>
@@ -142,10 +121,10 @@ public interface EzasseContext {
      * </p>
      * by perccyking
      *
-     * @return {@link EzasseResourceLoaderFactory} 资源加载器工厂
+     * @return {@link ResourceLoaderManager} 资源加载器工厂
      * @since 25-01-01 00:38
      */
-    EzasseResourceLoaderFactory getResourceLoaderFactory();
+    ResourceLoaderManager resourceLoaderManager();
 
     /**
      * <p>
@@ -153,10 +132,10 @@ public interface EzasseContext {
      * </p>
      * by perccyking
      *
-     * @param loaderFactory : 资源加载器工厂
+     * @param resourceLoaderManager : 资源加载器工厂
      * @since 25-01-01 00:39
      */
-    void registerEzasseResourceLoaderFactory(EzasseResourceLoaderFactory loaderFactory);
+    void resourceLoaderManager(ResourceLoaderManager resourceLoaderManager);
 
     /**
      * <p>
@@ -164,10 +143,10 @@ public interface EzasseContext {
      * </p>
      * by perccyking
      *
-     * @return {@link EzasseResourceParserFactory} 资源解析器工厂
+     * @return {@link ResourceParserManager} 资源解析器工厂
      * @since 25-01-01 00:39
      */
-    EzasseResourceParserFactory getResourceParserFactory();
+    ResourceParserManager resourceParserManger();
 
     /**
      * <p>
@@ -175,57 +154,30 @@ public interface EzasseContext {
      * </p>
      * by perccyking
      *
-     * @param parserFactory : 资源解析器工厂
+     * @param resourceParserManager : 资源解析器工厂
      * @since 25-01-01 00:39
      */
-    void registerEzasseResourceParserFactory(EzasseResourceParserFactory parserFactory);
+    void resourceParserManger(ResourceParserManager resourceParserManager);
 
     /**
      * <p>
-     * 缓存资源解析后的数据
+     * 获取资源管理器
      * </p>
      * by perccyking
      *
-     * @param resourceClass      : 资源类型
-     * @param ezasseResourceData : 解析后的资源数据
-     * @since 25-01-01 00:40
+     * @return {@link ResourceManager} 资源管理器
+     * @since 25-01-01 13:36
      */
-    void cacheEzasseResource(Class<? extends EzasseResource> resourceClass, EzasseResourceData ezasseResourceData);
+    ResourceManager resourceManger();
 
     /**
      * <p>
-     * 获取资源解析器解析后的数据
+     * 添加资源管理器
      * </p>
      * by perccyking
      *
-     * @param resourceClass : 资源类型
-     * @return {@link EzasseResourceData} 解析后的资源数据
-     * @since 25-01-01 00:41
+     * @param resourceManger : 资源管理器
+     * @since 25-01-01 13:37
      */
-    EzasseResourceData getEzasseResource(Class<? extends EzasseResource> resourceClass);
-
-    /**
-     * <p>
-     * 向执行器注册动作
-     * </p>
-     * by perccyking
-     *
-     * @param executorType   : 执行器类型
-     * @param executorAction : 动作
-     * @since 25-01-01 01:08
-     */
-    void registerExecutorAction(Class<? extends EzasseExecutor> executorType, EzasseExecutorAction<? extends ActionParam, ?> executorAction);
-
-    /**
-     * <p>
-     * 获取已注册的执行器动作
-     * </p>
-     * by perccyking
-     *
-     * @param executorType : 执行器类型
-     * @return 动作列表
-     * @since 25-01-01 01:09
-     */
-    @SuppressWarnings("all")
-    List<EzasseExecutorAction<? extends ActionParam, ?>> getExecutorAction(Class<? extends EzasseExecutor> executorType);
+    void resourceManger(ResourceManager resourceManger);
 }

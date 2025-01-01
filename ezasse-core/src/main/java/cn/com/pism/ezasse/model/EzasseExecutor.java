@@ -33,7 +33,7 @@ public abstract class EzasseExecutor {
 
         // 获取当前执行器的动作
         List<EzasseExecutorAction<? extends ActionParam, ?>> executorActions
-                = EzasseContextHolder.getContext().getExecutorAction(this.getClass());
+                = EzasseContextHolder.getContext().executorManager().getExecutorAction(this.getClass());
         executorActions.forEach(this::registerAction);
     }
 

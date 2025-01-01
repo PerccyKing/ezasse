@@ -1,15 +1,15 @@
-package cn.com.pism.ezasse.resource.factory;
+package cn.com.pism.ezasse.manager;
 
 import cn.com.pism.ezasse.resource.EzasseResource;
 import cn.com.pism.ezasse.resource.EzasseResourceLoader;
 
 /**
- * 资源加载器工厂接口
+ * 资源加载器管理器
  *
  * @author PerccyKing
  * @since 24-10-24 22:36
  */
-public interface EzasseResourceLoaderFactory {
+public interface ResourceLoaderManager {
 
     /**
      * <p>

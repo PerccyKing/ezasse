@@ -16,7 +16,7 @@ public class ExecChecker implements EzasseChecker {
     @Override
     public boolean check(EzasseDataSource dataSource, String checkContent) {
         // 这里使用的是jdbc数据源，需要通过数据源获取执行器
-        EzasseExecutor executor = EzasseContextHolder.getContext().getExecutor(dataSource.getId());
+        EzasseExecutor executor = EzasseContextHolder.getContext().executorManager().getExecutor(dataSource.getId());
 
         // 通过数据源获取到执行器，具体实现的JDBC实现执行器
         // 每个JDBC执行器都需要有默认的几个action

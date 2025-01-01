@@ -1,8 +1,8 @@
-package cn.com.pism.ezasse.resource.factory.impl;
+package cn.com.pism.ezasse.manager.impl;
 
 import cn.com.pism.ezasse.resource.EzasseResource;
 import cn.com.pism.ezasse.resource.EzasseResourceLoader;
-import cn.com.pism.ezasse.resource.factory.EzasseResourceLoaderFactory;
+import cn.com.pism.ezasse.manager.ResourceLoaderManager;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author PerccyKing
  * @since 24-10-27 00:59
  */
-public class DefaultEzasseResourceLoaderFactory implements EzasseResourceLoaderFactory {
+public class DefaultResourceLoaderManager implements ResourceLoaderManager {
 
     private final Map<Class<? extends EzasseResource>, EzasseResourceLoader<? extends EzasseResource>> loaders = new ConcurrentHashMap<>(256);
 

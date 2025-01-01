@@ -62,7 +62,7 @@ public class EzasseFileResourceParser extends EzasseResourceParser {
 
     private EzasseFileResourceData groupParsed(List<EzasseFile> sqlFiles, EzasseFileResourceData resourceData) {
         //配置
-        EzasseConfig config = EzasseContextHolder.getContext().getConfig();
+        EzasseConfig config = EzasseContextHolder.getContext().configManger().getConfig();
         List<String> groupOrder = config.getGroupOrder();
 
         //如果指定了分组，按分组顺序解析文件
@@ -82,7 +82,7 @@ public class EzasseFileResourceParser extends EzasseResourceParser {
 
     private List<EzasseFile> filterSqlFiles(List<EzasseFile> sqlFiles) {
         //配置
-        EzasseConfig config = EzasseContextHolder.getContext().getConfig();
+        EzasseConfig config = EzasseContextHolder.getContext().configManger().getConfig();
 
         //过滤指定文件
         List<String> fileList = config.getFileList();
