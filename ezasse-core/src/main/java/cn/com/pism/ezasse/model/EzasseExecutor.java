@@ -1,6 +1,6 @@
 package cn.com.pism.ezasse.model;
 
-import cn.com.pism.ezasse.action.ActionParam;
+import cn.com.pism.ezasse.action.param.ActionParam;
 import cn.com.pism.ezasse.action.EzasseExecutorAction;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
 

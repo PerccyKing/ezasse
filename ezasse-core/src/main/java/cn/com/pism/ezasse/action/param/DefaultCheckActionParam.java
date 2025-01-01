@@ -1,4 +1,4 @@
-package cn.com.pism.ezasse.action;
+package cn.com.pism.ezasse.action.param;
 
 import lombok.Data;
 

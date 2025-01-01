@@ -1,4 +1,4 @@
-package cn.com.pism.ezasse.action;
+package cn.com.pism.ezasse.action.param;
 
 /**
  * 动作参数，所有的参数都需要实现这个接口

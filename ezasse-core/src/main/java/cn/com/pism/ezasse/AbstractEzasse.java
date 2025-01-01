@@ -58,16 +58,16 @@ public abstract class AbstractEzasse {
 
 
         //获取资源加载器
-        ResourceLoaderManager resourceLoaderFactory = context.resourceLoaderManager();
+        ResourceLoaderManager resourceLoaderManager = context.resourceLoaderManager();
 
         //加载资源
-        EzasseResource ezasseResource = resourceLoaderFactory.getResourceLoader(this.resourceClass).load();
+        EzasseResource ezasseResource = resourceLoaderManager.getResourceLoader(this.resourceClass).load();
 
         //获取资源的解析器
-        ResourceParserManager resourceParserFactory = context.resourceParserManger();
+        ResourceParserManager resourceParserManager = context.resourceParserManger();
 
         //将解析出来的数据放入上下文
-        context.resourceManger().cacheEzasseResource(this.resourceClass, resourceParserFactory.getResourceParser(ezasseResource).parse());
+        context.resourceManger().cacheEzasseResource(this.resourceClass, resourceParserManager.getResourceParser(ezasseResource).parse());
 
     }
 

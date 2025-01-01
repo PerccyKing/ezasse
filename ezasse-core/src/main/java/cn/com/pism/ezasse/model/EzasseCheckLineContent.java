@@ -37,12 +37,13 @@ public class EzasseCheckLineContent {
         this.content.add(content);
     }
 
-    public String getSourceContent() {
-        if (CollectionUtils.isEmpty(content)) {
+    public String getExecuteScript() {
+        List<EzasseFileLine> executeContent = getExecuteContent();
+        if (CollectionUtils.isEmpty(executeContent)) {
             return "";
         }
         StringBuilder sb = new StringBuilder();
-        for (EzasseFileLine ezasseFileLine : content) {
+        for (EzasseFileLine ezasseFileLine : executeContent) {
             sb.append(ezasseFileLine.getLine()).append("\n");
         }
         return sb.toString();

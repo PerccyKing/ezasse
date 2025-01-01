@@ -1,5 +1,6 @@
 package cn.com.pism.ezasse.action;
 
+import cn.com.pism.ezasse.action.param.DefaultCheckActionParam;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -19,6 +20,7 @@ public class DefaultCheckExecutorAction implements EzasseExecutorAction<DefaultC
     }
 
     @Override
+    @SuppressWarnings("all")
     public Boolean doAction(DefaultCheckActionParam actionParam) {
         Integer res;
         try {

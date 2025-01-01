@@ -1,7 +1,7 @@
 package cn.com.pism.ezasse.model;
 
 
-import cn.com.pism.ezasse.action.DefaultCheckActionParam;
+import cn.com.pism.ezasse.action.param.DefaultCheckActionParam;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
 
 import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.DEFAULT_CHECK;

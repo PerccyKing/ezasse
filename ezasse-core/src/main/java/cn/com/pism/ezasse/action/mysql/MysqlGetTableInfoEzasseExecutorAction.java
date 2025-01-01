@@ -1,7 +1,7 @@
 package cn.com.pism.ezasse.action.mysql;
 
 import cn.com.pism.ezasse.action.EzasseExecutorAction;
-import cn.com.pism.ezasse.action.GetTableInfoActionParam;
+import cn.com.pism.ezasse.action.param.GetTableInfoActionParam;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import org.springframework.jdbc.core.JdbcTemplate;
 
