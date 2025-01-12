@@ -117,44 +117,44 @@ public interface EzasseContext {
 
     /**
      * <p>
-     * 获取资源加载器工厂
+     * 获取资源加载器管理器
      * </p>
      * by perccyking
      *
-     * @return {@link ResourceLoaderManager} 资源加载器工厂
+     * @return {@link ResourceLoaderManager} 资源加载器管理器
      * @since 25-01-01 00:38
      */
     ResourceLoaderManager resourceLoaderManager();
 
     /**
      * <p>
-     * 注册一个资源加载器工厂
+     * 注册一个资源加载器管理器
      * </p>
      * by perccyking
      *
-     * @param resourceLoaderManager : 资源加载器工厂
+     * @param resourceLoaderManager : 资源加载器管理器
      * @since 25-01-01 00:39
      */
     void resourceLoaderManager(ResourceLoaderManager resourceLoaderManager);
 
     /**
      * <p>
-     * 获取资源解析器工厂
+     * 获取资源解析器管理器
      * </p>
      * by perccyking
      *
-     * @return {@link ResourceParserManager} 资源解析器工厂
+     * @return {@link ResourceParserManager} 资源解析器管理器
      * @since 25-01-01 00:39
      */
     ResourceParserManager resourceParserManger();
 
     /**
      * <p>
-     * 注册资源解析器工厂
+     * 注册资源解析器管理器
      * </p>
      * by perccyking
      *
-     * @param resourceParserManager : 资源解析器工厂
+     * @param resourceParserManager : 资源解析器管理器
      * @since 25-01-01 00:39
      */
     void resourceParserManger(ResourceParserManager resourceParserManager);
