@@ -7,4 +7,6 @@ package cn.com.pism.ezasse.model;
 public interface EzasseChecker {
 
     boolean check(EzasseDataSource dataSource, String checkContent);
+
+    String getId();
 }

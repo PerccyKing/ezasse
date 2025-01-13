@@ -44,6 +44,20 @@ public class DefaultCheckerManager implements CheckerManager {
      * </p>
      * by perccyking
      *
+     * @param checker : 校验器
+     * @since 25-01-13 22:32
+     */
+    @Override
+    public void registerChecker(EzasseChecker checker) {
+        checkerMap.put(checker.getId(), checker);
+    }
+
+    /**
+     * <p>
+     * 注册校验器
+     * </p>
+     * by perccyking
+     *
      * @param checkerId : 校验器id
      * @param checker   : 校验器
      * @since 24-12-29 17:47

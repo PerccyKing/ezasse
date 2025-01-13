@@ -2,11 +2,11 @@ package cn.com.pism.ezasse;
 
 import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
+import cn.com.pism.ezasse.manager.ResourceLoaderManager;
+import cn.com.pism.ezasse.manager.ResourceParserManager;
 import cn.com.pism.ezasse.model.ExecChecker;
 import cn.com.pism.ezasse.model.MysqlEzasseExecutor;
 import cn.com.pism.ezasse.resource.EzasseResource;
-import cn.com.pism.ezasse.manager.ResourceLoaderManager;
-import cn.com.pism.ezasse.manager.ResourceParserManager;
 
 import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.MYSQL;
 
@@ -29,7 +29,7 @@ public abstract class AbstractEzasse {
         EzasseContext context = EzasseContextHolder.getContext();
 
         //注册校验器
-        context.checkerManager().registerChecker("EXEC", new ExecChecker());
+        context.checkerManager().registerChecker(new ExecChecker());
 
         context.executorManager().registerExecutor(MYSQL, MysqlEzasseExecutor.class);
     }

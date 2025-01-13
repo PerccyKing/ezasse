@@ -30,6 +30,17 @@ public interface CheckerManager {
      * </p>
      * by perccyking
      *
+     * @param checker : 校验器
+     * @since 25-01-13 22:32
+     */
+    void registerChecker(EzasseChecker checker);
+
+    /**
+     * <p>
+     * 注册校验器
+     * </p>
+     * by perccyking
+     *
      * @param checkerId : 校验器id
      * @param checker   : 校验器
      * @since 24-12-29 17:47
