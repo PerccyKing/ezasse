@@ -2,7 +2,7 @@ package cn.com.pism.ezasse.manager;
 
 import cn.com.pism.ezasse.action.param.ActionParam;
 import cn.com.pism.ezasse.action.EzasseExecutorAction;
-import cn.com.pism.ezasse.model.EzasseExecutor;
+import cn.com.pism.ezasse.executor.EzasseExecutor;
 
 import java.util.List;
 

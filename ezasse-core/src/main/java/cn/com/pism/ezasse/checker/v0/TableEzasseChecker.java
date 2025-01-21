@@ -1,19 +1,19 @@
-package cn.com.pism.ezasse.checker;
+package cn.com.pism.ezasse.checker.v0;
 
-import cn.com.pism.ezasse.exception.EzasseException;
-import cn.com.pism.ezasse.executor.EzasseExecutor;
+import cn.com.pism.ezasse.executor.v0.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseConfig;
+import cn.com.pism.ezasse.model.EzasseTableInfo;
+import org.apache.commons.collections4.CollectionUtils;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @since 2022/04/06 下午 02:56
+ * @since 2022/04/09 下午 03:40
  */
-public class DefaultKeyWordEzasseChecker extends EzasseChecker {
-
-
+public class TableEzasseChecker extends EzasseChecker {
     /**
      * <p>
      * 判断代码块是否需要执行
@@ -29,11 +29,8 @@ public class DefaultKeyWordEzasseChecker extends EzasseChecker {
     @Override
     public boolean needToExecute(DataSource checkDataSource, String checkContent, EzasseExecutor executor) {
         return publicCheck(checkContent, executor, () -> {
-            Integer res = executor.queryForObject(checkContent, Integer.class);
-            if (res == null) {
-                throw new EzasseException();
-            }
-            return res == 0;
+            List<EzasseTableInfo> tableInfo = executor.getTableInfo(checkContent);
+            return CollectionUtils.isEmpty(tableInfo);
         });
     }
 
@@ -49,7 +46,6 @@ public class DefaultKeyWordEzasseChecker extends EzasseChecker {
      */
     @Override
     public String getId(EzasseConfig config) {
-        return config.getKeyWords().getExec();
+        return config.getKeyWords().getTable().getCreateTable();
     }
-
 }

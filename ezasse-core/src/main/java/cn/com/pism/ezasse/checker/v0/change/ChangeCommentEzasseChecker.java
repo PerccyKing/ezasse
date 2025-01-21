@@ -1,4 +1,4 @@
-package cn.com.pism.ezasse.checker.change;
+package cn.com.pism.ezasse.checker.v0.change;
 
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseTableInfo;

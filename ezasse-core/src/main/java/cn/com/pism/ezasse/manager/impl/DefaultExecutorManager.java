@@ -6,7 +6,7 @@ import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.exception.EzasseException;
 import cn.com.pism.ezasse.manager.ExecutorManager;
 import cn.com.pism.ezasse.model.EzasseDataSource;
-import cn.com.pism.ezasse.model.EzasseExecutor;
+import cn.com.pism.ezasse.executor.EzasseExecutor;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;

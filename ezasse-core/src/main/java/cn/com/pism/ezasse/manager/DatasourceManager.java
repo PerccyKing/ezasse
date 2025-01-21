@@ -34,4 +34,11 @@ public interface DatasourceManager {
      */
     void registerDataSource(EzasseDataSource dataSource);
 
+    /**
+     * 注册主数据源
+     *
+     * @param dataSource : 数据源
+     */
+    void registerMasterDataSource(EzasseDataSource dataSource);
+
 }

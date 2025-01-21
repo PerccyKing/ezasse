@@ -1,7 +1,7 @@
-package cn.com.pism.ezasse.checker.change;
+package cn.com.pism.ezasse.checker.v0.change;
 
-import cn.com.pism.ezasse.checker.EzasseChecker;
-import cn.com.pism.ezasse.executor.EzasseExecutor;
+import cn.com.pism.ezasse.checker.v0.EzasseChecker;
+import cn.com.pism.ezasse.executor.v0.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import org.apache.commons.collections4.CollectionUtils;
@@ -14,9 +14,9 @@ import static cn.com.pism.ezasse.constants.EzasseConstants.REGX_POINT;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @since 2022/04/09 下午 05:38
+ * @since 2022/04/09 下午 05:33
  */
-public class ChangeNameEzasseChecker extends EzasseChecker {
+public class ChangeAddEzasseChecker extends EzasseChecker {
     /**
      * <p>
      * 判断代码块是否需要执行
@@ -35,6 +35,7 @@ public class ChangeNameEzasseChecker extends EzasseChecker {
             String[] split = checkContent.split(REGX_POINT);
             //第一位为表名，第二位为字段名
             List<EzasseTableInfo> tableInfo = executor.getTableInfo(split[0], split[1]);
+            //如果集合为空，可以执行脚本
             return CollectionUtils.isEmpty(tableInfo);
         });
     }
@@ -51,6 +52,6 @@ public class ChangeNameEzasseChecker extends EzasseChecker {
      */
     @Override
     public String getId(EzasseConfig config) {
-        return config.getKeyWords().getField().getChangeName();
+        return config.getKeyWords().getField().getAdd();
     }
 }

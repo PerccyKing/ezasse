@@ -1,7 +1,8 @@
-package cn.com.pism.ezasse.checker.change;
+package cn.com.pism.ezasse.checker.v0.change;
 
-import cn.com.pism.ezasse.checker.EzasseChecker;
-import cn.com.pism.ezasse.executor.EzasseExecutor;
+import cn.com.pism.ezasse.checker.v0.EzasseChecker;
+import cn.com.pism.ezasse.executor.v0.EzasseExecutor;
+import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -13,9 +14,9 @@ import static cn.com.pism.ezasse.constants.EzasseConstants.REGX_POINT;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @since 2022/04/10 上午 11:30
+ * @since 2022/04/09 下午 05:38
  */
-public abstract class ChangeEzasseChecker extends EzasseChecker {
+public class ChangeNameEzasseChecker extends EzasseChecker {
     /**
      * <p>
      * 判断代码块是否需要执行
@@ -32,24 +33,24 @@ public abstract class ChangeEzasseChecker extends EzasseChecker {
     public boolean needToExecute(DataSource checkDataSource, String checkContent, EzasseExecutor executor) {
         return publicCheck(checkContent, executor, () -> {
             String[] split = checkContent.split(REGX_POINT);
+            //第一位为表名，第二位为字段名
             List<EzasseTableInfo> tableInfo = executor.getTableInfo(split[0], split[1]);
-            if (CollectionUtils.isEmpty(tableInfo)) {
-                return false;
-            }
-            return aloneCheck(tableInfo, split);
+            return CollectionUtils.isEmpty(tableInfo);
         });
     }
 
     /**
      * <p>
-     * 由子类实现，单独判断某个字段
+     * 语法定义id
      * </p>
      *
-     * @param tableInfo : 表信息
-     * @param split     : 解析到的关键字
-     * @return {@link boolean}
+     * @param config : 配置
+     * @return {@link String}  全局唯一id，与关键字对其
      * @author PerccyKing
-     * @since 2022/04/10 上午 11:33
+     * @since 2022/04/06 下午 02:45
      */
-    public abstract boolean aloneCheck(List<EzasseTableInfo> tableInfo, String[] split);
+    @Override
+    public String getId(EzasseConfig config) {
+        return config.getKeyWords().getField().getChangeName();
+    }
 }

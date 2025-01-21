@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static cn.com.pism.ezasse.constants.EzasseConstants.CHECK_LINE_PATTERN;
+import static cn.com.pism.ezasse.constants.EzasseConstants.MASTER;
 
 /**
  * @author PerccyKing
@@ -105,6 +106,12 @@ public class EzasseFileLine {
 
             }
             this.checkContent = matcher.group(3);
+        }
+        if (StringUtils.isBlank(this.checkNode)) {
+            this.checkNode = MASTER;
+        }
+        if (StringUtils.isBlank(this.executeNode)) {
+            this.executeNode = MASTER;
         }
     }
 

@@ -45,4 +45,9 @@ public class EzasseConstants {
      * 校验行正则
      */
     public static final String CHECK_LINE_PATTERN = "^%s\\s*(%s)((?:\\.[a-zA-Z0-9_]+)*)\\((.*?)\\);?$";
+
+    /**
+     * master 数据源标记
+     */
+    public static final String MASTER = "MASTER";
 }

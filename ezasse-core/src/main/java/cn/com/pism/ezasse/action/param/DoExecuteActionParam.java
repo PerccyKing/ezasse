@@ -5,13 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * 执行内容参数
+ *
  * @author PerccyKing
  * @since 25-01-01 22:51
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DoExecuteParam implements ActionParam {
+public class DoExecuteActionParam implements ActionParam {
 
     /**
      * 执行内容

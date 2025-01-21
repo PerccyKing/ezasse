@@ -1,13 +1,20 @@
 package cn.com.pism.ezasse;
 
+import cn.com.pism.ezasse.checker.AddFieldChecker;
+import cn.com.pism.ezasse.checker.ChangeFieldCommentChecker;
+import cn.com.pism.ezasse.checker.ExecChecker;
+import cn.com.pism.ezasse.checker.TableChecker;
 import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
+import cn.com.pism.ezasse.executor.jdbc.MariaDbEzasseExecutor;
+import cn.com.pism.ezasse.executor.jdbc.MysqlEzasseExecutor;
+import cn.com.pism.ezasse.manager.CheckerManager;
+import cn.com.pism.ezasse.manager.ExecutorManager;
 import cn.com.pism.ezasse.manager.ResourceLoaderManager;
 import cn.com.pism.ezasse.manager.ResourceParserManager;
-import cn.com.pism.ezasse.model.ExecChecker;
-import cn.com.pism.ezasse.model.MysqlEzasseExecutor;
 import cn.com.pism.ezasse.resource.EzasseResource;
 
+import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.MARIADB;
 import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.MYSQL;
 
 /**
@@ -29,9 +36,30 @@ public abstract class AbstractEzasse {
         EzasseContext context = EzasseContextHolder.getContext();
 
         //注册校验器
-        context.checkerManager().registerChecker(new ExecChecker());
+        registerCheckers();
 
-        context.executorManager().registerExecutor(MYSQL, MysqlEzasseExecutor.class);
+        // 注册执行器
+        registerExecutors();
+    }
+
+    /**
+     * 注册校验器
+     */
+    private void registerCheckers() {
+        CheckerManager checkerManager = EzasseContextHolder.getContext().checkerManager();
+        checkerManager.registerChecker(new ExecChecker());
+        checkerManager.registerChecker(new TableChecker());
+        checkerManager.registerChecker(new AddFieldChecker());
+        checkerManager.registerChecker(new ChangeFieldCommentChecker());
+    }
+
+    /**
+     * 注册执行器
+     */
+    private void registerExecutors() {
+        ExecutorManager executorManager = EzasseContextHolder.getContext().executorManager();
+        executorManager.registerExecutor(MYSQL, MysqlEzasseExecutor.class);
+        executorManager.registerExecutor(MARIADB, MariaDbEzasseExecutor.class);
     }
 
     public void execute() {

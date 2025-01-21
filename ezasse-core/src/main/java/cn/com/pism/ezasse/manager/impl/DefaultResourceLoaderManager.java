@@ -1,13 +1,15 @@
 package cn.com.pism.ezasse.manager.impl;
 
 import cn.com.pism.ezasse.resource.EzasseResource;
-import cn.com.pism.ezasse.resource.EzasseResourceLoader;
+import cn.com.pism.ezasse.loader.EzasseResourceLoader;
 import cn.com.pism.ezasse.manager.ResourceLoaderManager;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 资源加载器管理器
+ *
  * @author PerccyKing
  * @since 24-10-27 00:59
  */

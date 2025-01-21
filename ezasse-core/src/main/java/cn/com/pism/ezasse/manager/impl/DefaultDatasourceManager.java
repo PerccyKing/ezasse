@@ -6,8 +6,11 @@ import cn.com.pism.ezasse.model.EzasseDataSource;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static cn.com.pism.ezasse.constants.EzasseConstants.MASTER;
+
 /**
  * 数据源管理器默认实现
+ *
  * @author PerccyKing
  * @since 25-01-01 11:31
  */
@@ -30,7 +33,7 @@ public class DefaultDatasourceManager implements DatasourceManager {
      */
     @Override
     public EzasseDataSource getDataSource(String dataSourceId) {
-        return dataSourceMap.get(dataSourceId);
+        return dataSourceMap.get(dataSourceId.toUpperCase());
     }
 
     /**
@@ -44,6 +47,19 @@ public class DefaultDatasourceManager implements DatasourceManager {
      */
     @Override
     public void registerDataSource(EzasseDataSource dataSource) {
-        dataSourceMap.put(dataSource.getId(), dataSource);
+        if (dataSourceMap.isEmpty() && !MASTER.equals(dataSource.getId())) {
+            registerMasterDataSource(dataSource);
+        }
+        dataSourceMap.put(dataSource.getId().toUpperCase(), dataSource);
+    }
+
+    /**
+     * 注册主数据源
+     *
+     * @param dataSource : 数据源
+     */
+    @Override
+    public void registerMasterDataSource(EzasseDataSource dataSource) {
+        dataSourceMap.put(MASTER, dataSource);
     }
 }

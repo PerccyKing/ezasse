@@ -1,6 +1,7 @@
 package cn.com.pism.ezasse.model;
 
-import cn.com.pism.ezasse.context.EzasseContext;
+import cn.com.pism.ezasse.executor.EzasseExecutor;
+import cn.com.pism.ezasse.manager.ExecutorManager;
 
 /**
  * ezasse 数据源
@@ -37,7 +38,7 @@ public interface EzasseDataSource {
      * 数据源类型
      * </p>
      * <p>
-     *     与 执行器{@link EzasseExecutor}进行绑定{@link EzasseContext#registerExecutor(String, Class)}
+     * 与 执行器{@link EzasseExecutor}进行绑定{@link ExecutorManager#registerExecutor(String, Class)}
      * </p>
      * by perccyking
      *

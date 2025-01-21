@@ -1,7 +1,7 @@
 package cn.com.pism.ezasse.action;
 
 import cn.com.pism.ezasse.action.param.ActionParam;
-import cn.com.pism.ezasse.model.EzasseExecutor;
+import cn.com.pism.ezasse.executor.EzasseExecutor;
 
 /**
  * 执行器动作

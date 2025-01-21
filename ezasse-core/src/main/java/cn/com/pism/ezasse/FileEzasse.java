@@ -1,13 +1,13 @@
 package cn.com.pism.ezasse;
 
-import cn.com.pism.ezasse.action.param.DoExecuteParam;
+import cn.com.pism.ezasse.action.param.DoExecuteActionParam;
 import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.loader.EzasseFileResourceLoader;
 import cn.com.pism.ezasse.model.EzasseCheckLineContent;
-import cn.com.pism.ezasse.model.EzasseChecker;
+import cn.com.pism.ezasse.checker.EzasseChecker;
 import cn.com.pism.ezasse.model.EzasseDataSource;
-import cn.com.pism.ezasse.model.EzasseExecutor;
+import cn.com.pism.ezasse.executor.EzasseExecutor;
 import cn.com.pism.ezasse.resource.EzasseFileResource;
 import cn.com.pism.ezasse.resource.EzasseFileResourceData;
 import cn.com.pism.ezasse.resource.EzasseFileResourceParser;
@@ -62,7 +62,7 @@ public class FileEzasse extends AbstractEzasse {
                                 .executorManager()
                                 .getExecutor(checkLineContent.getCheckLine().getExecuteNode());
 
-                        executor.execute(DO_EXECUTE, new DoExecuteParam(checkLineContent.getExecuteScript()));
+                        executor.execute(DO_EXECUTE, new DoExecuteActionParam(checkLineContent.getExecuteScript()));
                     }
                 });
     }
@@ -80,6 +80,10 @@ public class FileEzasse extends AbstractEzasse {
                 .getContext()
                 .checkerManager()
                 .getChecker(checkLineContent.getCheckLine().getCheckKey());
+
+        if (StringUtils.isBlank(checkLineContent.getCheckLine().getCheckContent())) {
+            return false;
+        }
 
         // 校验
         return ezasseChecker.check(dataSource, checkLineContent.getCheckLine().getCheckContent());

@@ -1,4 +1,4 @@
-package cn.com.pism.ezasse.checker.change;
+package cn.com.pism.ezasse.checker.v0.change;
 
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
@@ -9,9 +9,9 @@ import java.util.List;
 /**
  * @author PerccyKing
  * @version 0.0.1
- * @since 2022/04/10 上午 11:16
+ * @since 2022/04/09 下午 06:12
  */
-public class ChangeLengthEzasseChecker extends ChangeEzasseChecker {
+public class ChangeTypeEzasseChecker extends ChangeEzasseChecker {
     /**
      * <p>
      * 由子类实现，单独判断某个字段
@@ -25,8 +25,9 @@ public class ChangeLengthEzasseChecker extends ChangeEzasseChecker {
      */
     @Override
     public boolean aloneCheck(List<EzasseTableInfo> tableInfo, String[] split) {
-        EzasseTableInfo info = IterableUtils.find(tableInfo, t -> split[2].equals(t.getCharacterMaximumLength()));
-        return info == null;
+        //第三位为字段的目标类型
+        EzasseTableInfo ezasseTableInfo = IterableUtils.find(tableInfo, info -> split[2].equals(info.getDataType()));
+        return ezasseTableInfo == null;
     }
 
     /**
@@ -41,6 +42,6 @@ public class ChangeLengthEzasseChecker extends ChangeEzasseChecker {
      */
     @Override
     public String getId(EzasseConfig config) {
-        return config.getKeyWords().getField().getChangeLength();
+        return config.getKeyWords().getField().getChangeType();
     }
 }

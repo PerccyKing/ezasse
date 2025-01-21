@@ -1,6 +1,6 @@
 package cn.com.pism.ezasse.manager;
 
-import cn.com.pism.ezasse.model.EzasseChecker;
+import cn.com.pism.ezasse.checker.EzasseChecker;
 
 import java.util.List;
 

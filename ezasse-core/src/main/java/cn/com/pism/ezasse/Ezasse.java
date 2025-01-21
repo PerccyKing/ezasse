@@ -1,17 +1,16 @@
 package cn.com.pism.ezasse;
 
-import cn.com.pism.ezasse.checker.DefaultKeyWordEzasseChecker;
-import cn.com.pism.ezasse.checker.EzasseChecker;
-import cn.com.pism.ezasse.checker.TableEzasseChecker;
-import cn.com.pism.ezasse.checker.change.*;
+import cn.com.pism.ezasse.checker.v0.DefaultKeyWordEzasseChecker;
+import cn.com.pism.ezasse.checker.v0.EzasseChecker;
+import cn.com.pism.ezasse.checker.v0.TableEzasseChecker;
+import cn.com.pism.ezasse.checker.v0.change.*;
 import cn.com.pism.ezasse.exception.EzasseException;
-import cn.com.pism.ezasse.executor.*;
+import cn.com.pism.ezasse.executor.v0.*;
 import cn.com.pism.ezasse.model.EzasseCheckNode;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseSql;
 import cn.com.pism.ezasse.util.EzasseLogUtil;
 import cn.com.pism.ezasse.util.EzasseUtil;
-import cn.com.pism.frc.resourcescanner.Scanner;
 import cn.com.pism.frc.resourcescanner.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -20,12 +19,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.sql.DataSource;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static cn.com.pism.ezasse.constants.EzasseConstants.*;
-import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_FOLDER_EXCEPTION;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_GROUP_EXCEPTION;
 import static cn.com.pism.ezasse.util.EzasseUtil.getResourcesFromFolder;
 

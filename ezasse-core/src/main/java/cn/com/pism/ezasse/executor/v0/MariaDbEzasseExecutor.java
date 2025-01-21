@@ -1,4 +1,4 @@
-package cn.com.pism.ezasse.executor;
+package cn.com.pism.ezasse.executor.v0;
 
 import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.MARIADB;
 

@@ -1,7 +1,7 @@
 package cn.com.pism.ezasse.manager;
 
 import cn.com.pism.ezasse.resource.EzasseResource;
-import cn.com.pism.ezasse.resource.EzasseResourceLoader;
+import cn.com.pism.ezasse.loader.EzasseResourceLoader;
 
 /**
  * 资源加载器管理器

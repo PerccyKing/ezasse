@@ -4,7 +4,6 @@ import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseFile;
 import cn.com.pism.ezasse.resource.EzasseFileResource;
-import cn.com.pism.ezasse.resource.EzasseResourceLoader;
 import cn.com.pism.frc.resourcescanner.LoadableResource;
 import org.apache.commons.lang3.math.NumberUtils;
 

@@ -1,7 +1,7 @@
 package cn.com.pism.ezasse.manager.impl;
 
 import cn.com.pism.ezasse.manager.CheckerManager;
-import cn.com.pism.ezasse.model.EzasseChecker;
+import cn.com.pism.ezasse.checker.EzasseChecker;
 
 import java.util.ArrayList;
 import java.util.List;

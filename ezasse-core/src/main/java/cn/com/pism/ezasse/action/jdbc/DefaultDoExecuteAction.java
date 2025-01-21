@@ -1,7 +1,7 @@
-package cn.com.pism.ezasse.action.mysql;
+package cn.com.pism.ezasse.action.jdbc;
 
 import cn.com.pism.ezasse.action.EzasseExecutorAction;
-import cn.com.pism.ezasse.action.param.DoExecuteParam;
+import cn.com.pism.ezasse.action.param.DoExecuteActionParam;
 import cn.com.pism.ezasse.util.EzasseLogUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,20 +17,20 @@ import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.DO_EXEC
  * @author PerccyKing
  * @since 25-01-01 22:54
  */
-public class MysqlDoExecuteAction implements EzasseExecutorAction<DoExecuteParam, Boolean> {
+public class DefaultDoExecuteAction implements EzasseExecutorAction<DoExecuteActionParam, Boolean> {
 
-    protected static final Log log = LogFactory.getLog(MysqlDoExecuteAction.class);
+    protected static final Log log = LogFactory.getLog(DefaultDoExecuteAction.class);
 
 
     private final JdbcTemplate jdbcTemplate;
 
-    public MysqlDoExecuteAction(JdbcTemplate jdbcTemplate) {
+    public DefaultDoExecuteAction(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     @SuppressWarnings("all")
-    public Boolean doAction(DoExecuteParam actionParam) {
+    public Boolean doAction(DoExecuteActionParam actionParam) {
         try {
             ByteArrayResource resource = new ByteArrayResource(actionParam.getExecuteContent().getBytes());
             ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), resource);
