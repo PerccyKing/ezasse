@@ -33,7 +33,6 @@ public abstract class AbstractEzasse {
 
     protected AbstractEzasse(Class<? extends EzasseResource> resourceClass) {
         this.resourceClass = resourceClass;
-        EzasseContext context = EzasseContextHolder.getContext();
 
         //注册校验器
         registerCheckers();

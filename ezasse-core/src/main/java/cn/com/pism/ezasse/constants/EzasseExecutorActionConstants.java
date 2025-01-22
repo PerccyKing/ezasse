@@ -22,4 +22,9 @@ public class EzasseExecutorActionConstants {
      * 执行内容标记
      */
     public static final String DO_EXECUTE = "doExecute";
+
+    /**
+     * 表是否存在标记
+     */
+    public static final String TABLE_EXISTS = "tableExists";
 }

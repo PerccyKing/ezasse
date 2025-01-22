@@ -43,6 +43,9 @@ public class DefaultConfigManager implements ConfigManager {
      */
     @Override
     public EzasseConfig getConfig() {
+        if (config == null) {
+            return new EzasseConfig();
+        }
         return config;
     }
 }

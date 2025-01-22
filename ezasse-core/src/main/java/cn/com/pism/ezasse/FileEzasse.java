@@ -20,6 +20,7 @@ import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.DO_EXEC
  * @since 24-10-27 00:46
  */
 public class FileEzasse extends AbstractEzasse {
+
     public FileEzasse() {
         super(EzasseFileResource.class);
 
@@ -39,9 +40,7 @@ public class FileEzasse extends AbstractEzasse {
     protected void doExecute() {
 
         // 解析到的数据
-        getEzasseResource()
-                .getFileDataList()
-                .forEach(this::executeResourceData);
+        getEzasseResource().getFileDataList().forEach(this::executeResourceData);
     }
 
     protected void executeResourceData(EzasseFileResourceData.ResourceData resourceData) {
