@@ -145,4 +145,22 @@ public class EzasseUtil {
         return scanner.getResources("", SQL_EXTENSION);
     }
 
+    public static String removeBeforeNthOccurrence(String input, char targetChar, int n) {
+        if ((input == null || input.isEmpty()) || n <= 0) {
+            return input;
+        }
+
+        int count = 0;
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) == targetChar) {
+                count++;
+                if (count == n) {
+                    return input.substring(i + 1);
+                }
+            }
+        }
+
+        return input;
+    }
+
 }

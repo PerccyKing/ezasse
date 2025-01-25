@@ -26,6 +26,7 @@ public class EzasseConstants {
 
     public static final String REGX_POINT = "\\.";
 
+    public static final int NUM2 = 2;
     public static final int NUM3 = 3;
 
     /**
