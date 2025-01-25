@@ -1,9 +1,12 @@
 package cn.com.pism.ezasse;
 
-import cn.com.pism.ezasse.checker.*;
+import cn.com.pism.ezasse.checker.AddFieldChecker;
+import cn.com.pism.ezasse.checker.ExecChecker;
+import cn.com.pism.ezasse.checker.TableChecker;
 import cn.com.pism.ezasse.checker.change.ChangeFieldCommentChecker;
 import cn.com.pism.ezasse.checker.change.ChangeFieldLengthChecker;
 import cn.com.pism.ezasse.checker.change.ChangeFieldNameChecker;
+import cn.com.pism.ezasse.checker.change.ChangeFieldTypeChecker;
 import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.executor.jdbc.MariaDbEzasseExecutor;
@@ -52,6 +55,7 @@ public abstract class AbstractEzasse {
         checkerManager.registerChecker(new ChangeFieldCommentChecker());
         checkerManager.registerChecker(new ChangeFieldLengthChecker());
         checkerManager.registerChecker(new ChangeFieldNameChecker());
+        checkerManager.registerChecker(new ChangeFieldTypeChecker());
     }
 
     /**
