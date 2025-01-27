@@ -29,6 +29,7 @@ public class ChangeFieldNameChecker extends ChangeFieldChecker {
 
     @Override
     protected boolean isSyntaxValid(String[] split) {
+        // CHANGE_NAME(table.targetFieldName)
         return split.length >= NUM2;
     }
 

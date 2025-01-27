@@ -11,14 +11,14 @@ import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.executor.jdbc.MariaDbEzasseExecutor;
 import cn.com.pism.ezasse.executor.jdbc.MysqlEzasseExecutor;
+import cn.com.pism.ezasse.executor.jdbc.OracleEzasseExecutor;
 import cn.com.pism.ezasse.manager.CheckerManager;
 import cn.com.pism.ezasse.manager.ExecutorManager;
 import cn.com.pism.ezasse.manager.ResourceLoaderManager;
 import cn.com.pism.ezasse.manager.ResourceParserManager;
 import cn.com.pism.ezasse.resource.EzasseResource;
 
-import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.MARIADB;
-import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.MYSQL;
+import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.*;
 
 /**
  * 加载文件
@@ -65,6 +65,7 @@ public abstract class AbstractEzasse {
         ExecutorManager executorManager = EzasseContextHolder.getContext().executorManager();
         executorManager.registerExecutor(MYSQL, MysqlEzasseExecutor.class);
         executorManager.registerExecutor(MARIADB, MariaDbEzasseExecutor.class);
+        executorManager.registerExecutor(ORACLE, OracleEzasseExecutor.class);
     }
 
     public void execute() {
