@@ -1,24 +1,15 @@
 package cn.com.pism.ezasse.action.jdbc.oracle;
 
-import cn.com.pism.ezasse.action.EzasseExecutorAction;
-import cn.com.pism.ezasse.action.param.GetTableInfoActionParam;
-import cn.com.pism.ezasse.model.EzasseTableInfo;
-import org.apache.commons.lang3.StringUtils;
+import cn.com.pism.ezasse.action.jdbc.GetTableInfoAction;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.GET_TABLE_INFO;
-import static cn.com.pism.ezasse.util.EzasseUtil.getDataBaseNameFromDataSource;
-import static cn.com.pism.ezasse.util.EzasseUtil.toTableInfo;
 
 /**
  * @author PerccyKing
  * @since 25-01-27 15:25
  */
-public class OracleGetTableInfoAction implements EzasseExecutorAction<GetTableInfoActionParam, List<EzasseTableInfo>> {
+public class OracleGetTableInfoAction extends GetTableInfoAction {
 
 
     private static final String GET_TABLE_INFO_SQL = "SELECT UTC.COLUMN_NAME columnName,\n" +
@@ -31,21 +22,18 @@ public class OracleGetTableInfoAction implements EzasseExecutorAction<GetTableIn
 
     private static final String COLUMN_FILTER = "AND UTC.COLUMN_NAME = ?";
 
-    private final JdbcTemplate jdbcTemplate;
-
     public OracleGetTableInfoAction(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        super(jdbcTemplate);
     }
 
     @Override
-    public List<EzasseTableInfo> doAction(GetTableInfoActionParam actionParam) {
-        List<Map<String, Object>> queryForList;
-        if (StringUtils.isNotBlank(actionParam.getColumnName())) {
-            queryForList = jdbcTemplate.queryForList(GET_TABLE_INFO_SQL + COLUMN_FILTER, actionParam.getTableName(), getDataBaseNameFromDataSource(this.jdbcTemplate.getDataSource()), actionParam.getColumnName());
-        } else {
-            queryForList = jdbcTemplate.queryForList(GET_TABLE_INFO_SQL, actionParam.getTableName(), getDataBaseNameFromDataSource(this.jdbcTemplate.getDataSource()));
-        }
-        return toTableInfo(queryForList);
+    protected String getTableInfoSql() {
+        return GET_TABLE_INFO_SQL;
+    }
+
+    @Override
+    protected String getFieldFilterSql() {
+        return COLUMN_FILTER;
     }
 
 
