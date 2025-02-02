@@ -30,7 +30,7 @@ public class TableChecker implements EzasseChecker {
             Boolean executeRes = ezasseExecutor.execute(TABLE_EXISTS, TableIsExistActionParam.builder().tableName(checkContent).build());
             return Boolean.TRUE.equals(executeRes);
         } else {
-            List<EzasseTableInfo> tableInfos = ezasseExecutor.execute(GET_TABLE_INFO, GetTableInfoActionParam.builder().build());
+            List<EzasseTableInfo> tableInfos = ezasseExecutor.execute(GET_TABLE_INFO, GetTableInfoActionParam.builder().tableName(checkContent).build());
             // 表如果存在返回false
             return CollectionUtils.isEmpty(tableInfos);
         }

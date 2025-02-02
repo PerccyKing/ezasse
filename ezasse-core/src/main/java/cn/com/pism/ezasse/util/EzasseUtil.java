@@ -16,8 +16,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
-import static cn.com.pism.ezasse.constants.EzasseConstants.CLASSPATH_PREFIX;
-import static cn.com.pism.ezasse.constants.EzasseConstants.SQL_EXTENSION;
+import static cn.com.pism.ezasse.constants.EzasseConstants.*;
 import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.UNKNOWN;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_FOLDER_EXCEPTION;
 
@@ -75,10 +74,10 @@ public class EzasseUtil {
         List<EzasseTableInfo> tableInfos = new ArrayList<>();
         mapList.forEach(map -> {
             EzasseTableInfo tableInfo = new EzasseTableInfo();
-            tableInfo.setColumnName(MapUtils.getString(map, "columnName"));
-            tableInfo.setDataType(MapUtils.getString(map, "dataType"));
-            tableInfo.setCharacterMaximumLength(MapUtils.getString(map, "characterMaximumLength"));
-            tableInfo.setColumnComment(MapUtils.getString(map, "columnComment"));
+            tableInfo.setColumnName(MapUtils.getString(map, COLUMN_NAME));
+            tableInfo.setDataType(MapUtils.getString(map, DATA_TYPE));
+            tableInfo.setDataLength(MapUtils.getString(map, DATA_LENGTH));
+            tableInfo.setColumnComment(MapUtils.getString(map, COLUMN_COMMENT));
             tableInfos.add(tableInfo);
         });
         return tableInfos;

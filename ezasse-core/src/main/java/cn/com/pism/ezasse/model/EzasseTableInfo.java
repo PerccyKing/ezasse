@@ -20,7 +20,7 @@ public class EzasseTableInfo {
     /**
      * 字段长度
      */
-    private String characterMaximumLength;
+    private String dataLength;
 
     /**
      * 备注
@@ -43,12 +43,12 @@ public class EzasseTableInfo {
         this.dataType = dataType;
     }
 
-    public String getCharacterMaximumLength() {
-        return characterMaximumLength;
+    public String getDataLength() {
+        return dataLength;
     }
 
-    public void setCharacterMaximumLength(String characterMaximumLength) {
-        this.characterMaximumLength = characterMaximumLength;
+    public void setDataLength(String dataLength) {
+        this.dataLength = dataLength;
     }
 
     public String getColumnComment() {

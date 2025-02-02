@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @author PerccyKing
  * @since 25-01-13 22:37
  */
-public class JdbcTemplateExecutor extends EzasseExecutor {
+public abstract class JdbcTemplateExecutor extends EzasseExecutor {
 
     protected JdbcTemplateExecutor(EzasseDataSource ezasseDataSource) {
         super(ezasseDataSource);

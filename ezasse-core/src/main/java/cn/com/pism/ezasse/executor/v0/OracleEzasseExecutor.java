@@ -21,7 +21,7 @@ public class OracleEzasseExecutor extends EzasseExecutor {
 
     private static final String SQL = "SELECT UTC.COLUMN_NAME columnName,\n" +
             "       UTC.DATA_TYPE   dataType,\n" +
-            "       UTC.CHAR_LENGTH characterMaximumLength,\n" +
+            "       UTC.CHAR_LENGTH dataLength,\n" +
             "       UCC.COMMENTS    columnComment\n" +
             "FROM USER_TAB_COLS UTC\n" +
             "         LEFT JOIN USER_COL_COMMENTS UCC ON UTC.TABLE_NAME = UCC.TABLE_NAME AND UTC.COLUMN_NAME = UCC.COLUMN_NAME\n" +

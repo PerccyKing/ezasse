@@ -16,7 +16,7 @@ import static cn.com.pism.ezasse.util.EzasseUtil.toTableInfo;
 public class HsqlDbExecutor extends EzasseExecutor {
     private static final String SQL = "select ISC.COLUMN_NAME              columnName,\n" +
             "       ISC.DATA_TYPE                dataType,\n" +
-            "       ISC.CHARACTER_MAXIMUM_LENGTH characterMaximumLength,\n" +
+            "       ISC.CHARACTER_MAXIMUM_LENGTH dataLength,\n" +
             "       ISSC.REMARKS                 columnComment\n" +
             "from INFORMATION_SCHEMA.COLUMNS ISC\n" +
             "         left join INFORMATION_SCHEMA.SYSTEM_COLUMNS ISSC\n" +

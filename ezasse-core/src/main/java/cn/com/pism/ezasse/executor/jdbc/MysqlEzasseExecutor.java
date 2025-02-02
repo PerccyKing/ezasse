@@ -19,7 +19,7 @@ public class MysqlEzasseExecutor extends JdbcTemplateExecutor {
 
     @Override
     protected void registerActions(EzasseDataSource ezasseDataSource, JdbcTemplate jdbcTemplate) {
-        registerAction(new MysqlGetTableInfoAction(jdbcTemplate));
+        registerAction(MysqlGetTableInfoAction.build(jdbcTemplate));
         registerAction(new MysqlTableExistsAction(jdbcTemplate));
     }
 }

@@ -28,7 +28,7 @@ public class H2EzasseExecutor extends EzasseExecutor {
      */
     @Override
     public List<EzasseTableInfo> getTableInfo(String tableName, String columnName) {
-        String getTableInfoSql = "SELECT COLUMN_NAME columnName,DATA_TYPE dataType,CHARACTER_MAXIMUM_LENGTH characterMaximumLength,REMARKS columnComment FROM Information_schema.columns WHERE table_Name = ? AND TABLE_SCHEMA=? AND COLUMN_NAME=? ";
+        String getTableInfoSql = "SELECT COLUMN_NAME columnName,DATA_TYPE dataType,CHARACTER_MAXIMUM_LENGTH dataLength,REMARKS columnComment FROM Information_schema.columns WHERE table_Name = ? AND TABLE_SCHEMA=? AND COLUMN_NAME=? ";
         List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(getTableInfoSql, tableName, getDataBaseNameFromDataSource(this.dataSource), columnName);
         return toTableInfo(queryForList);
     }
@@ -45,7 +45,7 @@ public class H2EzasseExecutor extends EzasseExecutor {
      */
     @Override
     public List<EzasseTableInfo> getTableInfo(String tableName) {
-        String sql = "SELECT COLUMN_NAME columnName,DATA_TYPE dataType,CHARACTER_MAXIMUM_LENGTH characterMaximumLength,REMARKS columnComment FROM Information_schema.columns WHERE table_Name = ? AND TABLE_SCHEMA=? ";
+        String sql = "SELECT COLUMN_NAME columnName,DATA_TYPE dataType,CHARACTER_MAXIMUM_LENGTH dataLength,REMARKS columnComment FROM Information_schema.columns WHERE table_Name = ? AND TABLE_SCHEMA=? ";
         List<Map<String, Object>> queryForList = jdbcTemplate.queryForList(sql, tableName, getDataBaseNameFromDataSource(this.dataSource));
         return toTableInfo(queryForList);
     }

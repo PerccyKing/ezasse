@@ -48,4 +48,15 @@ public class EzasseConstants {
      * master 数据源标记
      */
     public static final String MASTER = "MASTER";
+
+
+
+    public static final String COLUMN_NAME = "columnName";
+
+    public static final String DATA_TYPE = "dataType";
+
+    public static final String DATA_LENGTH = "dataLength";
+
+    public static final String COLUMN_COMMENT = "columnComment";
+
 }
