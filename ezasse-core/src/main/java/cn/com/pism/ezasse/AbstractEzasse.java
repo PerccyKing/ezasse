@@ -9,10 +9,7 @@ import cn.com.pism.ezasse.checker.change.ChangeFieldNameChecker;
 import cn.com.pism.ezasse.checker.change.ChangeFieldTypeChecker;
 import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
-import cn.com.pism.ezasse.executor.jdbc.H2EzasseExecutor;
-import cn.com.pism.ezasse.executor.jdbc.MariaDbEzasseExecutor;
-import cn.com.pism.ezasse.executor.jdbc.MysqlEzasseExecutor;
-import cn.com.pism.ezasse.executor.jdbc.OracleEzasseExecutor;
+import cn.com.pism.ezasse.executor.jdbc.*;
 import cn.com.pism.ezasse.manager.CheckerManager;
 import cn.com.pism.ezasse.manager.ExecutorManager;
 import cn.com.pism.ezasse.manager.ResourceLoaderManager;
@@ -68,6 +65,7 @@ public abstract class AbstractEzasse {
         executorManager.registerExecutor(MARIADB, MariaDbEzasseExecutor.class);
         executorManager.registerExecutor(ORACLE, OracleEzasseExecutor.class);
         executorManager.registerExecutor(H2, H2EzasseExecutor.class);
+        executorManager.registerExecutor(HSQLDB, HsqlDbExecutor.class);
     }
 
     public void execute() {

@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 public class OracleEzasseExecutor extends JdbcTemplateExecutor {
 
-    protected OracleEzasseExecutor(EzasseDataSource ezasseDataSource) {
+    public OracleEzasseExecutor(EzasseDataSource ezasseDataSource) {
         super(ezasseDataSource);
     }
 
