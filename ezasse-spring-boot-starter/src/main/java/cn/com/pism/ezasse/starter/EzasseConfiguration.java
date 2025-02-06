@@ -1,7 +1,7 @@
 package cn.com.pism.ezasse.starter;
 
 import cn.com.pism.ezasse.Ezasse;
-import cn.com.pism.ezasse.checker.v0.EzasseChecker;
+import cn.com.pism.ezasse.checker.EzasseChecker;
 import cn.com.pism.ezasse.executor.v0.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.util.EzasseLogUtil;

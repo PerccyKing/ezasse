@@ -27,4 +27,9 @@ public class EzasseExecutorActionConstants {
      * 表是否存在标记
      */
     public static final String TABLE_EXISTS = "tableExists";
+
+    /**
+     * 修改字段 comment
+     */
+    public static final String CHANGE_FIELD_COMMENT = "changeFieldComment";
 }

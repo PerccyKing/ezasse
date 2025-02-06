@@ -21,6 +21,12 @@
             <version>0.0.12</version>
         </dependency>
 
+        <dependency>
+            <groupId>cn.com.pism</groupId>
+            <artifactId>ezasse-for-jdbc</artifactId>
+            <version>0.0.12</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>

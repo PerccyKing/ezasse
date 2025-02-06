@@ -1,6 +1,6 @@
 package cn.com.pism.ezasse.manager;
 
-import cn.com.pism.ezasse.checker.EzasseChecker;
+import cn.com.pism.ezasse.model.EzasseChecker;
 
 import java.util.List;
 
@@ -57,5 +57,16 @@ public interface CheckerManager {
      * @since 24-12-29 17:48
      */
     List<String> getCheckerKeys();
+
+    /**
+     * <p>
+     * 获取所有允许为空的校验器
+     * </p>
+     * by perccyking
+     *
+     * @return 校验器id
+     * @since 25-02-02 23:10
+     */
+    List<String> getAllowEmptyCheckerKeys();
 
 }

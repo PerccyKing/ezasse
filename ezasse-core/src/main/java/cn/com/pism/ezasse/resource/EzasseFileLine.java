@@ -4,8 +4,8 @@ import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -89,7 +89,7 @@ public class EzasseFileLine {
     }
 
     private void checkLineParse(String line, EzasseConfig config, List<String> checkerKeys) {
-        Matcher matcher = Pattern.compile(String.format(CHECK_LINE_PATTERN, config.getLineComment(), String.join("|", checkerKeys))).matcher(line);
+        Matcher matcher = Pattern.compile(String.format(CHECK_LINE_PATTERN, String.join("|", config.getLineComment()), String.join("|", checkerKeys))).matcher(line);
         boolean matches = matcher.matches();
         if (matches) {
             this.checkLine = true;

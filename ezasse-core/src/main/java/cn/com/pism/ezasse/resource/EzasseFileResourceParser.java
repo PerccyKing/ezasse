@@ -6,10 +6,10 @@ import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseFile;
 import cn.com.pism.ezasse.util.EzasseIoUtil;
 import cn.com.pism.ezasse.util.EzasseLogUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.util.CollectionUtils;
 
 import java.io.InputStream;
 import java.util.Comparator;
@@ -22,19 +22,13 @@ import java.util.stream.Stream;
  * @author PerccyKing
  * @since 24-11-02 23:47
  */
-public class EzasseFileResourceParser extends EzasseResourceParser {
+public class EzasseFileResourceParser implements EzasseResourceParser {
 
     private static final Log log = LogFactory.getLog(EzasseFileResourceParser.class);
 
-    private final EzasseFileResource resource;
-
-    public EzasseFileResourceParser(EzasseResource resource) {
-        super(resource);
-        this.resource = (EzasseFileResource) resource;
-    }
-
     @Override
-    public EzasseFileResourceData parse() {
+    public EzasseFileResourceData parse(EzasseResource ezasseResource) {
+        EzasseFileResource resource = (EzasseFileResource) ezasseResource;
         EzasseFileResourceData resourceData = new EzasseFileResourceData();
 
         List<EzasseFile> sqlFiles = resource.getFiles();

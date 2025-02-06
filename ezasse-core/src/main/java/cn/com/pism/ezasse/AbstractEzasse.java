@@ -1,22 +1,17 @@
 package cn.com.pism.ezasse;
 
-import cn.com.pism.ezasse.checker.AddFieldChecker;
-import cn.com.pism.ezasse.checker.ExecChecker;
-import cn.com.pism.ezasse.checker.TableChecker;
-import cn.com.pism.ezasse.checker.change.ChangeFieldCommentChecker;
-import cn.com.pism.ezasse.checker.change.ChangeFieldLengthChecker;
-import cn.com.pism.ezasse.checker.change.ChangeFieldNameChecker;
-import cn.com.pism.ezasse.checker.change.ChangeFieldTypeChecker;
 import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
-import cn.com.pism.ezasse.executor.jdbc.*;
 import cn.com.pism.ezasse.manager.CheckerManager;
 import cn.com.pism.ezasse.manager.ExecutorManager;
 import cn.com.pism.ezasse.manager.ResourceLoaderManager;
 import cn.com.pism.ezasse.manager.ResourceParserManager;
+import cn.com.pism.ezasse.model.EzasseChecker;
+import cn.com.pism.ezasse.model.EzasseExecutorRegister;
 import cn.com.pism.ezasse.resource.EzasseResource;
+import cn.com.pism.ezasse.resource.EzasseResourceData;
 
-import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.*;
+import java.util.ServiceLoader;
 
 /**
  * 加载文件
@@ -47,13 +42,8 @@ public abstract class AbstractEzasse {
      */
     private void registerCheckers() {
         CheckerManager checkerManager = EzasseContextHolder.getContext().checkerManager();
-        checkerManager.registerChecker(new ExecChecker());
-        checkerManager.registerChecker(new TableChecker());
-        checkerManager.registerChecker(new AddFieldChecker());
-        checkerManager.registerChecker(new ChangeFieldCommentChecker());
-        checkerManager.registerChecker(new ChangeFieldLengthChecker());
-        checkerManager.registerChecker(new ChangeFieldNameChecker());
-        checkerManager.registerChecker(new ChangeFieldTypeChecker());
+        ServiceLoader<EzasseChecker> checkers = ServiceLoader.load(EzasseChecker.class);
+        checkers.forEach(checkerManager::registerChecker);
     }
 
     /**
@@ -61,11 +51,8 @@ public abstract class AbstractEzasse {
      */
     private void registerExecutors() {
         ExecutorManager executorManager = EzasseContextHolder.getContext().executorManager();
-        executorManager.registerExecutor(MYSQL, MysqlEzasseExecutor.class);
-        executorManager.registerExecutor(MARIADB, MariaDbEzasseExecutor.class);
-        executorManager.registerExecutor(ORACLE, OracleEzasseExecutor.class);
-        executorManager.registerExecutor(H2, H2EzasseExecutor.class);
-        executorManager.registerExecutor(HSQLDB, HsqlDbExecutor.class);
+        ServiceLoader<EzasseExecutorRegister> executorRegisters = ServiceLoader.load(EzasseExecutorRegister.class);
+        executorRegisters.forEach(register -> register.getExecutorMap().forEach(executorManager::registerExecutor));
     }
 
     public void execute() {
@@ -100,8 +87,11 @@ public abstract class AbstractEzasse {
         //获取资源的解析器
         ResourceParserManager resourceParserManager = context.resourceParserManger();
 
+        //解析数据
+        EzasseResourceData ezasseResourceData = resourceParserManager.getResourceParser(this.resourceClass).parse(ezasseResource);
+
         //将解析出来的数据放入上下文
-        context.resourceManger().cacheEzasseResource(this.resourceClass, resourceParserManager.getResourceParser(ezasseResource).parse());
+        context.resourceManger().cacheEzasseResource(this.resourceClass, ezasseResourceData);
 
     }
 

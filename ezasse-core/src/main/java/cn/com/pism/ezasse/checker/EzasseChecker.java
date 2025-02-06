@@ -1,40 +1,53 @@
 package cn.com.pism.ezasse.checker;
 
-import cn.com.pism.ezasse.context.EzasseContextHolder;
-import cn.com.pism.ezasse.executor.EzasseExecutor;
-import cn.com.pism.ezasse.model.EzasseDataSource;
+import cn.com.pism.ezasse.executor.v0.EzasseExecutor;
+import cn.com.pism.ezasse.model.EzasseConfig;
+import cn.com.pism.ezasse.util.NoneParamCallback;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.sql.DataSource;
 
 /**
+ * 校验器
+ *
  * @author PerccyKing
- * @since 24-10-22 23:06
+ * @version 0.0.1
+ * @since 2022/04/05 下午 12:22
  */
-public interface EzasseChecker {
+public abstract class EzasseChecker {
 
-    /**
-     * <p>
-     * 对校验内容进行校验
-     * </p>
-     * by perccyking
-     *
-     * @param dataSource : 数据源
-     * @param checkContent : 交易内容
-     * @return {@link boolean} true:校验通过 false:校验不通过
-     * @since 25-01-19 01:42
-     */
-    boolean check(EzasseDataSource dataSource, String checkContent);
-
-    /**
-     * <p>
-     * 获取校验器的id
-     * </p>
-     * by perccyking
-     *
-     * @return {@link String} 校验器id
-     * @since 25-01-19 01:43
-     */
-    String getId();
-
-    default EzasseExecutor getEzasseExecutor(String dataSourceId) {
-        return EzasseContextHolder.getContext().executorManager().getExecutor(dataSourceId);
+    protected boolean publicCheck(String checkContent, EzasseExecutor executor, NoneParamCallback<Boolean> callback) {
+        if (StringUtils.isBlank(checkContent) || executor == null) {
+            return false;
+        } else {
+            return callback.call();
+        }
     }
+
+    /**
+     * <p>
+     * 判断代码块是否需要执行
+     * </p>
+     *
+     * @param checkDataSource :数据校验节点
+     * @param checkContent    :数据校验内容
+     * @param executor        :执行器
+     * @return {@link boolean} true:执行代码块,false:跳过代码块
+     * @author PerccyKing
+     * @since 2022/04/05 下午 12:23
+     */
+    public abstract boolean needToExecute(DataSource checkDataSource, String checkContent, EzasseExecutor executor);
+
+
+    /**
+     * <p>
+     * 语法定义id
+     * </p>
+     *
+     * @param config : 配置
+     * @return {@link String}  全局唯一id，与关键字对其
+     * @author PerccyKing
+     * @since 2022/04/06 下午 02:45
+     */
+    public abstract String getId(EzasseConfig config);
 }

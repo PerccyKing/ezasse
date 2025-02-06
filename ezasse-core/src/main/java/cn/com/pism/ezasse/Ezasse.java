@@ -1,9 +1,9 @@
 package cn.com.pism.ezasse;
 
-import cn.com.pism.ezasse.checker.v0.DefaultKeyWordEzasseChecker;
-import cn.com.pism.ezasse.checker.v0.EzasseChecker;
-import cn.com.pism.ezasse.checker.v0.TableEzasseChecker;
-import cn.com.pism.ezasse.checker.v0.change.*;
+import cn.com.pism.ezasse.checker.DefaultKeyWordEzasseChecker;
+import cn.com.pism.ezasse.checker.EzasseChecker;
+import cn.com.pism.ezasse.checker.TableEzasseChecker;
+import cn.com.pism.ezasse.checker.change.*;
 import cn.com.pism.ezasse.exception.EzasseException;
 import cn.com.pism.ezasse.executor.v0.*;
 import cn.com.pism.ezasse.model.EzasseCheckNode;

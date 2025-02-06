@@ -1,13 +1,15 @@
 package cn.com.pism.ezasse.manager.impl;
 
-import cn.com.pism.ezasse.action.param.ActionParam;
 import cn.com.pism.ezasse.action.EzasseExecutorAction;
+import cn.com.pism.ezasse.action.param.ActionParam;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.exception.EzasseException;
+import cn.com.pism.ezasse.executor.EzasseExecutor;
 import cn.com.pism.ezasse.manager.ExecutorManager;
 import cn.com.pism.ezasse.model.EzasseDataSource;
-import cn.com.pism.ezasse.executor.EzasseExecutor;
-import org.springframework.util.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +24,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 25-01-01 12:53
  */
 public class DefaultExecutorManager implements ExecutorManager {
+
+    private static final Log log = LogFactory.getLog(DefaultExecutorManager.class);
 
     /**
      * 数据源类型，对应的执行器类型
@@ -60,6 +64,7 @@ public class DefaultExecutorManager implements ExecutorManager {
                 // 实例化执行器
                 return ezasseExecutorClass.getConstructor(EzasseDataSource.class).newInstance(dataSource);
             } catch (Exception e) {
+                log.error("获取执行器失败", e);
                 throw new EzasseException("really?!!");
             }
         });

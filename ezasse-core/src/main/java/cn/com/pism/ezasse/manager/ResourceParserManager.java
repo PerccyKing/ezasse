@@ -17,11 +17,11 @@ public interface ResourceParserManager {
      * </p>
      * by perccyking
      *
-     * @param resource : 资源
+     * @param resourceType : 资源类型
      * @return {@link EzasseResourceParser} 资源对应的解析器
      * @since 25-01-01 13:23
      */
-    EzasseResourceParser getResourceParser(EzasseResource resource);
+    EzasseResourceParser getResourceParser(Class<? extends EzasseResource> resourceType);
 
     /**
      * <p>
@@ -29,9 +29,9 @@ public interface ResourceParserManager {
      * </p>
      * by perccyking
      *
-     * @param resourceClass       : 资源类型
-     * @param resourceParserClass : 资源解析器类型
+     * @param resourceClass        : 资源类型
+     * @param ezasseResourceParser : 资源解析器
      * @since 25-01-01 13:23
      */
-    <I extends EzasseResource, P extends EzasseResourceParser> void registerResourceParser(Class<I> resourceClass, Class<P> resourceParserClass);
+    void registerResourceParser(Class<? extends EzasseResource> resourceClass, EzasseResourceParser ezasseResourceParser);
 }
