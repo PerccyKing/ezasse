@@ -5,9 +5,11 @@ import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
 import {ezasseConfig} from "@site/ezasse.config";
-import { Analytics } from "@vercel/analytics/react"
+import {Analytics} from "@vercel/analytics/react";
+import {SpeedInsights} from '@vercel/speed-insights/react';
 
 import styles from './index.module.css';
+import {JSX} from 'react';
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
@@ -37,11 +39,12 @@ export default function Home(): JSX.Element {
     <Layout
       title={` ${siteConfig.title} 项目脚本管理方案`}
       description="ezasse">
-      <HomepageHeader />
+      <HomepageHeader/>
       <main>
-        <HomepageFeatures />
-        <Analytics />
+        <HomepageFeatures/>
       </main>
+      <Analytics/>
+      <SpeedInsights/>
     </Layout>
   );
 }
