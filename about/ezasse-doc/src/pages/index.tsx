@@ -6,6 +6,7 @@ import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
 import {ezasseConfig} from "@site/ezasse.config";
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import styles from './index.module.css';
 
@@ -41,6 +42,7 @@ export default function Home(): JSX.Element {
       <main>
         <HomepageFeatures />
         <Analytics />
+        <SpeedInsights />
       </main>
     </Layout>
   );
