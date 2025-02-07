@@ -5,6 +5,7 @@ import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
 import {ezasseConfig} from "@site/ezasse.config";
+import { Analytics } from "@vercel/analytics/react"
 
 import styles from './index.module.css';
 
@@ -39,6 +40,7 @@ export default function Home(): JSX.Element {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
+        <Analytics />
       </main>
     </Layout>
   );
