@@ -6,8 +6,9 @@ import cn.com.pism.ezasse.manager.CheckerManager;
 import cn.com.pism.ezasse.manager.ExecutorManager;
 import cn.com.pism.ezasse.manager.ResourceLoaderManager;
 import cn.com.pism.ezasse.manager.ResourceParserManager;
+import cn.com.pism.ezasse.model.ExecutorActionRegister;
 import cn.com.pism.ezasse.model.EzasseChecker;
-import cn.com.pism.ezasse.model.EzasseExecutorRegister;
+import cn.com.pism.ezasse.model.EzasseExecutor;
 import cn.com.pism.ezasse.resource.EzasseResource;
 import cn.com.pism.ezasse.resource.EzasseResourceData;
 
@@ -30,11 +31,14 @@ public abstract class AbstractEzasse {
     protected AbstractEzasse(Class<? extends EzasseResource> resourceClass) {
         this.resourceClass = resourceClass;
 
-        //注册校验器
+        // 注册校验器
         registerCheckers();
 
         // 注册执行器
         registerExecutors();
+
+        // 注册执行器动作
+        registerExecutorActions();
     }
 
     /**
@@ -51,8 +55,16 @@ public abstract class AbstractEzasse {
      */
     private void registerExecutors() {
         ExecutorManager executorManager = EzasseContextHolder.getContext().executorManager();
-        ServiceLoader<EzasseExecutorRegister> executorRegisters = ServiceLoader.load(EzasseExecutorRegister.class);
-        executorRegisters.forEach(register -> register.getExecutorMap().forEach(executorManager::registerExecutor));
+        ServiceLoader<EzasseExecutor> executors = ServiceLoader.load(EzasseExecutor.class);
+        executors.forEach(executor -> executorManager.registerExecutor(executor.getDataSourceType(), executor));
+    }
+
+    /**
+     * 注册执行器动作
+     */
+    private void registerExecutorActions() {
+        ServiceLoader<ExecutorActionRegister> executorActionRegisters = ServiceLoader.load(ExecutorActionRegister.class);
+        executorActionRegisters.forEach(register -> register.registry(EzasseContextHolder.getContext().executorManager()));
     }
 
     public void execute() {

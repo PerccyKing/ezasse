@@ -1,8 +1,9 @@
 package cn.com.pism.ezasse.jdbc.action.mysql;
 
-import cn.com.pism.ezasse.action.EzasseExecutorAction;
-import cn.com.pism.ezasse.action.param.TableIsExistActionParam;
-import org.springframework.jdbc.core.JdbcTemplate;
+import cn.com.pism.ezasse.jdbc.action.JdbcTemplateCache;
+import cn.com.pism.ezasse.jdbc.action.param.TableIsExistActionParam;
+import cn.com.pism.ezasse.model.EzasseDataSource;
+import cn.com.pism.ezasse.model.EzasseExecutorAction;
 
 import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.TABLE_EXISTS;
 import static cn.com.pism.ezasse.util.EzasseUtil.getDataBaseNameFromDataSource;
@@ -17,12 +18,6 @@ public class MysqlTableExistsAction implements EzasseExecutorAction<TableIsExist
             "FROM INFORMATION_SCHEMA.TABLES  " +
             "WHERE TABLE_NAME = ?  AND TABLE_SCHEMA = ?";
 
-    private final JdbcTemplate jdbcTemplate;
-
-    public MysqlTableExistsAction(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     /**
      * <p>
      * 执行动作
@@ -34,8 +29,8 @@ public class MysqlTableExistsAction implements EzasseExecutorAction<TableIsExist
      * @since 25-01-01 11:19
      */
     @Override
-    public Boolean doAction(TableIsExistActionParam actionParam) {
-        return Boolean.FALSE.equals(jdbcTemplate.queryForObject(SQL, Boolean.class, actionParam.getTableName(), getDataBaseNameFromDataSource(this.jdbcTemplate.getDataSource())));
+    public Boolean doAction(TableIsExistActionParam actionParam, EzasseDataSource dataSource) {
+        return Boolean.FALSE.equals(JdbcTemplateCache.get(dataSource.getId()).queryForObject(SQL, Boolean.class, actionParam.getTableName(), getDataBaseNameFromDataSource(dataSource.getDataSource())));
     }
 
     /**

@@ -1,12 +1,12 @@
 package cn.com.pism.ezasse.jdbc.action;
 
-import cn.com.pism.ezasse.action.EzasseExecutorAction;
-import cn.com.pism.ezasse.action.param.DoExecuteActionParam;
+import cn.com.pism.ezasse.model.DoExecuteActionParam;
+import cn.com.pism.ezasse.model.EzasseDataSource;
+import cn.com.pism.ezasse.model.EzasseExecutorAction;
 import cn.com.pism.ezasse.util.EzasseLogUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 
 import java.sql.SQLException;
@@ -21,19 +21,12 @@ public class DefaultDoExecuteAction implements EzasseExecutorAction<DoExecuteAct
 
     protected static final Log log = LogFactory.getLog(DefaultDoExecuteAction.class);
 
-
-    private final JdbcTemplate jdbcTemplate;
-
-    public DefaultDoExecuteAction(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     @Override
     @SuppressWarnings("all")
-    public Boolean doAction(DoExecuteActionParam actionParam) {
+    public Boolean doAction(DoExecuteActionParam actionParam, EzasseDataSource dataSource) {
         try {
             ByteArrayResource resource = new ByteArrayResource(actionParam.getExecuteContent().getBytes());
-            ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), resource);
+            ScriptUtils.executeSqlScript(JdbcTemplateCache.get(dataSource.getId()).getDataSource().getConnection(), resource);
         } catch (SQLException e) {
             EzasseLogUtil.error(log, e.getMessage());
             return Boolean.FALSE;

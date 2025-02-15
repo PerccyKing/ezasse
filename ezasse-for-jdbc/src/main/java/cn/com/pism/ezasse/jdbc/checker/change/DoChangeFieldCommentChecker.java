@@ -1,9 +1,10 @@
 package cn.com.pism.ezasse.jdbc.checker.change;
 
-import cn.com.pism.ezasse.action.param.ChangeFieldCommentActionParam;
-import cn.com.pism.ezasse.executor.EzasseExecutor;
+import cn.com.pism.ezasse.context.EzasseContextHolder;
+import cn.com.pism.ezasse.jdbc.action.param.ChangeFieldCommentActionParam;
 import cn.com.pism.ezasse.model.EzasseCheckLineContent;
 import cn.com.pism.ezasse.model.EzasseDataSource;
+import cn.com.pism.ezasse.model.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 
 import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.CHANGE_FIELD_COMMENT;
@@ -25,12 +26,13 @@ public class DoChangeFieldCommentChecker extends ChangeFieldCommentChecker {
 
         if (super.check(dataSource, checkLineContent.getCheckLine().getCheckContent())) {
             // 执行通过，获取执行器
-            EzasseExecutor ezasseExecutor = getEzasseExecutor(checkLineContent.getCheckLine().getExecuteNode());
+            EzasseDataSource executeDataSource = EzasseContextHolder.getContext().datasourceManager().getDataSource(checkLineContent.getCheckLine().getExecuteNode());
+            EzasseExecutor ezasseExecutor = getEzasseExecutor(executeDataSource);
             ezasseExecutor.execute(CHANGE_FIELD_COMMENT, ChangeFieldCommentActionParam.builder()
                     .tableName(this.tableName)
                     .fieldName(this.field)
                     .comment(this.comment)
-                    .build());
+                    .build(), executeDataSource);
         }
 
         //默认返回false

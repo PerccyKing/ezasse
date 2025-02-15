@@ -1,6 +1,6 @@
 package cn.com.pism.ezasse.jdbc.checker.change;
 
-import cn.com.pism.ezasse.action.param.GetTableInfoActionParam;
+import cn.com.pism.ezasse.jdbc.action.param.GetTableInfoActionParam;
 import cn.com.pism.ezasse.model.EzasseChecker;
 import cn.com.pism.ezasse.model.EzasseDataSource;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
@@ -40,11 +40,11 @@ public abstract class ChangeFieldChecker extends EzasseChecker {
         }
 
         // 获取表字段信息 0：表名 1：列名
-        List<EzasseTableInfo> tableInfos = getEzasseExecutor(dataSource.getId())
+        List<EzasseTableInfo> tableInfos = getEzasseExecutor(dataSource)
                 .execute(GET_TABLE_INFO, GetTableInfoActionParam.builder()
                         .tableName(split[0])
                         .columnName(split[1])
-                        .build());
+                        .build(), dataSource);
 
         // 如果没有表信息 表里面没有需要修改的目标字段 返回false
         if (CollectionUtils.isEmpty(tableInfos)) {
@@ -73,6 +73,7 @@ public abstract class ChangeFieldChecker extends EzasseChecker {
 
     /**
      * 是否检查表字段是否存在
+     *
      * @return true:检查，false：不检查
      */
     protected boolean checkTableFieldExists() {
@@ -99,9 +100,10 @@ public abstract class ChangeFieldChecker extends EzasseChecker {
 
     /**
      * 修改表字段属性的检查
-     * @param tableInfos   表信息
-     * @param tableName   表名
-     * @param field       列名、字段名
+     *
+     * @param tableInfos 表信息
+     * @param tableName  表名
+     * @param field      列名、字段名
      * @return true：校验通过，false：校验不通过
      */
     protected boolean doChangeFieldCheck(List<EzasseTableInfo> tableInfos, String tableName, String field) {

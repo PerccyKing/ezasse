@@ -1,7 +1,9 @@
 package cn.com.pism.ezasse.jdbc.action.oracle;
 
 import cn.com.pism.ezasse.jdbc.action.JdbcGetTableInfoAction;
-import cn.com.pism.ezasse.action.param.GetTableInfoActionParam;
+import cn.com.pism.ezasse.jdbc.action.JdbcTemplateCache;
+import cn.com.pism.ezasse.jdbc.action.param.GetTableInfoActionParam;
+import cn.com.pism.ezasse.model.EzasseDataSource;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -27,16 +29,10 @@ public class OracleGetTableInfoAction extends JdbcGetTableInfoAction {
 
     private static final String COLUMN_NAME_FILTER = "AND UTC.COLUMN_NAME = ?";
 
-    private final JdbcTemplate jdbcTemplate;
-
-    public OracleGetTableInfoAction(JdbcTemplate jdbcTemplate) {
-        super(jdbcTemplate);
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     @Override
-    public List<EzasseTableInfo> doAction(GetTableInfoActionParam actionParam) {
+    public List<EzasseTableInfo> doAction(GetTableInfoActionParam actionParam, EzasseDataSource dataSource) {
         List<Map<String, Object>> tableInfos;
+        JdbcTemplate jdbcTemplate = JdbcTemplateCache.get(dataSource.getId());
         if (StringUtils.isNotBlank(actionParam.getColumnName())) {
             tableInfos = jdbcTemplate.queryForList(GET_TABLE_INFO_SQL + COLUMN_NAME_FILTER, actionParam.getTableName(), actionParam.getColumnName());
         } else {

@@ -1,0 +1,5 @@
+cn.com.pism.ezasse.jdbc.executor.MysqlEzasseExecutor
+cn.com.pism.ezasse.jdbc.executor.OracleEzasseExecutor
+cn.com.pism.ezasse.jdbc.executor.MariaDbEzasseExecutor
+cn.com.pism.ezasse.jdbc.executor.H2EzasseExecutor
+cn.com.pism.ezasse.jdbc.executor.HsqlDbExecutor

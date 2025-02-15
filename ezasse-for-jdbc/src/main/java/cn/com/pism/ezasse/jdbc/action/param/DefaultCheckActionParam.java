@@ -1,5 +1,6 @@
-package cn.com.pism.ezasse.action.param;
+package cn.com.pism.ezasse.jdbc.action.param;
 
+import cn.com.pism.ezasse.model.ActionParam;
 import lombok.Data;
 
 /**

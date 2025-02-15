@@ -1,10 +1,10 @@
 package cn.com.pism.ezasse.jdbc.checker;
 
-import cn.com.pism.ezasse.action.param.GetTableInfoActionParam;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
-import cn.com.pism.ezasse.executor.EzasseExecutor;
+import cn.com.pism.ezasse.jdbc.action.param.GetTableInfoActionParam;
 import cn.com.pism.ezasse.model.EzasseChecker;
 import cn.com.pism.ezasse.model.EzasseDataSource;
+import cn.com.pism.ezasse.model.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import org.springframework.util.CollectionUtils;
 
@@ -25,12 +25,12 @@ public class AddFieldChecker extends EzasseChecker {
     public boolean check(EzasseDataSource dataSource, String checkContent) {
         // 第一位为表名，第二位为列名
         String[] split = checkContent.split(REGX_POINT);
-        EzasseExecutor ezasseExecutor = getEzasseExecutor(dataSource.getId());
+        EzasseExecutor ezasseExecutor = getEzasseExecutor(dataSource);
         List<EzasseTableInfo> tableInfos = ezasseExecutor.execute(GET_TABLE_INFO,
                 GetTableInfoActionParam.builder()
                         .tableName(split[0])
                         .columnName(split[1])
-                        .build());
+                        .build(), dataSource);
         if (CollectionUtils.isEmpty(tableInfos)) {
             return true;
         }

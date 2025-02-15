@@ -1,7 +1,6 @@
 package cn.com.pism.ezasse.model;
 
 import cn.com.pism.ezasse.context.EzasseContextHolder;
-import cn.com.pism.ezasse.executor.EzasseExecutor;
 
 /**
  * @author PerccyKing
@@ -39,8 +38,8 @@ public abstract class EzasseChecker {
      */
     public abstract String getId();
 
-    protected EzasseExecutor getEzasseExecutor(String dataSourceId) {
-        return EzasseContextHolder.getContext().executorManager().getExecutor(dataSourceId);
+    protected EzasseExecutor getEzasseExecutor(EzasseDataSource dataSource) {
+        return EzasseContextHolder.getContext().executorManager().getExecutor(dataSource.getType());
     }
 
     public boolean allEmpty() {

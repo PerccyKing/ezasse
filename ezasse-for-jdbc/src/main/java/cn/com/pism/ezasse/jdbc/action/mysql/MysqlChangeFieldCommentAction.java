@@ -1,8 +1,9 @@
 package cn.com.pism.ezasse.jdbc.action.mysql;
 
-import cn.com.pism.ezasse.action.EzasseExecutorAction;
-import cn.com.pism.ezasse.action.param.ChangeFieldCommentActionParam;
-import org.springframework.jdbc.core.JdbcTemplate;
+import cn.com.pism.ezasse.jdbc.action.JdbcTemplateCache;
+import cn.com.pism.ezasse.jdbc.action.param.ChangeFieldCommentActionParam;
+import cn.com.pism.ezasse.model.EzasseDataSource;
+import cn.com.pism.ezasse.model.EzasseExecutorAction;
 
 import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.CHANGE_FIELD_COMMENT;
 
@@ -14,16 +15,10 @@ public class MysqlChangeFieldCommentAction implements EzasseExecutorAction<Chang
 
     private static final String SQL = "ALTER TABLE %s MODIFY COLUMN %s COMMENT '%s'";
 
-    private final JdbcTemplate jdbcTemplate;
-
-    public MysqlChangeFieldCommentAction(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     // todo 需要拿到表信息
     @Override
-    public Boolean doAction(ChangeFieldCommentActionParam actionParam) {
-        jdbcTemplate.execute(String.format(SQL, actionParam.getTableName(), actionParam.getFieldName(), actionParam.getComment()));
+    public Boolean doAction(ChangeFieldCommentActionParam actionParam, EzasseDataSource dataSource) {
+        JdbcTemplateCache.get(dataSource.getId()).execute(String.format(SQL, actionParam.getTableName(), actionParam.getFieldName(), actionParam.getComment()));
         return true;
     }
 

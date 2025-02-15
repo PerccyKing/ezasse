@@ -1,13 +1,13 @@
 package cn.com.pism.ezasse.jdbc.action;
 
-import cn.com.pism.ezasse.action.EzasseExecutorAction;
-import cn.com.pism.ezasse.action.param.GetTableInfoActionParam;
 import cn.com.pism.ezasse.exception.EzasseException;
+import cn.com.pism.ezasse.jdbc.action.param.GetTableInfoActionParam;
+import cn.com.pism.ezasse.model.EzasseDataSource;
+import cn.com.pism.ezasse.model.EzasseExecutorAction;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -33,9 +33,7 @@ public class JdbcGetTableInfoActionBuilder implements EzasseExecutorAction<GetTa
 
     private final Map<String, String> where = new HashMap<>(16);
 
-    private final Map<String, Function<GetTableInfoActionParam, String>> paramWhere = new HashMap<>(16);
-
-    private JdbcTemplate jdbcTemplate;
+    private final Map<String, Function<WhereCondition, String>> paramWhere = new HashMap<>(16);
 
     private JdbcGetTableInfoActionBuilder() {
     }
@@ -46,12 +44,12 @@ public class JdbcGetTableInfoActionBuilder implements EzasseExecutorAction<GetTa
 
     @Override
     @SuppressWarnings("all")
-    public List<EzasseTableInfo> doAction(GetTableInfoActionParam actionParam) {
-        SqlArgs sqlArgs = buildQuerySql(actionParam);
-        return toTableInfo(jdbcTemplate.queryForList(sqlArgs.getSql(), sqlArgs.getArgs().toArray()));
+    public List<EzasseTableInfo> doAction(GetTableInfoActionParam actionParam, EzasseDataSource dataSource) {
+        SqlArgs sqlArgs = buildQuerySql(actionParam, dataSource);
+        return toTableInfo(JdbcTemplateCache.get(dataSource.getId()).queryForList(sqlArgs.getSql(), sqlArgs.getArgs().toArray()));
     }
 
-    private SqlArgs buildQuerySql(GetTableInfoActionParam actionParam) {
+    private SqlArgs buildQuerySql(GetTableInfoActionParam actionParam, EzasseDataSource dataSource) {
         StringBuilder getTableInfoSql = new StringBuilder("select \n");
 
         appendSelect(getTableInfoSql);
@@ -68,7 +66,10 @@ public class JdbcGetTableInfoActionBuilder implements EzasseExecutorAction<GetTa
 
         List<String> args = new ArrayList<>();
 
-        appendParamWhere(actionParam, args, wheres);
+        WhereCondition whereCondition = new WhereCondition();
+        whereCondition.setDataSource(dataSource);
+        whereCondition.setActionParam(actionParam);
+        appendParamWhere(whereCondition, args, wheres);
 
         appendWhere(args, wheres);
 
@@ -77,15 +78,15 @@ public class JdbcGetTableInfoActionBuilder implements EzasseExecutorAction<GetTa
         return new SqlArgs(getTableInfoSql.toString(), args);
     }
 
-    private void appendParamWhere(GetTableInfoActionParam actionParam, List<String> args, List<String> wheres) {
+    private void appendParamWhere(WhereCondition whereCondition, List<String> args, List<String> wheres) {
         List<String> paramWhereList = paramWhere
                 .entrySet()
                 .stream()
                 .map(entry -> {
-                    if (entry.getValue() == null || StringUtils.isBlank(entry.getValue().apply(actionParam))) {
+                    if (entry.getValue() == null || StringUtils.isBlank(entry.getValue().apply(whereCondition))) {
                         return "";
                     }
-                    args.add(entry.getValue().apply(actionParam));
+                    args.add(entry.getValue().apply(whereCondition));
                     return entry.getKey() + " = ?\n";
                 })
                 .collect(Collectors.toList());
@@ -161,22 +162,14 @@ public class JdbcGetTableInfoActionBuilder implements EzasseExecutorAction<GetTa
         return this;
     }
 
-    public JdbcGetTableInfoActionBuilder where(String column, Function<GetTableInfoActionParam, String> condition) {
+    public JdbcGetTableInfoActionBuilder where(String column, Function<WhereCondition, String> condition) {
         this.paramWhere.put(column, condition);
-        return this;
-    }
-
-    public JdbcGetTableInfoActionBuilder jdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
         return this;
     }
 
     public JdbcGetTableInfoActionBuilder build() {
         if (CollectionUtils.isEmpty(selectMap)) {
             throw new EzasseException("selectMap empty error");
-        }
-        if (jdbcTemplate == null) {
-            throw new EzasseException("jdbcTemplate empty error");
         }
         return this;
     }
@@ -189,4 +182,9 @@ public class JdbcGetTableInfoActionBuilder implements EzasseExecutorAction<GetTa
         private List<String> args;
     }
 
+    @Data
+    public static class WhereCondition {
+        private EzasseDataSource dataSource;
+        private GetTableInfoActionParam actionParam;
+    }
 }

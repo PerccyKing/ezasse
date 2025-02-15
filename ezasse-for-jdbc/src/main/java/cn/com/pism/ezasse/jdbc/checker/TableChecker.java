@@ -1,11 +1,11 @@
 package cn.com.pism.ezasse.jdbc.checker;
 
-import cn.com.pism.ezasse.action.param.GetTableInfoActionParam;
-import cn.com.pism.ezasse.action.param.TableIsExistActionParam;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
-import cn.com.pism.ezasse.executor.EzasseExecutor;
+import cn.com.pism.ezasse.jdbc.action.param.GetTableInfoActionParam;
+import cn.com.pism.ezasse.jdbc.action.param.TableIsExistActionParam;
 import cn.com.pism.ezasse.model.EzasseChecker;
 import cn.com.pism.ezasse.model.EzasseDataSource;
+import cn.com.pism.ezasse.model.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import org.springframework.util.CollectionUtils;
 
@@ -26,12 +26,12 @@ public class TableChecker extends EzasseChecker {
     @Override
     public boolean check(EzasseDataSource dataSource, String checkContent) {
         //执行器
-        EzasseExecutor ezasseExecutor = getEzasseExecutor(dataSource.getId());
-        if (ezasseExecutor.getEzasseExecutorAction(TABLE_EXISTS) != null) {
-            Boolean executeRes = ezasseExecutor.execute(TABLE_EXISTS, TableIsExistActionParam.builder().tableName(checkContent).build());
+        EzasseExecutor ezasseExecutor = getEzasseExecutor(dataSource);
+        if (EzasseContextHolder.getContext().executorManager().getExecutorAction(ezasseExecutor.getDataSourceType(), TABLE_EXISTS) != null) {
+            Boolean executeRes = ezasseExecutor.execute(TABLE_EXISTS, TableIsExistActionParam.builder().tableName(checkContent).build(), dataSource);
             return Boolean.TRUE.equals(executeRes);
         } else {
-            List<EzasseTableInfo> tableInfos = ezasseExecutor.execute(GET_TABLE_INFO, GetTableInfoActionParam.builder().tableName(checkContent).build());
+            List<EzasseTableInfo> tableInfos = ezasseExecutor.execute(GET_TABLE_INFO, GetTableInfoActionParam.builder().tableName(checkContent).build(), dataSource);
             // 表如果存在返回false
             return CollectionUtils.isEmpty(tableInfos);
         }

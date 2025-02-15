@@ -1,13 +1,9 @@
 package cn.com.pism.ezasse;
 
-import cn.com.pism.ezasse.action.param.DoExecuteActionParam;
-import cn.com.pism.ezasse.model.EzasseChecker;
 import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
-import cn.com.pism.ezasse.executor.EzasseExecutor;
 import cn.com.pism.ezasse.loader.EzasseFileResourceLoader;
-import cn.com.pism.ezasse.model.EzasseCheckLineContent;
-import cn.com.pism.ezasse.model.EzasseDataSource;
+import cn.com.pism.ezasse.model.*;
 import cn.com.pism.ezasse.resource.EzasseFileResource;
 import cn.com.pism.ezasse.resource.EzasseFileResourceData;
 import cn.com.pism.ezasse.resource.EzasseFileResourceParser;
@@ -48,13 +44,14 @@ public class FileEzasse extends AbstractEzasse {
         resourceData
                 .getCheckLineContents()
                 .stream()
-                // 过滤掉执行内容为空的数据
                 .filter(checkLineContent -> {
+                    // 允许执行内容为空的校验行
                     if (EzasseContextHolder.getContext().checkerManager()
                             .getAllowEmptyCheckerKeys()
                             .contains(checkLineContent.getCheckLine().getCheckKey())) {
                         return true;
                     }
+                    // 过滤掉执行内容为空的
                     return StringUtils.isNotBlank(checkLineContent.getExecuteScript());
                 })
                 .forEach(this::checkAndExecute);
@@ -65,13 +62,20 @@ public class FileEzasse extends AbstractEzasse {
         boolean checkResult = doCheck(checkLineContent);
         // 判断校验结果
         if (checkResult) {
+
+            // 获取执行节点数据源
+            EzasseDataSource executeDataSource = EzasseContextHolder
+                    .getContext()
+                    .datasourceManager()
+                    .getDataSource(checkLineContent.getCheckLine().getExecuteNode());
+
             // 如果校验通过，获取执行节点使用的数据源
             EzasseExecutor executor = EzasseContextHolder
                     .getContext()
                     .executorManager()
-                    .getExecutor(checkLineContent.getCheckLine().getExecuteNode());
+                    .getExecutor(executeDataSource.getType());
 
-            executor.execute(DO_EXECUTE, new DoExecuteActionParam(checkLineContent.getExecuteScript()));
+            executor.execute(DO_EXECUTE, new DoExecuteActionParam(checkLineContent.getExecuteScript()), executeDataSource);
         }
     }
 

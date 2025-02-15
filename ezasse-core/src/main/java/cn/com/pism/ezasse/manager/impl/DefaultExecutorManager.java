@@ -1,20 +1,12 @@
 package cn.com.pism.ezasse.manager.impl;
 
-import cn.com.pism.ezasse.action.EzasseExecutorAction;
-import cn.com.pism.ezasse.action.param.ActionParam;
-import cn.com.pism.ezasse.context.EzasseContextHolder;
-import cn.com.pism.ezasse.exception.EzasseException;
-import cn.com.pism.ezasse.executor.EzasseExecutor;
 import cn.com.pism.ezasse.manager.ExecutorManager;
-import cn.com.pism.ezasse.model.EzasseDataSource;
+import cn.com.pism.ezasse.model.ActionParam;
+import cn.com.pism.ezasse.model.EzasseExecutor;
+import cn.com.pism.ezasse.model.EzasseExecutorAction;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -25,22 +17,20 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DefaultExecutorManager implements ExecutorManager {
 
-    private static final Log log = LogFactory.getLog(DefaultExecutorManager.class);
-
     /**
-     * 数据源类型，对应的执行器类型
-     */
-    private final Map<String, Class<? extends EzasseExecutor>> executorClassMap = new ConcurrentHashMap<>(16);
-
-    /**
-     * 执行器map [id,执行器]
+     * 执行器map [datasourceType,执行器]
      */
     private final Map<String, EzasseExecutor> executorMap = new ConcurrentHashMap<>(16);
 
     /**
-     * 执行器对应的执行动作map
+     * 执行动作map [datasourceType,执行器动作]
      */
-    private final Map<Class<? extends EzasseExecutor>, List<EzasseExecutorAction<? extends ActionParam, ?>>> executorActionMap = new ConcurrentHashMap<>(16);
+    private final Map<String, List<EzasseExecutorAction<? extends ActionParam, ?>>> executorActionMap = new ConcurrentHashMap<>(16);
+
+    /**
+     * 执行器动作id map [执行器类型, [动作id,动作]]]
+     */
+    private final Map<String, Map<String, EzasseExecutorAction<? extends ActionParam, ?>>> executorActionIdMap = new HashMap<>(16);
 
     /**
      * <p>
@@ -48,26 +38,13 @@ public class DefaultExecutorManager implements ExecutorManager {
      * </p>
      * by perccyking
      *
-     * @param dataSourceId : 数据源id
+     * @param dataSourceType : 数据源类型
      * @return {@link EzasseExecutor} 执行器
      * @since 24-12-29 17:52
      */
     @Override
-    public EzasseExecutor getExecutor(String dataSourceId) {
-        return executorMap.computeIfAbsent(dataSourceId, id -> {
-            // 获取数据源
-            EzasseDataSource dataSource = EzasseContextHolder.getContext().datasourceManager().getDataSource(id);
-
-            // 通过数据源类型获取执行器的类型
-            Class<? extends EzasseExecutor> ezasseExecutorClass = executorClassMap.get(dataSource.getType());
-            try {
-                // 实例化执行器
-                return ezasseExecutorClass.getConstructor(EzasseDataSource.class).newInstance(dataSource);
-            } catch (Exception e) {
-                log.error("获取执行器失败", e);
-                throw new EzasseException("really?!!");
-            }
-        });
+    public EzasseExecutor getExecutor(String dataSourceType) {
+        return executorMap.get(dataSourceType);
     }
 
     /**
@@ -77,12 +54,12 @@ public class DefaultExecutorManager implements ExecutorManager {
      * by perccyking
      *
      * @param dataSourceType : 数据源类型
-     * @param executorClass  : 执行器类型
+     * @param executor       : 执行器实例
      * @since 24-12-29 17:52
      */
     @Override
-    public void registerExecutor(String dataSourceType, Class<? extends EzasseExecutor> executorClass) {
-        executorClassMap.put(dataSourceType, executorClass);
+    public void registerExecutor(String dataSourceType, EzasseExecutor executor) {
+        executorMap.put(dataSourceType, executor);
     }
 
 
@@ -92,16 +69,21 @@ public class DefaultExecutorManager implements ExecutorManager {
      * </p>
      * by perccyking
      *
-     * @param executorType   : 执行器类型
+     * @param dataSourceType : 执行器类型
      * @param executorAction : 动作
      * @since 25-01-01 01:08
      */
     @Override
-    public void registerExecutorAction(Class<? extends EzasseExecutor> executorType,
+    public void registerExecutorAction(String dataSourceType,
                                        EzasseExecutorAction<? extends ActionParam, ?> executorAction) {
+
         List<EzasseExecutorAction<? extends ActionParam, ?>> ezasseExecutorActions =
-                executorActionMap.computeIfAbsent(executorType, k -> new ArrayList<>());
+                executorActionMap.computeIfAbsent(dataSourceType, k -> new ArrayList<>());
         ezasseExecutorActions.add(executorAction);
+
+        Map<String, EzasseExecutorAction<? extends ActionParam, ?>> idExecutorActionMap =
+                executorActionIdMap.computeIfAbsent(dataSourceType, k -> new HashMap<>(16));
+        idExecutorActionMap.put(executorAction.getId(), executorAction);
     }
 
     /**
@@ -110,16 +92,36 @@ public class DefaultExecutorManager implements ExecutorManager {
      * </p>
      * by perccyking
      *
-     * @param executorType : 执行器类型
+     * @param dataSourceType : 数据源类型
      * @return 动作列表
      * @since 25-01-01 01:09
      */
     @Override
-    public List<EzasseExecutorAction<? extends ActionParam, ?>> getExecutorAction(Class<? extends EzasseExecutor> executorType) {
-        List<EzasseExecutorAction<? extends ActionParam, ?>> ezasseExecutorActions = executorActionMap.get(executorType);
-        if (CollectionUtils.isEmpty(ezasseExecutorActions)) {
+    public List<EzasseExecutorAction<? extends ActionParam, ?>> getExecutorAction(String dataSourceType) {
+        List<EzasseExecutorAction<? extends ActionParam, ?>> executorActions = executorActionMap.get(dataSourceType);
+        if (CollectionUtils.isEmpty(executorActions)) {
             return Collections.emptyList();
         }
-        return ezasseExecutorActions;
+        return executorActions;
+    }
+
+    /**
+     * <p>
+     * 获取执行器的指定动作
+     * </p>
+     * by perccyking
+     *
+     * @param dataSourceType : 数据源类型
+     * @param actionId       : 动作id
+     * @return 执行器
+     * @since 25-02-08 12:15
+     */
+    @Override
+    public EzasseExecutorAction<? extends ActionParam, ?> getExecutorAction(String dataSourceType, String actionId) {
+        Map<String, EzasseExecutorAction<? extends ActionParam, ?>> actionMap = executorActionIdMap.getOrDefault(dataSourceType, new HashMap<>());
+        if (actionMap.get(actionId) == null) {
+            return actionMap.get(actionId);
+        }
+        return executorActionIdMap.getOrDefault(dataSourceType, new HashMap<>()).get(actionId);
     }
 }

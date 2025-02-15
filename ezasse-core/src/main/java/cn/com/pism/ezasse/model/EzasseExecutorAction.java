@@ -1,7 +1,4 @@
-package cn.com.pism.ezasse.action;
-
-import cn.com.pism.ezasse.action.param.ActionParam;
-import cn.com.pism.ezasse.executor.EzasseExecutor;
+package cn.com.pism.ezasse.model;
 
 /**
  * 执行器动作
@@ -22,10 +19,11 @@ public interface EzasseExecutorAction<P extends ActionParam, R> {
      * by perccyking
      *
      * @param actionParam : 动作参数
+     * @param dataSource  : 数据源
      * @return {@link R} 动作返回值
      * @since 25-01-01 11:19
      */
-    R doAction(P actionParam);
+    R doAction(P actionParam, EzasseDataSource dataSource);
 
     /**
      * <p>
@@ -37,4 +35,5 @@ public interface EzasseExecutorAction<P extends ActionParam, R> {
      * @since 25-01-01 11:19
      */
     String getId();
+
 }

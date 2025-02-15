@@ -1,4 +1,4 @@
-package cn.com.pism.ezasse.action.param;
+package cn.com.pism.ezasse.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
