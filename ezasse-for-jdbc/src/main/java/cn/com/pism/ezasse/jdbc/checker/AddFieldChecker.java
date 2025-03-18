@@ -2,7 +2,7 @@ package cn.com.pism.ezasse.jdbc.checker;
 
 import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.jdbc.action.param.GetTableInfoActionParam;
-import cn.com.pism.ezasse.model.EzasseChecker;
+import cn.com.pism.ezasse.checker.EzasseChecker;
 import cn.com.pism.ezasse.model.EzasseDataSource;
 import cn.com.pism.ezasse.model.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
@@ -44,6 +44,6 @@ public class AddFieldChecker extends EzasseChecker {
 
     @Override
     public String getId() {
-        return EzasseContextHolder.getContext().configManger().getConfig().getKeyWords().getField().getAdd();
+        return EzasseContextHolder.getContext().configManager().getConfig().getKeyWords().getField().getAdd();
     }
 }

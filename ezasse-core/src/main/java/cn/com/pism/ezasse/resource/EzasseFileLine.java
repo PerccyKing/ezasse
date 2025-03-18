@@ -1,6 +1,6 @@
 package cn.com.pism.ezasse.resource;
 
-import cn.com.pism.ezasse.context.EzasseContextHolder;
+import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import lombok.Getter;
 import lombok.Setter;
@@ -65,15 +65,15 @@ public class EzasseFileLine {
     @Setter
     private String executeNode;
 
-    public EzasseFileLine(String line) {
+    public EzasseFileLine(EzasseContext ezasseContext, String line) {
         this.line = line;
 
         this.emptyLine = StringUtils.isBlank(line);
 
-        List<String> checkerKeys = EzasseContextHolder.getContext().checkerManager().getCheckerKeys();
+        List<String> checkerKeys = ezasseContext.checkerManager().getCheckerKeys();
 
         if (!this.emptyLine) {
-            EzasseConfig config = EzasseContextHolder.getContext().configManger().getConfig();
+            EzasseConfig config = ezasseContext.configManager().getConfig();
 
             //如果开起了限定符，则判断是否是限定符开始或结束行
             if (config.isDelimiter()) {

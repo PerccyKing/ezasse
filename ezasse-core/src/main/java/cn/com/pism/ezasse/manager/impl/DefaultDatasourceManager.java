@@ -2,6 +2,7 @@ package cn.com.pism.ezasse.manager.impl;
 
 import cn.com.pism.ezasse.manager.DatasourceManager;
 import cn.com.pism.ezasse.model.EzasseDataSource;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -61,5 +62,10 @@ public class DefaultDatasourceManager implements DatasourceManager {
     @Override
     public void registerMasterDataSource(EzasseDataSource dataSource) {
         dataSourceMap.put(MASTER, dataSource);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return CollectionUtils.isEmpty(dataSourceMap);
     }
 }

@@ -1,8 +1,8 @@
 package cn.com.pism.ezasse.manager.impl;
 
-import cn.com.pism.ezasse.resource.EzasseResource;
 import cn.com.pism.ezasse.loader.EzasseResourceLoader;
 import cn.com.pism.ezasse.manager.ResourceLoaderManager;
+import cn.com.pism.ezasse.resource.EzasseResource;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,16 +18,16 @@ public class DefaultResourceLoaderManager implements ResourceLoaderManager {
     private final Map<Class<? extends EzasseResource>, EzasseResourceLoader<? extends EzasseResource>> loaders = new ConcurrentHashMap<>(256);
 
     @Override
-    public <T extends EzasseResource> EzasseResourceLoader<T> getResourceLoader(Class<T> resourceClass) {
+    public EzasseResourceLoader<? extends EzasseResource> getResourceLoader(Class<? extends EzasseResource> resourceClass) {
         EzasseResourceLoader<? extends EzasseResource> loader = loaders.get(resourceClass);
         if (loader == null) {
             throw new IllegalArgumentException("No resource loader registered for class: " + resourceClass.getName());
         }
-        return createTypedLoader(loader, resourceClass);
+        return loader;
     }
 
     @Override
-    public <T extends EzasseResource> void registerResourceLoader(Class<T> resourceClass, EzasseResourceLoader<T> resourceLoader) {
+    public void registerResourceLoader(Class<? extends EzasseResource> resourceClass, EzasseResourceLoader<? extends EzasseResource> resourceLoader) {
 
         if (resourceClass == null) {
             throw new IllegalArgumentException("Resource class cannot be null.");
@@ -39,29 +39,5 @@ public class DefaultResourceLoaderManager implements ResourceLoaderManager {
         loaders.put(resourceClass, resourceLoader);
     }
 
-    private <T extends EzasseResource> EzasseResourceLoader<T> createTypedLoader(EzasseResourceLoader<? extends EzasseResource> loader, Class<T> resourceClass) {
-        return new TypedEzasseResourceLoader<>(loader, resourceClass);
-    }
-
-    private static class TypedEzasseResourceLoader<T extends EzasseResource> implements EzasseResourceLoader<T> {
-
-        private final EzasseResourceLoader<? extends EzasseResource> delegate;
-        private final Class<T> resourceClass;
-
-        public TypedEzasseResourceLoader(EzasseResourceLoader<? extends EzasseResource> delegate, Class<T> resourceClass) {
-            this.delegate = delegate;
-            this.resourceClass = resourceClass;
-        }
-
-        @Override
-        public T load() {
-            EzasseResource resource = delegate.load();
-            if (resourceClass.isInstance(resource)) {
-                return resourceClass.cast(resource);
-            } else {
-                throw new ClassCastException("Loader returned an incorrect type: " + resource.getClass().getName() + " is not a " + resourceClass.getName());
-            }
-        }
-    }
 }
 

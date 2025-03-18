@@ -5,7 +5,7 @@ import cn.com.pism.ezasse.jdbc.action.mysql.MysqlTableExistsAction;
 import cn.com.pism.ezasse.manager.ExecutorManager;
 import cn.com.pism.ezasse.model.ExecutorActionRegister;
 
-import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.MYSQL;
+import static cn.com.pism.ezasse.jdbc.constants.EzasseDatabaseTypeConstants.MYSQL;
 
 /**
  * @author PerccyKing

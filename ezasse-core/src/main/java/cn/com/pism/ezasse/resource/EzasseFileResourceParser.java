@@ -1,7 +1,7 @@
 package cn.com.pism.ezasse.resource;
 
-import cn.com.pism.ezasse.context.EzasseContextHolder;
-import cn.com.pism.ezasse.model.EzasseCheckLineContent;
+import cn.com.pism.ezasse.context.EzasseContext;
+import cn.com.pism.ezasse.checker.EzasseCheckLineContent;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseFile;
 import cn.com.pism.ezasse.util.EzasseIoUtil;
@@ -25,6 +25,12 @@ import java.util.stream.Stream;
 public class EzasseFileResourceParser implements EzasseResourceParser {
 
     private static final Log log = LogFactory.getLog(EzasseFileResourceParser.class);
+
+    private final EzasseContext ezasseContext;
+
+    public EzasseFileResourceParser(EzasseContext ezasseContext) {
+        this.ezasseContext = ezasseContext;
+    }
 
     @Override
     public EzasseFileResourceData parse(EzasseResource ezasseResource) {
@@ -56,7 +62,7 @@ public class EzasseFileResourceParser implements EzasseResourceParser {
 
     private EzasseFileResourceData groupParsed(List<EzasseFile> sqlFiles, EzasseFileResourceData resourceData) {
         //配置
-        EzasseConfig config = EzasseContextHolder.getContext().configManger().getConfig();
+        EzasseConfig config = ezasseContext.configManager().getConfig();
         List<String> groupOrder = config.getGroupOrder();
 
         //如果指定了分组，按分组顺序解析文件
@@ -76,7 +82,7 @@ public class EzasseFileResourceParser implements EzasseResourceParser {
 
     private List<EzasseFile> filterSqlFiles(List<EzasseFile> sqlFiles) {
         //配置
-        EzasseConfig config = EzasseContextHolder.getContext().configManger().getConfig();
+        EzasseConfig config = ezasseContext.configManager().getConfig();
 
         //过滤指定文件
         List<String> fileList = config.getFileList();
@@ -132,7 +138,7 @@ public class EzasseFileResourceParser implements EzasseResourceParser {
         EzasseCheckLineContent currentCheckLineContent = null;
 
         for (String line : lines) {
-            EzasseFileLine ezasseFileLine = new EzasseFileLine(line);
+            EzasseFileLine ezasseFileLine = new EzasseFileLine(ezasseContext,line);
             fileData.addFileLine(ezasseFileLine);
 
             // 如果当前行校验行

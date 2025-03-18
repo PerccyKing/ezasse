@@ -2,7 +2,7 @@ package cn.com.pism.ezasse.jdbc.checker.change;
 
 import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.jdbc.action.param.ChangeFieldCommentActionParam;
-import cn.com.pism.ezasse.model.EzasseCheckLineContent;
+import cn.com.pism.ezasse.checker.EzasseCheckLineContent;
 import cn.com.pism.ezasse.model.EzasseDataSource;
 import cn.com.pism.ezasse.model.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseTableInfo;

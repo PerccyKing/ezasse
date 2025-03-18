@@ -1,12 +1,18 @@
 package cn.com.pism.ezasse.model;
 
+import cn.com.pism.ezasse.manager.ExecutorManager;
+import lombok.Setter;
+
 /**
  * 执行器
  *
  * @author PerccyKing
  * @since 24-12-14 12:33
  */
-public interface EzasseExecutor {
+@Setter
+public abstract class EzasseExecutor {
+
+    protected ExecutorManager executorManager;
 
     /**
      * 执行action
@@ -18,15 +24,27 @@ public interface EzasseExecutor {
      * @param <P>        参数
      * @return action执行结果
      */
-    <R, P extends ActionParam> R execute(String actionId, P param, EzasseDataSource dataSource);
+    @SuppressWarnings("unchecked")
+    public <R, P extends ActionParam> R execute(String actionId, P param, EzasseDataSource dataSource) {
+        EzasseExecutorAction<P, ?> executorAction = (EzasseExecutorAction<P, ?>) getAction(actionId);
+        if (executorAction == null) {
+            // 没有action处理
+            return null;
+        }
+        return (R) executorAction.doAction(param, dataSource);
+    }
 
     /**
      * 获取action
+     *
      * @param actionId actionId
      * @return 执行器action实例
      */
     @SuppressWarnings("all")
-    EzasseExecutorAction<? extends ActionParam, ?> getAction(String actionId);
+    protected EzasseExecutorAction<? extends ActionParam, ?> getAction(String actionId) {
+        EzasseExecutorAction<? extends ActionParam, ?> executorAction = executorManager.getExecutorAction(getDataSourceType(), actionId);
+        return executorAction;
+    }
 
     /**
      * <p>
@@ -34,9 +52,9 @@ public interface EzasseExecutor {
      * </p>
      * by perccyking
      *
-     * @return {@link EzasseDataSourceType} 执行器数据源类型
+     * @return 执行器数据源类型
      * @since 25-02-08 12:18
      */
-    String getDataSourceType();
+    public abstract String getDataSourceType();
 
 }

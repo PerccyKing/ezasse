@@ -4,7 +4,7 @@ import cn.com.pism.ezasse.jdbc.action.oracle.OracleGetTableInfoAction;
 import cn.com.pism.ezasse.manager.ExecutorManager;
 import cn.com.pism.ezasse.model.ExecutorActionRegister;
 
-import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.ORACLE;
+import static cn.com.pism.ezasse.jdbc.constants.EzasseDatabaseTypeConstants.ORACLE;
 
 /**
  * @author PerccyKing

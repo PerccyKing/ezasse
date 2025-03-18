@@ -1,13 +1,14 @@
 package cn.com.pism.ezasse.jdbc.model;
 
 import cn.com.pism.ezasse.model.EzasseDataSource;
+import lombok.AllArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 
-import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.UNKNOWN;
+import static cn.com.pism.ezasse.jdbc.constants.EzasseDatabaseTypeConstants.UNKNOWN;
 
 /**
  * jdbc 数据源
@@ -15,9 +16,34 @@ import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.UNKNOWN;
  * @author PerccyKing
  * @since 25-01-16 23:36
  */
-public abstract class JdbcEzasseDataSource implements EzasseDataSource {
+@AllArgsConstructor
+public class JdbcEzasseDataSource implements EzasseDataSource {
 
     private static final Log log = LogFactory.getLog(JdbcEzasseDataSource.class);
+
+    private DataSource dataSource;
+
+    private String id;
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getDataSource() {
+        return (T) dataSource;
+    }
+
+    /**
+     * <p>
+     * 获取数据源id
+     * </p>
+     * by perccyking
+     *
+     * @return {@link String} 数据源id
+     * @since 25-01-01 00:44
+     */
+    @Override
+    public String getId() {
+        return id;
+    }
 
     /**
      * 获取 jdbc 数据源类型
@@ -26,7 +52,6 @@ public abstract class JdbcEzasseDataSource implements EzasseDataSource {
      */
     @Override
     public String getType() {
-        DataSource dataSource = getDataSource();
         try (Connection connection = dataSource.getConnection()) {
             return getDatabaseProductName(connection.getMetaData().getURL()).toUpperCase();
         } catch (Exception e) {

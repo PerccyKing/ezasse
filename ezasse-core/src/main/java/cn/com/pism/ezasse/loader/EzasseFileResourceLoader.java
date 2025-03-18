@@ -1,6 +1,6 @@
 package cn.com.pism.ezasse.loader;
 
-import cn.com.pism.ezasse.context.EzasseContextHolder;
+import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseFile;
 import cn.com.pism.ezasse.resource.EzasseFileResource;
@@ -23,10 +23,17 @@ import static cn.com.pism.ezasse.util.EzasseUtil.getResourcesFromFolder;
  */
 public class EzasseFileResourceLoader implements EzasseResourceLoader<EzasseFileResource> {
 
+    private final EzasseContext ezasseContext;
+
+
+    public EzasseFileResourceLoader(EzasseContext ezasseContext) {
+        this.ezasseContext = ezasseContext;
+    }
+
     @Override
     public EzasseFileResource load() {
         //配置
-        EzasseConfig config = EzasseContextHolder.getContext().configManger().getConfig();
+        EzasseConfig config = ezasseContext.configManager().getConfig();
 
         //脚本文件位置
         String folder = config.getFolder();
@@ -66,7 +73,7 @@ public class EzasseFileResourceLoader implements EzasseResourceLoader<EzasseFile
             }
 
             //如果分段能匹配到数据源，则认为当前分段为数据源
-            if (EzasseContextHolder.getContext().datasourceManager().getDataSource(split) != null) {
+            if (ezasseContext.datasourceManager().getDataSource(split) != null) {
                 ezasseFile.setNode(split);
             }
         });

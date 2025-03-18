@@ -25,9 +25,15 @@ public class EzasseLogUtil {
         }
     }
 
-    public static void error(Log log, String message) {
+    public static void error(Log log, String msg) {
         if (log.isErrorEnabled()) {
-            log.error(message);
+            log.error(msg);
+        }
+    }
+
+    public static void warn(Log log, String msg) {
+        if (log.isWarnEnabled()) {
+            log.warn(msg);
         }
     }
 }

@@ -1,7 +1,8 @@
 package cn.com.pism.ezasse;
 
+import cn.com.pism.ezasse.checker.EzasseCheckLineContent;
+import cn.com.pism.ezasse.checker.EzasseChecker;
 import cn.com.pism.ezasse.context.EzasseContext;
-import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.loader.EzasseFileResourceLoader;
 import cn.com.pism.ezasse.model.*;
 import cn.com.pism.ezasse.resource.EzasseFileResource;
@@ -19,18 +20,24 @@ public class FileEzasse extends AbstractEzasse {
 
     public FileEzasse() {
         super(EzasseFileResource.class);
-
-        EzasseContext context = EzasseContextHolder.getContext();
-
-        //注册资源加载器
-        context.resourceLoaderManager()
-                .registerResourceLoader(EzasseFileResource.class, new EzasseFileResourceLoader());
-
-        //注册资源解析器
-        context.resourceParserManger()
-                .registerResourceParser(EzasseFileResource.class, new EzasseFileResourceParser());
     }
 
+    public FileEzasse(EzasseContext ezasseContext) {
+        super(EzasseFileResource.class, ezasseContext);
+
+        if (ezasseContext.resourceLoaderManager().getResourceLoader(resourceClass) == null) {
+            //注册资源加载器
+            ezasseContext.resourceLoaderManager()
+                    .registerResourceLoader(resourceClass, new EzasseFileResourceLoader(ezasseContext));
+        }
+
+        if (ezasseContext.resourceParserManager().getResourceParser(resourceClass) == null) {
+            //注册资源解析器
+            ezasseContext.resourceParserManager()
+                    .registerResourceParser(resourceClass, new EzasseFileResourceParser(ezasseContext));
+        }
+
+    }
 
     @Override
     protected void doExecute() {
@@ -46,7 +53,7 @@ public class FileEzasse extends AbstractEzasse {
                 .stream()
                 .filter(checkLineContent -> {
                     // 允许执行内容为空的校验行
-                    if (EzasseContextHolder.getContext().checkerManager()
+                    if (ezasseContext.checkerManager()
                             .getAllowEmptyCheckerKeys()
                             .contains(checkLineContent.getCheckLine().getCheckKey())) {
                         return true;
@@ -64,14 +71,12 @@ public class FileEzasse extends AbstractEzasse {
         if (checkResult) {
 
             // 获取执行节点数据源
-            EzasseDataSource executeDataSource = EzasseContextHolder
-                    .getContext()
+            EzasseDataSource executeDataSource = ezasseContext
                     .datasourceManager()
                     .getDataSource(checkLineContent.getCheckLine().getExecuteNode());
 
             // 如果校验通过，获取执行节点使用的数据源
-            EzasseExecutor executor = EzasseContextHolder
-                    .getContext()
+            EzasseExecutor executor = ezasseContext
                     .executorManager()
                     .getExecutor(executeDataSource.getType());
 
@@ -85,8 +90,7 @@ public class FileEzasse extends AbstractEzasse {
         String checkNode = checkLineContent.getCheckLine().getCheckNode();
 
         // 通过校验行获取校验器
-        EzasseChecker ezasseChecker = EzasseContextHolder
-                .getContext()
+        EzasseChecker ezasseChecker = ezasseContext
                 .checkerManager()
                 .getChecker(checkLineContent.getCheckLine().getCheckKey());
 
@@ -95,16 +99,15 @@ public class FileEzasse extends AbstractEzasse {
         }
 
         // 获取校验节点使用的数据源
-        EzasseDataSource dataSource = EzasseContextHolder.getContext().datasourceManager().getDataSource(checkNode);
+        EzasseDataSource dataSource = ezasseContext.datasourceManager().getDataSource(checkNode);
 
         // 校验
         return ezasseChecker.check(dataSource, checkLineContent);
     }
 
     protected EzasseFileResourceData getEzasseResource() {
-        return (EzasseFileResourceData) EzasseContextHolder
-                .getContext()
-                .resourceManger()
+        return (EzasseFileResourceData) ezasseContext
+                .resourceManager()
                 .getEzasseResource(EzasseFileResource.class);
     }
 }

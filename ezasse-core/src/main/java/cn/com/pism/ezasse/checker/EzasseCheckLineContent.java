@@ -1,4 +1,4 @@
-package cn.com.pism.ezasse.model;
+package cn.com.pism.ezasse.checker;
 
 import cn.com.pism.ezasse.resource.EzasseFileLine;
 import lombok.AllArgsConstructor;

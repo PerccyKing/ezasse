@@ -10,6 +10,7 @@ import static cn.com.pism.ezasse.constants.EzasseConstants.NUM2;
 
 /**
  * 修改字段名/列名
+ *
  * @author PerccyKing
  * @since 25-01-24 13:23
  */
@@ -35,6 +36,6 @@ public class ChangeFieldNameChecker extends ChangeFieldChecker {
 
     @Override
     public String getId() {
-        return EzasseContextHolder.getContext().configManger().getConfig().getKeyWords().getField().getChangeName();
+        return EzasseContextHolder.getContext().configManager().getConfig().getKeyWords().getField().getChangeName();
     }
 }

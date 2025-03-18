@@ -7,8 +7,9 @@ import java.util.Map;
  * @author PerccyKing
  * @version 0.0.1
  * @since 2022/04/11 上午 12:20
- 
+ * @deprecated deprecated at 1.x please use {@link  cn.com.pism.ezasse.model.EzasseDataSource}
  */
+@Deprecated
 public interface EzasseDatasource {
 
     /**

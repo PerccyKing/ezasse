@@ -19,7 +19,7 @@ public class ChangeFieldCommentChecker extends ChangeFieldChecker {
 
     @Override
     public String getId() {
-        return EzasseContextHolder.getContext().configManger().getConfig().getKeyWords().getField().getChangeComment();
+        return EzasseContextHolder.getContext().configManager().getConfig().getKeyWords().getField().getChangeComment();
     }
 
 }

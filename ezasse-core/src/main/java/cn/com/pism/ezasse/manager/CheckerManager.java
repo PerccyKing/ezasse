@@ -1,8 +1,9 @@
 package cn.com.pism.ezasse.manager;
 
-import cn.com.pism.ezasse.model.EzasseChecker;
+import cn.com.pism.ezasse.checker.EzasseChecker;
 
 import java.util.List;
+import java.util.ServiceLoader;
 
 /**
  * 校验器管理器
@@ -11,6 +12,14 @@ import java.util.List;
  * @since 25-01-01 12:33
  */
 public interface CheckerManager {
+
+    /**
+     * 注册校验器
+     */
+    default void registerCheckers() {
+        ServiceLoader<EzasseChecker> checkers = ServiceLoader.load(EzasseChecker.class);
+        checkers.forEach(this::registerChecker);
+    }
 
     /**
      * <p>

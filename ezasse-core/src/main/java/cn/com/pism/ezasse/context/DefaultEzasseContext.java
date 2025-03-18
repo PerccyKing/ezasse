@@ -55,6 +55,34 @@ public class DefaultEzasseContext implements EzasseContext {
         this.resourceLoaderManager = new DefaultResourceLoaderManager();
         this.resourceParserManager = new DefaultResourceParserManager();
         this.resourceManager = new DefaultResourceManager();
+
+        initAfter();
+
+    }
+
+    public DefaultEzasseContext(DatasourceManager datasourceManager,
+                                CheckerManager checkerManager,
+                                ExecutorManager executorManager,
+                                ResourceLoaderManager resourceLoaderManager,
+                                ResourceParserManager resourceParserManager,
+                                ConfigManager configManager,
+                                ResourceManager resourceManager) {
+        this.datasourceManager = datasourceManager;
+        this.checkerManager = checkerManager;
+        this.executorManager = executorManager;
+        this.resourceLoaderManager = resourceLoaderManager;
+        this.resourceParserManager = resourceParserManager;
+        this.configManager = configManager;
+        this.resourceManager = resourceManager;
+
+        initAfter();
+    }
+
+    private void initAfter() {
+        EzasseContextHolder.setEzasseContext(this);
+        this.checkerManager.registerCheckers();
+        this.executorManager.registerExecutors();
+        this.executorManager.registerExecutorActions();
     }
 
     /**
@@ -151,7 +179,7 @@ public class DefaultEzasseContext implements EzasseContext {
      * @since 25-01-01 13:04
      */
     @Override
-    public ConfigManager configManger() {
+    public ConfigManager configManager() {
         return this.configManager;
     }
 
@@ -181,12 +209,12 @@ public class DefaultEzasseContext implements EzasseContext {
     }
 
     @Override
-    public ResourceParserManager resourceParserManger() {
+    public ResourceParserManager resourceParserManager() {
         return resourceParserManager;
     }
 
     @Override
-    public void resourceParserManger(ResourceParserManager resourceParserManager) {
+    public void resourceParserManager(ResourceParserManager resourceParserManager) {
         this.resourceParserManager = resourceParserManager;
     }
 
@@ -200,7 +228,7 @@ public class DefaultEzasseContext implements EzasseContext {
      * @since 25-01-01 13:36
      */
     @Override
-    public ResourceManager resourceManger() {
+    public ResourceManager resourceManager() {
         return this.resourceManager;
     }
 
@@ -210,12 +238,12 @@ public class DefaultEzasseContext implements EzasseContext {
      * </p>
      * by perccyking
      *
-     * @param resourceManger : 资源管理器
+     * @param resourceManager : 资源管理器
      * @since 25-01-01 13:37
      */
     @Override
-    public void resourceManger(ResourceManager resourceManger) {
-        this.resourceManager = resourceManger;
+    public void resourceManager(ResourceManager resourceManager) {
+        this.resourceManager = resourceManager;
     }
 
 }

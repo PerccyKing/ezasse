@@ -3,7 +3,7 @@ package cn.com.pism.ezasse.jdbc.checker;
 
 import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.jdbc.action.param.DefaultCheckActionParam;
-import cn.com.pism.ezasse.model.EzasseChecker;
+import cn.com.pism.ezasse.checker.EzasseChecker;
 import cn.com.pism.ezasse.model.EzasseDataSource;
 
 import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.DEFAULT_CHECK;
@@ -27,6 +27,6 @@ public class ExecChecker extends EzasseChecker {
 
     @Override
     public String getId() {
-        return EzasseContextHolder.getContext().configManger().getConfig().getKeyWords().getExec();
+        return EzasseContextHolder.getContext().configManager().getConfig().getKeyWords().getExec();
     }
 }

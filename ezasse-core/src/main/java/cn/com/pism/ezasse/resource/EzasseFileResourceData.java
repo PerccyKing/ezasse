@@ -1,6 +1,6 @@
 package cn.com.pism.ezasse.resource;
 
-import cn.com.pism.ezasse.model.EzasseCheckLineContent;
+import cn.com.pism.ezasse.checker.EzasseCheckLineContent;
 import lombok.Data;
 
 import java.util.ArrayList;

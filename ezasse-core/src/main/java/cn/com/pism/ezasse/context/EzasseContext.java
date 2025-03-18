@@ -102,7 +102,7 @@ public interface EzasseContext {
      * @return {@link ConfigManager} 配置管理器
      * @since 25-01-01 13:04
      */
-    ConfigManager configManger();
+    ConfigManager configManager();
 
     /**
      * <p>
@@ -146,7 +146,7 @@ public interface EzasseContext {
      * @return {@link ResourceParserManager} 资源解析器管理器
      * @since 25-01-01 00:39
      */
-    ResourceParserManager resourceParserManger();
+    ResourceParserManager resourceParserManager();
 
     /**
      * <p>
@@ -157,7 +157,7 @@ public interface EzasseContext {
      * @param resourceParserManager : 资源解析器管理器
      * @since 25-01-01 00:39
      */
-    void resourceParserManger(ResourceParserManager resourceParserManager);
+    void resourceParserManager(ResourceParserManager resourceParserManager);
 
     /**
      * <p>
@@ -168,7 +168,7 @@ public interface EzasseContext {
      * @return {@link ResourceManager} 资源管理器
      * @since 25-01-01 13:36
      */
-    ResourceManager resourceManger();
+    ResourceManager resourceManager();
 
     /**
      * <p>
@@ -176,8 +176,8 @@ public interface EzasseContext {
      * </p>
      * by perccyking
      *
-     * @param resourceManger : 资源管理器
+     * @param resourceManager : 资源管理器
      * @since 25-01-01 13:37
      */
-    void resourceManger(ResourceManager resourceManger);
+    void resourceManager(ResourceManager resourceManager);
 }

@@ -1,10 +1,12 @@
 package cn.com.pism.ezasse.manager;
 
 import cn.com.pism.ezasse.model.ActionParam;
+import cn.com.pism.ezasse.model.ExecutorActionRegister;
 import cn.com.pism.ezasse.model.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseExecutorAction;
 
 import java.util.List;
+import java.util.ServiceLoader;
 
 /**
  * 执行器管理器
@@ -13,6 +15,26 @@ import java.util.List;
  * @since 25-01-01 12:53
  */
 public interface ExecutorManager {
+
+    /**
+     * 注册执行器
+     */
+    default void registerExecutors() {
+        ServiceLoader<EzasseExecutor> executors = ServiceLoader.load(EzasseExecutor.class);
+        executors.forEach(executor -> {
+            executor.setExecutorManager(this);
+            registerExecutor(executor.getDataSourceType(), executor);
+        });
+    }
+
+    /**
+     * 注册执行器动作
+     */
+    default void registerExecutorActions() {
+        ServiceLoader<ExecutorActionRegister> executorActionRegisters = ServiceLoader.load(ExecutorActionRegister.class);
+        executorActionRegisters.forEach(register -> register.registry(this));
+    }
+
 
     /**
      * <p>

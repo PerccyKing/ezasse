@@ -1,53 +1,57 @@
 package cn.com.pism.ezasse.checker;
 
-import cn.com.pism.ezasse.executor.v0.EzasseExecutor;
-import cn.com.pism.ezasse.model.EzasseConfig;
-import cn.com.pism.ezasse.util.NoneParamCallback;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.sql.DataSource;
+import cn.com.pism.ezasse.context.EzasseContextHolder;
+import cn.com.pism.ezasse.model.EzasseDataSource;
+import cn.com.pism.ezasse.model.EzasseExecutor;
+import lombok.Setter;
 
 /**
- * 校验器
- *
  * @author PerccyKing
- * @version 0.0.1
- * @since 2022/04/05 下午 12:22
+ * @since 24-10-22 23:06
  */
+@Setter
 public abstract class EzasseChecker {
 
-    protected boolean publicCheck(String checkContent, EzasseExecutor executor, NoneParamCallback<Boolean> callback) {
-        if (StringUtils.isBlank(checkContent) || executor == null) {
-            return false;
-        } else {
-            return callback.call();
-        }
+    /**
+     * <p>
+     * 对校验内容进行校验
+     * </p>
+     * by perccyking
+     *
+     * @param dataSource   : 数据源
+     * @param checkContent : 交易内容
+     * @return {@link boolean} true:校验通过 false:校验不通过
+     * @since 25-01-19 01:42
+     */
+    public boolean check(EzasseDataSource dataSource, String checkContent) {
+        return false;
+    }
+
+    public boolean check(EzasseDataSource dataSource, EzasseCheckLineContent checkLineContent) {
+        return check(dataSource, checkLineContent.getCheckLine().getCheckContent());
     }
 
     /**
      * <p>
-     * 判断代码块是否需要执行
+     * 获取校验器的id
      * </p>
+     * by perccyking
      *
-     * @param checkDataSource :数据校验节点
-     * @param checkContent    :数据校验内容
-     * @param executor        :执行器
-     * @return {@link boolean} true:执行代码块,false:跳过代码块
-     * @author PerccyKing
-     * @since 2022/04/05 下午 12:23
+     * @return {@link String} 校验器id
+     * @since 25-01-19 01:43
      */
-    public abstract boolean needToExecute(DataSource checkDataSource, String checkContent, EzasseExecutor executor);
+    public abstract String getId();
 
+    protected EzasseExecutor getEzasseExecutor(EzasseDataSource dataSource) {
+        return EzasseContextHolder.getContext().executorManager().getExecutor(dataSource.getType());
+    }
 
     /**
-     * <p>
-     * 语法定义id
-     * </p>
+     * 是否允许空内容
      *
-     * @param config : 配置
-     * @return {@link String}  全局唯一id，与关键字对其
-     * @author PerccyKing
-     * @since 2022/04/06 下午 02:45
+     * @return true:允许，false:不允许
      */
-    public abstract String getId(EzasseConfig config);
+    public boolean allEmpty() {
+        return false;
+    }
 }

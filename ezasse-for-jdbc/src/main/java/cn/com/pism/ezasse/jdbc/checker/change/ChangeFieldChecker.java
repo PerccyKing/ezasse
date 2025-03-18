@@ -1,7 +1,7 @@
 package cn.com.pism.ezasse.jdbc.checker.change;
 
 import cn.com.pism.ezasse.jdbc.action.param.GetTableInfoActionParam;
-import cn.com.pism.ezasse.model.EzasseChecker;
+import cn.com.pism.ezasse.checker.EzasseChecker;
 import cn.com.pism.ezasse.model.EzasseDataSource;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import cn.com.pism.ezasse.util.EzasseUtil;

@@ -20,6 +20,6 @@ public class ChangeFieldLengthChecker extends ChangeFieldChecker {
 
     @Override
     public String getId() {
-        return EzasseContextHolder.getContext().configManger().getConfig().getKeyWords().getField().getChangeLength();
+        return EzasseContextHolder.getContext().configManager().getConfig().getKeyWords().getField().getChangeLength();
     }
 }

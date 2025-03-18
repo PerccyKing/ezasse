@@ -18,6 +18,6 @@ public class ChangeFieldTypeChecker extends ChangeFieldChecker {
 
     @Override
     public String getId() {
-        return EzasseContextHolder.getContext().configManger().getConfig().getKeyWords().getField().getChangeType();
+        return EzasseContextHolder.getContext().configManager().getConfig().getKeyWords().getField().getChangeType();
     }
 }

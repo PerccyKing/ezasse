@@ -1,10 +1,13 @@
 package cn.com.pism.ezasse.model;
 
+import lombok.Data;
+
 /**
  * @author PerccyKing
  * @version 0.0.1
  * @since 2022/04/07 下午 08:57
  */
+@Data
 public class EzasseTableInfo {
 
     /**
@@ -27,35 +30,4 @@ public class EzasseTableInfo {
      */
     private String columnComment;
 
-    public String getColumnName() {
-        return columnName;
-    }
-
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
-    }
-
-    public String getDataType() {
-        return dataType;
-    }
-
-    public void setDataType(String dataType) {
-        this.dataType = dataType;
-    }
-
-    public String getDataLength() {
-        return dataLength;
-    }
-
-    public void setDataLength(String dataLength) {
-        this.dataLength = dataLength;
-    }
-
-    public String getColumnComment() {
-        return columnComment;
-    }
-
-    public void setColumnComment(String columnComment) {
-        this.columnComment = columnComment;
-    }
 }

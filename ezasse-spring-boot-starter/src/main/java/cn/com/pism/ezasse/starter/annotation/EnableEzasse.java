@@ -1,6 +1,6 @@
 package cn.com.pism.ezasse.starter.annotation;
 
-import cn.com.pism.ezasse.starter.EzasseConfiguration;
+import cn.com.pism.ezasse.starter.EzasseAutoConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -13,7 +13,7 @@ import java.lang.annotation.*;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import(EzasseConfiguration.class)
+@Import(EzasseAutoConfiguration.class)
 @Documented
 public @interface EnableEzasse {
 }

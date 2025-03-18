@@ -18,26 +18,10 @@ public class EzasseConstants {
 
     public static final String MINUS_SIGN = "-";
 
-    public static final String LINE_COMMENT = "--";
-
-    public static final String LEFT_BRACKET = "(";
-
-    public static final String RIGHT_BRACKET = ")";
-
     public static final String REGX_POINT = "\\.";
 
     public static final int NUM2 = 2;
     public static final int NUM3 = 3;
-
-    /**
-     * 开始界定符
-     */
-    public static final String START_DEFINER = "-- [";
-
-    /**
-     * 结束界定符
-     */
-    public static final String END_DEFINER = "-- ]";
 
     /**
      * 校验行正则
@@ -48,7 +32,6 @@ public class EzasseConstants {
      * master 数据源标记
      */
     public static final String MASTER = "MASTER";
-
 
 
     public static final String COLUMN_NAME = "columnName";

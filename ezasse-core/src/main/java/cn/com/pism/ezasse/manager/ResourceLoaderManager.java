@@ -1,7 +1,7 @@
 package cn.com.pism.ezasse.manager;
 
-import cn.com.pism.ezasse.resource.EzasseResource;
 import cn.com.pism.ezasse.loader.EzasseResourceLoader;
+import cn.com.pism.ezasse.resource.EzasseResource;
 
 /**
  * 资源加载器管理器
@@ -21,7 +21,8 @@ public interface ResourceLoaderManager {
      * @return {@link EzasseResourceLoader <T>} 返回一个指定资源类型的EzasseResourceLoader对象
      * @since 24-10-31 00:16
      */
-    <T extends EzasseResource> EzasseResourceLoader<T> getResourceLoader(Class<T> resourceClass);
+    @SuppressWarnings("all")
+    EzasseResourceLoader<? extends EzasseResource> getResourceLoader(Class<? extends EzasseResource> resourceClass);
 
     /**
      * <p>
@@ -33,5 +34,5 @@ public interface ResourceLoaderManager {
      * @param resourceLoader 实现了EzasseResourceLoader接口的资源加载器实例，用于加载指定类型的资源
      * @since 24-10-31 00:17
      */
-    <T extends EzasseResource> void registerResourceLoader(Class<T> resourceClass, EzasseResourceLoader<T> resourceLoader);
+    void registerResourceLoader(Class<? extends EzasseResource> resourceClass, EzasseResourceLoader<? extends EzasseResource> resourceLoader);
 }

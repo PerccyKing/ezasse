@@ -1,4 +1,4 @@
-package cn.com.pism.ezasse.constants;
+package cn.com.pism.ezasse.jdbc.constants;
 
 /**
  * @author PerccyKing

@@ -4,7 +4,7 @@ import cn.com.pism.ezasse.jdbc.action.hsqldb.HsqlDbGetTableInfoAction;
 import cn.com.pism.ezasse.manager.ExecutorManager;
 import cn.com.pism.ezasse.model.ExecutorActionRegister;
 
-import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.HSQLDB;
+import static cn.com.pism.ezasse.jdbc.constants.EzasseDatabaseTypeConstants.HSQLDB;
 
 /**
  * @author PerccyKing

@@ -2,8 +2,8 @@ package cn.com.pism.ezasse.util;
 
 import cn.com.pism.ezasse.exception.EzasseException;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
-import cn.com.pism.frc.resourcescanner.Scanner;
 import cn.com.pism.frc.resourcescanner.*;
+import cn.com.pism.frc.resourcescanner.Scanner;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +17,6 @@ import java.sql.SQLException;
 import java.util.*;
 
 import static cn.com.pism.ezasse.constants.EzasseConstants.*;
-import static cn.com.pism.ezasse.constants.EzasseDatabaseTypeConstants.UNKNOWN;
 import static cn.com.pism.ezasse.enums.EzasseExceptionCode.UNSPECIFIED_FOLDER_EXCEPTION;
 
 /**
@@ -104,21 +103,6 @@ public class EzasseUtil {
                 }
             }
         }
-    }
-
-    public static String getDatabaseTypeFromDataSource(DataSource dataSource) {
-        String databaseType = getFromDataSource(dataSource, connection -> {
-            try {
-                return connection.getMetaData().getDatabaseProductName().toUpperCase(Locale.ROOT);
-            } catch (SQLException e) {
-                EzasseLogUtil.error(log, e.getMessage());
-                return UNKNOWN;
-            }
-        });
-        if (databaseType == null) {
-            return UNKNOWN;
-        }
-        return databaseType;
     }
 
     public static Collection<LoadableResource> getResourcesFromFolder(String folder) {

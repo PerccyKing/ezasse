@@ -41,4 +41,15 @@ public interface DatasourceManager {
      */
     void registerMasterDataSource(EzasseDataSource dataSource);
 
+    /**
+     * <p>
+     * 检查数据源是否为空
+     * </p>
+     * by perccyking
+     *
+     * @return {@link boolean} true：没有任何数据源
+     * @since 25-03-15 21:00
+     */
+    boolean isEmpty();
+
 }
