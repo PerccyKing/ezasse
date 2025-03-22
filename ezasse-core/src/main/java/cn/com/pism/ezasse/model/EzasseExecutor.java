@@ -1,7 +1,10 @@
 package cn.com.pism.ezasse.model;
 
 import cn.com.pism.ezasse.manager.ExecutorManager;
+import cn.com.pism.ezasse.util.EzasseLogUtil;
 import lombok.Setter;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * 执行器
@@ -11,6 +14,8 @@ import lombok.Setter;
  */
 @Setter
 public abstract class EzasseExecutor {
+
+    protected static final Log log = LogFactory.getLog(EzasseExecutor.class);
 
     protected ExecutorManager executorManager;
 
@@ -28,10 +33,13 @@ public abstract class EzasseExecutor {
     public <R, P extends ActionParam> R execute(String actionId, P param, EzasseDataSource dataSource) {
         EzasseExecutorAction<P, ?> executorAction = (EzasseExecutorAction<P, ?>) getAction(actionId);
         if (executorAction == null) {
+            EzasseLogUtil.trace(log, String.format("executor:%s, EzasseExecutorAction [%s] not found", getDataSourceType(), actionId));
             // 没有action处理
             return null;
         }
-        return (R) executorAction.doAction(param, dataSource);
+        R r = (R) executorAction.doAction(param, dataSource);
+        EzasseLogUtil.trace(log, String.format("executor:%s, execute '%s', param:%s, result:%s", getDataSourceType(), actionId, param, r));
+        return r;
     }
 
     /**

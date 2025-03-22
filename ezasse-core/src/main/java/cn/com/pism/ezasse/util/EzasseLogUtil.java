@@ -10,30 +10,38 @@ import org.apache.commons.logging.Log;
  */
 public class EzasseLogUtil {
 
+    private static final String LOG_CONTEXT = "[ezasse] ";
+
     private EzasseLogUtil() {
     }
 
-    public static void info(Log log, Object msg) {
+    public static void info(Log log, String msg) {
         if (log.isInfoEnabled()) {
-            log.info(msg);
+            log.info(LOG_CONTEXT + msg);
         }
     }
 
-    public static void debug(Log log, Object msg) {
+    public static void debug(Log log, String msg) {
         if (log.isDebugEnabled()) {
-            log.debug(msg);
+            log.debug(LOG_CONTEXT + msg);
+        }
+    }
+
+    public static void trace(Log log, String msg) {
+        if (log.isTraceEnabled()) {
+            log.trace(LOG_CONTEXT + msg);
         }
     }
 
     public static void error(Log log, String msg) {
         if (log.isErrorEnabled()) {
-            log.error(msg);
+            log.error(LOG_CONTEXT + msg);
         }
     }
 
     public static void warn(Log log, String msg) {
         if (log.isWarnEnabled()) {
-            log.warn(msg);
+            log.warn(LOG_CONTEXT + msg);
         }
     }
 }

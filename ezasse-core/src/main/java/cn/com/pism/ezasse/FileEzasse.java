@@ -4,11 +4,16 @@ import cn.com.pism.ezasse.checker.EzasseCheckLineContent;
 import cn.com.pism.ezasse.checker.EzasseChecker;
 import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.loader.EzasseFileResourceLoader;
-import cn.com.pism.ezasse.model.*;
+import cn.com.pism.ezasse.model.DoExecuteActionParam;
+import cn.com.pism.ezasse.model.EzasseDataSource;
+import cn.com.pism.ezasse.model.EzasseExecutor;
 import cn.com.pism.ezasse.resource.EzasseFileResource;
 import cn.com.pism.ezasse.resource.EzasseFileResourceData;
 import cn.com.pism.ezasse.resource.EzasseFileResourceParser;
+import cn.com.pism.ezasse.util.EzasseLogUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.DO_EXECUTE;
 
@@ -18,13 +23,21 @@ import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.DO_EXEC
  */
 public class FileEzasse extends AbstractEzasse {
 
+    protected static final Log log = LogFactory.getLog(FileEzasse.class);
+
     public FileEzasse() {
         super(EzasseFileResource.class);
+
+        fileEzasseInit(ezasseContext);
     }
 
     public FileEzasse(EzasseContext ezasseContext) {
         super(EzasseFileResource.class, ezasseContext);
 
+        fileEzasseInit(ezasseContext);
+    }
+
+    private void fileEzasseInit(EzasseContext ezasseContext) {
         if (ezasseContext.resourceLoaderManager().getResourceLoader(resourceClass) == null) {
             //注册资源加载器
             ezasseContext.resourceLoaderManager()
@@ -36,7 +49,6 @@ public class FileEzasse extends AbstractEzasse {
             ezasseContext.resourceParserManager()
                     .registerResourceParser(resourceClass, new EzasseFileResourceParser(ezasseContext));
         }
-
     }
 
     @Override
@@ -67,6 +79,9 @@ public class FileEzasse extends AbstractEzasse {
     private void checkAndExecute(EzasseCheckLineContent checkLineContent) {
         // 校验
         boolean checkResult = doCheck(checkLineContent);
+
+        EzasseLogUtil.info(log, String.format("check passed:[%s],checkLine:[%s]", checkResult, checkLineContent.getCheckLine().getLine()));
+
         // 判断校验结果
         if (checkResult) {
 

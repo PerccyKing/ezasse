@@ -19,11 +19,7 @@ public class DefaultResourceLoaderManager implements ResourceLoaderManager {
 
     @Override
     public EzasseResourceLoader<? extends EzasseResource> getResourceLoader(Class<? extends EzasseResource> resourceClass) {
-        EzasseResourceLoader<? extends EzasseResource> loader = loaders.get(resourceClass);
-        if (loader == null) {
-            throw new IllegalArgumentException("No resource loader registered for class: " + resourceClass.getName());
-        }
-        return loader;
+        return loaders.get(resourceClass);
     }
 
     @Override

@@ -93,19 +93,19 @@ public class EzasseFileLine {
         boolean matches = matcher.matches();
         if (matches) {
             this.checkLine = true;
-            this.checkKey = matcher.group(1);
-            String group = matcher.group(2);
+            this.checkKey = matcher.group(2);
+            String group = matcher.group(3);
             if (StringUtils.isNotBlank(group)) {
                 String[] nodes = group.split("\\.");
                 if (nodes.length > 1) {
-                    this.checkNode = nodes[1];
+                    this.checkNode = nodes[2];
                 }
                 if (nodes.length > 2) {
-                    this.executeNode = nodes[2];
+                    this.executeNode = nodes[3];
                 }
 
             }
-            this.checkContent = matcher.group(3);
+            this.checkContent = matcher.group(4);
         }
         if (StringUtils.isBlank(this.checkNode)) {
             this.checkNode = MASTER;

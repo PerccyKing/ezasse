@@ -138,7 +138,7 @@ public class EzasseFileResourceParser implements EzasseResourceParser {
         EzasseCheckLineContent currentCheckLineContent = null;
 
         for (String line : lines) {
-            EzasseFileLine ezasseFileLine = new EzasseFileLine(ezasseContext,line);
+            EzasseFileLine ezasseFileLine = new EzasseFileLine(ezasseContext, line);
             fileData.addFileLine(ezasseFileLine);
 
             // 如果当前行校验行
