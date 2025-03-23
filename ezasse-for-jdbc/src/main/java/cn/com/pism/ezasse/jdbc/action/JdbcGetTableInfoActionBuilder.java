@@ -18,7 +18,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static cn.com.pism.ezasse.constants.EzasseConstants.*;
-import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.GET_TABLE_INFO;
+import static cn.com.pism.ezasse.jdbc.constants.EzasseJdbcConstants .GET_TABLE_INFO;
 import static cn.com.pism.ezasse.util.EzasseUtil.toTableInfo;
 
 /**

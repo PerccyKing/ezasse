@@ -5,7 +5,7 @@ import cn.com.pism.ezasse.jdbc.action.param.ChangeFieldCommentActionParam;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.CHANGE_FIELD_COMMENT;
+import static cn.com.pism.ezasse.jdbc.constants.EzasseJdbcEnhanceConstants.CHANGE_FIELD_COMMENT;
 
 /**
  * @author PerccyKing

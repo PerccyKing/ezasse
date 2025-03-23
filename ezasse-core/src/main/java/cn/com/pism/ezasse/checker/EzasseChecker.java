@@ -69,7 +69,7 @@ public abstract class EzasseChecker {
      *
      * @return true:允许，false:不允许
      */
-    public boolean allEmpty() {
+    public boolean allowEmpty() {
         return false;
     }
 }

@@ -94,7 +94,7 @@ public class DefaultCheckerManager implements CheckerManager {
         return checkerMap
                 .values()
                 .stream()
-                .filter(EzasseChecker::allEmpty)
+                .filter(EzasseChecker::allowEmpty)
                 .map(EzasseChecker::getId)
                 .collect(Collectors.toList());
     }

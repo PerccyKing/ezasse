@@ -11,7 +11,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.List;
 
 import static cn.com.pism.ezasse.constants.EzasseConstants.REGX_POINT;
-import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.GET_TABLE_INFO;
+import static cn.com.pism.ezasse.jdbc.constants.EzasseJdbcConstants.GET_TABLE_INFO;
 
 /**
  * 添加字段，判断表中是否存在字段

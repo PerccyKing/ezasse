@@ -6,7 +6,7 @@ import cn.com.pism.ezasse.model.EzasseTableInfo;
 
 import java.util.List;
 
-import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.GET_TABLE_INFO;
+import static cn.com.pism.ezasse.jdbc.constants.EzasseJdbcConstants.GET_TABLE_INFO;
 
 /**
  * @author PerccyKing

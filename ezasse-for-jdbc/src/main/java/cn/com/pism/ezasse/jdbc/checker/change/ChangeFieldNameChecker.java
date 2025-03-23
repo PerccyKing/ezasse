@@ -19,7 +19,7 @@ public class ChangeFieldNameChecker extends ChangeFieldChecker {
     @Override
     protected boolean doChangeFieldCheck(List<EzasseTableInfo> tableInfos, String tableName, String field) {
         // 检查表信息中是否含有字段名
-        return IterableUtils.find(tableInfos, info -> info.getColumnName().equals(field)) == null;
+        return IterableUtils.find(tableInfos, info -> info.getColumnName().equals(field)) != null;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package cn.com.pism.ezasse.jdbc.register;
 
 import cn.com.pism.ezasse.jdbc.action.mysql.MysqlChangeFieldCommentAction;
+import cn.com.pism.ezasse.jdbc.action.mysql.MysqlChangeFieldNameAction;
 import cn.com.pism.ezasse.manager.ExecutorManager;
 import cn.com.pism.ezasse.model.ExecutorActionRegister;
 
@@ -14,5 +15,6 @@ public class JdbcMysqlEnhanceExecutorActionRegister implements ExecutorActionReg
 
     public void registry(ExecutorManager executorManager) {
         executorManager.registerExecutorAction(MYSQL, new MysqlChangeFieldCommentAction());
+        executorManager.registerExecutorAction(MYSQL, new MysqlChangeFieldNameAction());
     }
 }

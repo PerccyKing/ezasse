@@ -13,7 +13,7 @@ import java.util.List;
 
 import static cn.com.pism.ezasse.constants.EzasseConstants.NUM3;
 import static cn.com.pism.ezasse.constants.EzasseConstants.REGX_POINT;
-import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.GET_TABLE_INFO;
+import static cn.com.pism.ezasse.jdbc.constants.EzasseJdbcConstants.GET_TABLE_INFO;
 
 /**
  * 修改字段属性的校验器，change相关的语法有相似性
