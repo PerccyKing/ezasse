@@ -1,4 +1,4 @@
-package cn.com.pism.ezasse.jdbc.model;
+package cn.com.pism.ezasse.jdbc.register;
 
 import cn.com.pism.ezasse.jdbc.action.oracle.OracleGetTableInfoAction;
 import cn.com.pism.ezasse.manager.ExecutorManager;

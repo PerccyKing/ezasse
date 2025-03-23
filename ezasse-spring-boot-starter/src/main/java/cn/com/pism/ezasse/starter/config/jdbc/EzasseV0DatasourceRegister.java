@@ -1,6 +1,6 @@
 package cn.com.pism.ezasse.starter.config.jdbc;
 
-import cn.com.pism.ezasse.jdbc.model.JdbcEzasseDataSource;
+import cn.com.pism.ezasse.jdbc.register.JdbcEzasseDataSource;
 import cn.com.pism.ezasse.manager.DatasourceManager;
 import cn.com.pism.ezasse.starter.EzasseDatasource;
 import org.apache.commons.lang3.ArrayUtils;

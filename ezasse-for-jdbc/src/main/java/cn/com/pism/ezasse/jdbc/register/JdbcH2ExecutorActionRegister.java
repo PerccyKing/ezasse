@@ -1,4 +1,4 @@
-package cn.com.pism.ezasse.jdbc.model;
+package cn.com.pism.ezasse.jdbc.register;
 
 import cn.com.pism.ezasse.jdbc.action.h2.H2GetTableInfoAction;
 import cn.com.pism.ezasse.manager.ExecutorManager;

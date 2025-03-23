@@ -5,4 +5,3 @@ cn.com.pism.ezasse.jdbc.checker.change.ChangeFieldCommentChecker
 cn.com.pism.ezasse.jdbc.checker.change.ChangeFieldLengthChecker
 cn.com.pism.ezasse.jdbc.checker.change.ChangeFieldNameChecker
 cn.com.pism.ezasse.jdbc.checker.change.ChangeFieldTypeChecker
-cn.com.pism.ezasse.jdbc.checker.change.DoChangeFieldCommentChecker

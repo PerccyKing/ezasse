@@ -1,5 +1,5 @@
-cn.com.pism.ezasse.jdbc.model.JdbcExecutorActionRegister
-cn.com.pism.ezasse.jdbc.model.JdbcMysqlExecutorActionRegister
-cn.com.pism.ezasse.jdbc.model.JdbcOracleExecutorActionRegister
-cn.com.pism.ezasse.jdbc.model.JdbcHsqldbExecutorActionRegister
-cn.com.pism.ezasse.jdbc.model.JdbcH2ExecutorActionRegister
+cn.com.pism.ezasse.jdbc.register.JdbcExecutorActionRegister
+cn.com.pism.ezasse.jdbc.register.JdbcMysqlExecutorActionRegister
+cn.com.pism.ezasse.jdbc.register.JdbcOracleExecutorActionRegister
+cn.com.pism.ezasse.jdbc.register.JdbcHsqldbExecutorActionRegister
+cn.com.pism.ezasse.jdbc.register.JdbcH2ExecutorActionRegister

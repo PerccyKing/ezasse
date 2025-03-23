@@ -7,6 +7,7 @@
         <module>ezasse-core</module>
         <module>ezasse-spring-boot-starter</module>
         <module>ezasse-for-jdbc</module>
+        <module>ezasse-for-jdbc-enhance</module>
     </modules>
 
     <groupId>cn.com.pism</groupId>
@@ -78,6 +79,13 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.18.34</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>5.3.39</version>
                 <scope>provided</scope>
             </dependency>
 

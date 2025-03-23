@@ -1,4 +1,4 @@
-package cn.com.pism.ezasse.jdbc.model;
+package cn.com.pism.ezasse.jdbc.register;
 
 import cn.com.pism.ezasse.model.EzasseDataSource;
 import lombok.AllArgsConstructor;

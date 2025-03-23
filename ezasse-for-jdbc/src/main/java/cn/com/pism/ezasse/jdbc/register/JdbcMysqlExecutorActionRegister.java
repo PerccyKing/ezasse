@@ -1,4 +1,4 @@
-package cn.com.pism.ezasse.jdbc.model;
+package cn.com.pism.ezasse.jdbc.register;
 
 import cn.com.pism.ezasse.jdbc.action.mysql.MysqlGetTableInfoAction;
 import cn.com.pism.ezasse.jdbc.action.mysql.MysqlTableExistsAction;
