@@ -2,7 +2,7 @@ package cn.com.pism.example;
 
 import cn.com.pism.ezasse.FileEzasse;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
-import cn.com.pism.ezasse.jdbc.model.JdbcEzasseDataSource;
+import cn.com.pism.ezasse.jdbc.register.JdbcEzasseDataSource;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.logging.log4j.Level;
