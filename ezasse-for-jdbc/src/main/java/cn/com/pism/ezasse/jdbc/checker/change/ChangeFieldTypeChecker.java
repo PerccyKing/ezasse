@@ -13,7 +13,11 @@ public class ChangeFieldTypeChecker extends ChangeFieldChecker {
 
     @Override
     protected boolean doChangeFieldCheck(EzasseTableInfo tableInfo, String tableName, String field, String targetValue) {
-        return !tableInfo.getDataType().equals(targetValue);
+        String finalTargetValue = targetValue;
+        if (finalTargetValue.contains("(")) {
+            finalTargetValue = finalTargetValue.substring(0, finalTargetValue.indexOf("("));
+        }
+        return !tableInfo.getDataType().equals(finalTargetValue);
     }
 
     @Override

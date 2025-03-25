@@ -8,11 +8,6 @@ public class EzasseJdbcEnhanceConstants {
     private EzasseJdbcEnhanceConstants() {
     }
 
+    public static final String CHANGE_FIELD = "changeField";
 
-    /**
-     * 修改字段 comment
-     */
-    public static final String CHANGE_FIELD_COMMENT = "changeFieldComment";
-
-    public static final String CHANGE_FIELD_NAME = "changeFieldName";
 }

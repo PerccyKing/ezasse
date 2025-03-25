@@ -1,12 +1,14 @@
 package cn.com.pism.ezasse.jdbc.checker.change;
 
 import cn.com.pism.ezasse.context.EzasseContextHolder;
+import cn.com.pism.ezasse.model.EzasseDataSource;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import org.apache.commons.collections4.IterableUtils;
 
 import java.util.List;
 
 import static cn.com.pism.ezasse.constants.EzasseConstants.NUM2;
+import static cn.com.pism.ezasse.constants.EzasseConstants.REGX_POINT;
 
 /**
  * 修改字段名/列名
@@ -23,9 +25,14 @@ public class ChangeFieldNameChecker extends ChangeFieldChecker {
     }
 
     @Override
-    protected boolean checkTableFieldExists() {
-        //需要修改字段名称，不检查表字段是否存在
-        return false;
+    protected boolean doChangeFieldCheck(EzasseTableInfo tableInfo, String tableName, String field, String targetValue) {
+        return !targetValue.equals(field);
+    }
+
+    @Override
+    protected boolean checkTableFieldExists(EzasseDataSource dataSource, String checkContent) {
+        String[] split = checkContent.split(REGX_POINT);
+        return split.length > NUM2;
     }
 
     @Override

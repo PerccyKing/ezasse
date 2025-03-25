@@ -39,6 +39,12 @@ public class EzasseLogUtil {
         }
     }
 
+    public static void error(Log log, String msg, Throwable t) {
+        if (log.isErrorEnabled()) {
+            log.error(LOG_CONTEXT + msg, t);
+        }
+    }
+
     public static void warn(Log log, String msg) {
         if (log.isWarnEnabled()) {
             log.warn(LOG_CONTEXT + msg);

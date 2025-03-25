@@ -1,7 +1,7 @@
 package cn.com.pism.ezasse.jdbc.checker.change;
 
-import cn.com.pism.ezasse.jdbc.action.param.GetTableInfoActionParam;
 import cn.com.pism.ezasse.checker.EzasseChecker;
+import cn.com.pism.ezasse.jdbc.action.param.GetTableInfoActionParam;
 import cn.com.pism.ezasse.model.EzasseDataSource;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import cn.com.pism.ezasse.util.EzasseUtil;
@@ -52,7 +52,7 @@ public abstract class ChangeFieldChecker extends EzasseChecker {
         }
 
         EzasseTableInfo tableInfo;
-        if (checkTableFieldExists()) {
+        if (checkTableFieldExists(dataSource, checkContent)) {
             // 如果 tableInfos 不为空，则表存在 查找目标字段信息
             tableInfo = IterableUtils.find(tableInfos, info -> info.getColumnName().equals(split[1]));
             if (tableInfo == null) {
@@ -78,6 +78,11 @@ public abstract class ChangeFieldChecker extends EzasseChecker {
      */
     protected boolean checkTableFieldExists() {
         return true;
+    }
+
+    @SuppressWarnings("unused")
+    protected boolean checkTableFieldExists(EzasseDataSource dataSource, String checkContent) {
+        return checkTableFieldExists();
     }
 
     protected boolean isSyntaxValid(String[] split) {

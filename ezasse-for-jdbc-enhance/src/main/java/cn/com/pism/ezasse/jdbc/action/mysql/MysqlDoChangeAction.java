@@ -1,6 +1,7 @@
 package cn.com.pism.ezasse.jdbc.action.mysql;
 
 import cn.com.pism.ezasse.jdbc.action.JdbcTemplateCache;
+import cn.com.pism.ezasse.jdbc.util.SqlTypeUtil;
 import cn.com.pism.ezasse.model.ActionParam;
 import cn.com.pism.ezasse.model.EzasseDataSource;
 import cn.com.pism.ezasse.model.EzasseExecutorAction;
@@ -24,6 +25,7 @@ public abstract class MysqlDoChangeAction<P extends ActionParam> implements Ezas
 
     @Override
     public Boolean doAction(P actionParam, EzasseDataSource dataSource) {
+        SqlTypeUtil.init(dataSource.getType(), dataSource.getDataSource());
         JdbcTemplate jdbcTemplate = JdbcTemplateCache.get(dataSource.getId());
         String tableDdl = getTableDdl(jdbcTemplate, getTableName(actionParam));
         String changeSql = buildChangeSql(tableDdl, actionParam);

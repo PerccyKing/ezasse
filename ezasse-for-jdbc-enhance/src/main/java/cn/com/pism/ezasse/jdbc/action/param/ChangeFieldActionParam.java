@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author PerccyKing
- * @since 25-02-02 23:22
+ * @since 25-03-25 22:24
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ChangeFieldCommentActionParam implements ActionParam {
+public class ChangeFieldActionParam implements ActionParam {
     /**
      * 表名
      */
@@ -26,7 +26,23 @@ public class ChangeFieldCommentActionParam implements ActionParam {
     private String fieldName;
 
     /**
+     * 新的字段名
+     */
+    private String newFieldName;
+
+    /**
+     * 数据类型
+     */
+    private String type;
+
+    /**
+     * 长度
+     */
+    private String length;
+
+    /**
      * comment
      */
     private String comment;
+
 }

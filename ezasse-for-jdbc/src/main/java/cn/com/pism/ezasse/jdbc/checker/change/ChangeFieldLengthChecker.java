@@ -14,7 +14,7 @@ public class ChangeFieldLengthChecker extends ChangeFieldChecker {
     @Override
     protected boolean doChangeFieldCheck(EzasseTableInfo tableInfo, String tableName, String field, String targetValue) {
         // 目标值与现有值不一致则校验通过
-        return targetValue.equals(tableInfo.getDataLength());
+        return !targetValue.equals(tableInfo.getDataLength());
     }
 
 
