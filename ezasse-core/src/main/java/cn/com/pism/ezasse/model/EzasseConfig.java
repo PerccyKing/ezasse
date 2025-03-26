@@ -1,9 +1,11 @@
 package cn.com.pism.ezasse.model;
 
 import lombok.Data;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,7 +20,7 @@ public class EzasseConfig {
     /**
      * 文件夹，会扫描当前文件夹下所有的sql文件,文件夹最好有三位顺序标记，没有标记将按照默认排序执行
      */
-    private String folder = "sql";
+    private List<String> folders;
 
     /**
      * 文件列表,未指定，将校验全部的sql文件，可以是sql文件的完整名称，也可以是文件的分组名称
@@ -54,6 +56,13 @@ public class EzasseConfig {
      * 行注释标记
      */
     private List<String> lineComment = Arrays.asList("--", "#");
+
+    public List<String> getFolders() {
+        if (CollectionUtils.isEmpty(folders)) {
+            return Collections.singletonList("sql");
+        }
+        return folders;
+    }
 
     public boolean isDelimiter() {
         return !StringUtils.isAnyBlank(delimiterStart, delimiterEnd);

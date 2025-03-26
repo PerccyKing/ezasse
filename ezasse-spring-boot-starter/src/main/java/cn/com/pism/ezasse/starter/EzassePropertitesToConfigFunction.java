@@ -13,7 +13,7 @@ public class EzassePropertitesToConfigFunction implements Function<EzassePropert
     @Override
     public EzasseConfig apply(EzasseProperties ezasseProperties) {
         EzasseConfig config = new EzasseConfig();
-        config.setFolder(ezasseProperties.getFolder());
+        config.setFolders(ezasseProperties.getFolders());
         config.setFileList(ezasseProperties.getFileList());
         config.setGroupOrder(ezasseProperties.getGroupOrder());
         config.setDelimiterStart(ezasseProperties.getDelimiterStart());

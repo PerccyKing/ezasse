@@ -35,15 +35,19 @@ public class EzasseFileResourceLoader implements EzasseResourceLoader<EzasseFile
         //配置
         EzasseConfig config = ezasseContext.configManager().getConfig();
 
-        //脚本文件位置
-        String folder = config.getFolder();
-
-        //从配置的目录下获取所有资源
-        Collection<LoadableResource> resources = getResourcesFromFolder(folder);
-
         List<EzasseFile> ezasseFiles = new ArrayList<>();
 
-        resources.forEach(resource -> ezasseFiles.add(resourceToEzasseFile(resource)));
+        //脚本文件位置
+        List<String> folders = config.getFolders();
+
+        folders.forEach(folder -> {
+
+            //从配置的目录下获取所有资源
+            Collection<LoadableResource> resources = getResourcesFromFolder(folder);
+
+            resources.forEach(resource -> ezasseFiles.add(resourceToEzasseFile(resource)));
+
+        });
 
         return new EzasseFileResource(ezasseFiles);
     }
