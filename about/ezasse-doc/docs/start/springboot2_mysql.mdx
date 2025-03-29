@@ -1,0 +1,88 @@
+import EzasseSpringbootStarterDependency from "@site/src/components/EzasseSpringbootStarterDependency";
+
+# springboot + mysql
+
+以springboot项目使用mysql数据库为例，快速接入ezasse
+
+## 添加依赖
+
+<EzasseSpringbootStarterDependency showVersion={true}/>
+
+另外必要的依赖
+
+```xml
+<!--spring-jdbc支持-->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-jdbc</artifactId>
+</dependency>
+```
+
+```xml
+<!--mysql驱动-->
+<dependency>
+    <groupId>com.mysql</groupId>
+    <artifactId>mysql-connector-j</artifactId>
+    <scope>runtime</scope>
+</dependency>
+```
+
+## 添加数据库配置
+
+```yaml
+# 根据实际情况修改
+spring:
+  datasource:
+    password: ${passwort}
+    username: root
+    url: jdbc:mysql://localhost:3306/ezasse
+    driver-class-name: com.mysql.cj.jdbc.Driver
+```
+
+## 编写ezasse文件
+
+resources 文件夹下创建`sql`文件夹，并且创建文件 `init.sql`
+
+:::tip
+
+当数据库中没有表t_user时会执行建表语句
+
+:::
+
+```sql title="/src/main/resources/sql/init.sql"
+-- TABLE(t_user)
+CREATE TABLE t_user
+(
+    id      BIGINT NOT NULL COMMENT '主键id'
+        PRIMARY KEY,
+    account TEXT NULL COMMENT '账号'
+) COMMENT '用户表';
+
+```
+
+## 启用ezasse
+
+在启动类上添加注解`@EnableEzasse`
+
+```java title="Application.java"
+package cn.com.pism.example;
+
+import cn.com.pism.ezasse.starter.annotation.EnableEzasse;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+@EnableEzasse
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SimpleExampleSpringboot3Application.class, args);
+    }
+
+}
+
+```
+
+## 完成集成
+
+按照上诉步骤可以完成集成，只需要启动项目就可以执行ezasse

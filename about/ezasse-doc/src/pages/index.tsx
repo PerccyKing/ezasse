@@ -4,12 +4,13 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
-import {ezasseConfig} from "@site/ezasse.config";
+import {ezasseConfig} from "@site/config/ezasse.config";
 import {Analytics} from "@vercel/analytics/react";
 import {SpeedInsights} from '@vercel/speed-insights/react';
 
 import styles from './index.module.css';
 import {JSX} from 'react';
+import Translate from "@docusaurus/Translate";
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
@@ -23,8 +24,8 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            href={ezasseConfig.v0xHref}>
-            快速开始
+            to="/docs">
+            <Translate>立即开始</Translate>
           </Link>
         </div>
 

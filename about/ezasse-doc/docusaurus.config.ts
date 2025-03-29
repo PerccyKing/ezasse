@@ -1,10 +1,15 @@
-import {themes, themes as prismThemes} from 'prism-react-renderer';
+import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
-import {ezasseConfig} from "./ezasse.config";
+import {ezasseConfig} from "./config/ezasse.config";
+import {navbarArr} from "./config/navbar.config";
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
+  themes: ['@docusaurus/theme-mermaid'],
+  markdown: {
+    mermaid: true,
+  },
   title: 'ezasse',
   tagline: '项目脚本管理方案',
   favicon: 'img/favicon.ico',
@@ -40,15 +45,9 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/PerccyKing/ezasse/about/ezasse-doc/docs/',
+            'https://github.com/PerccyKing/ezasse/about/ezasse-doc/',
           lastVersion: 'current',
-          versions: {
-            current: {
-              label: '1.0.0',
-              path: '1.0.0',
-            },
 
-          },
         },
         blog: {
           showReadingTime: true,
@@ -92,30 +91,7 @@ const config: Config = {
         srcDark: 'img/logo-dark.svg'
       },
       items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: '文档',
-        },
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: '0.x文档',
-          href: ezasseConfig.v0xHref
-        },
-        {to: '/blog', label: '博客', position: 'left'},
-        {
-          href: ezasseConfig.github,
-          label: 'GitHub',
-          position: 'right',
-        },
-        {
-          href: ezasseConfig.gitee,
-          label: 'Gitee',
-          position: 'right',
-        },
+        ...navbarArr,
       ],
     },
     footer: {

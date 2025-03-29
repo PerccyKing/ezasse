@@ -21,3 +21,45 @@
   align-items: center;
   justify-content: center;
 }
+
+.indexCtasGitHubButtonWrapper {
+  display: flex;
+}
+
+.indexCtasGitHubButton {
+  overflow: hidden;
+}
+
+@media only screen and (max-width: 768px) {
+  .hero {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .heroInner {
+    padding: 0;
+  }
+
+  .heroProjectTagline {
+    font-size: 36px;
+    text-align: center;
+  }
+
+  .heroLogo {
+    display: block;
+    float: none;
+    margin: 0 auto;
+  }
+
+  .indexCtas {
+    justify-content: center;
+  }
+
+  .indexCtas a {
+    margin: 20px 36px;
+  }
+
+  .indexCtasGitHubButton {
+    display: none;
+  }
+}

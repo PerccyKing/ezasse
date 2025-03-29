@@ -7,7 +7,8 @@ export type EzasseConfig = {
   shortDes: string,
   github?: string,
   gitee?: string,
-  pismOssGithub?: string
+  pismOssGithub?: string,
+  currentVersion?: string
 }
 
 
@@ -17,5 +18,6 @@ export const ezasseConfig: EzasseConfig = {
   shortDes: '项目SQL脚本管理方案',
   github: 'https://github.com/PerccyKing/ezasse',
   gitee: 'https://gitee.com/perccyking/ezasse',
-  pismOssGithub: 'https://github.com/pism-oss'
+  pismOssGithub: 'https://github.com/pism-oss',
+  currentVersion: '1.0.0-re'
 }
