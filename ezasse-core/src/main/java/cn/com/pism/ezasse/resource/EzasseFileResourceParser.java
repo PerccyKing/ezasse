@@ -1,12 +1,12 @@
 package cn.com.pism.ezasse.resource;
 
-import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.checker.EzasseCheckLineContent;
+import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseFile;
+import cn.com.pism.ezasse.util.CollUtils;
 import cn.com.pism.ezasse.util.EzasseIoUtil;
 import cn.com.pism.ezasse.util.EzasseLogUtil;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,7 +43,7 @@ public class EzasseFileResourceParser implements EzasseResourceParser {
         printLog(sqlFiles);
 
         //没有解析到文件，直接结束流程
-        if (CollectionUtils.isEmpty(sqlFiles)) {
+        if (CollUtils.isEmpty(sqlFiles)) {
             return resourceData;
         }
 
@@ -66,7 +66,7 @@ public class EzasseFileResourceParser implements EzasseResourceParser {
         List<String> groupOrder = config.getGroupOrder();
 
         //如果指定了分组，按分组顺序解析文件
-        if (CollectionUtils.isEmpty(groupOrder)) {
+        if (CollUtils.isEmpty(groupOrder)) {
             return null;
         }
 
@@ -86,14 +86,14 @@ public class EzasseFileResourceParser implements EzasseResourceParser {
 
         //过滤指定文件
         List<String> fileList = config.getFileList();
-        if (!CollectionUtils.isEmpty(fileList)) {
+        if (!CollUtils.isEmpty(fileList)) {
             sqlFiles = sqlFiles.stream()
                     .filter(sqlFile -> fileList.stream().anyMatch(sqlFile.getName()::contains))
                     .collect(Collectors.toList());
         }
 
         //如果指定了分组
-        if (!CollectionUtils.isEmpty(config.getGroupOrder())) {
+        if (!CollUtils.isEmpty(config.getGroupOrder())) {
             //过滤出指定分组的文件
             sqlFiles = sqlFiles.stream()
                     .filter(sqlFile -> config.getGroupOrder().contains(sqlFile.getGroup()))
@@ -126,7 +126,7 @@ public class EzasseFileResourceParser implements EzasseResourceParser {
      */
     private EzasseFileResourceData.ResourceData parseFileLines(EzasseFile sqlFile, List<String> lines) {
         // 空文件不做处理
-        if (CollectionUtils.isEmpty(lines)) {
+        if (CollUtils.isEmpty(lines)) {
             return null;
         }
 

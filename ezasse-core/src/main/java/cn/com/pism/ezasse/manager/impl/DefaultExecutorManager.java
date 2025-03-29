@@ -4,7 +4,7 @@ import cn.com.pism.ezasse.manager.ExecutorManager;
 import cn.com.pism.ezasse.model.ActionParam;
 import cn.com.pism.ezasse.model.EzasseExecutor;
 import cn.com.pism.ezasse.model.EzasseExecutorAction;
-import org.apache.commons.collections4.CollectionUtils;
+import cn.com.pism.ezasse.util.CollUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -99,7 +99,7 @@ public class DefaultExecutorManager implements ExecutorManager {
     @Override
     public List<EzasseExecutorAction<? extends ActionParam, ?>> getExecutorAction(String dataSourceType) {
         List<EzasseExecutorAction<? extends ActionParam, ?>> executorActions = executorActionMap.get(dataSourceType);
-        if (CollectionUtils.isEmpty(executorActions)) {
+        if (CollUtils.isEmpty(executorActions)) {
             return Collections.emptyList();
         }
         return executorActions;

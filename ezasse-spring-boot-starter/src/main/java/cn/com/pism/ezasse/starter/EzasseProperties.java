@@ -1,5 +1,6 @@
 package cn.com.pism.ezasse.starter;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 @ConfigurationProperties(prefix = "spring.ezasse")
 @Component
+@Data
 public class EzasseProperties {
     /**
      * 文件夹，会扫描当前文件夹下所有的sql文件,文件夹最好有三位顺序标记，没有标记将按照默认排序执行
@@ -41,10 +43,21 @@ public class EzasseProperties {
     private String delimiterEnd;
 
     /**
+     * 是否启用
+     */
+    private boolean enable = true;
+
+    /**
+     * 立即执行
+     */
+    private boolean execute = true;
+
+    /**
      * 关键字
      */
     private EzasseKeyWords keyWords = new EzasseKeyWords();
 
+    @Data
     public static class EzasseKeyWords {
 
         /**
@@ -70,19 +83,13 @@ public class EzasseProperties {
          * @author PerccyKing
          * @since 2022/04/20 下午 11:50
          */
+        @Data
         public static class Table {
             /**
              * 创建表关键字
              */
             private String createTable = "TABLE";
 
-            public String getCreateTable() {
-                return createTable;
-            }
-
-            public void setCreateTable(String createTable) {
-                this.createTable = createTable;
-            }
         }
 
         /**
@@ -93,6 +100,7 @@ public class EzasseProperties {
          * @author PerccyKing
          * @since 2022/04/20 下午 11:51
          */
+        @Data
         public static class Field {
             /**
              * 添加字段
@@ -119,70 +127,8 @@ public class EzasseProperties {
              */
             private String changeComment = "CHANGE_COMMENT";
 
-            public String getAdd() {
-                return add;
-            }
-
-            public void setAdd(String add) {
-                this.add = add;
-            }
-
-            public String getChangeName() {
-                return changeName;
-            }
-
-            public void setChangeName(String changeName) {
-                this.changeName = changeName;
-            }
-
-            public String getChangeType() {
-                return changeType;
-            }
-
-            public void setChangeType(String changeType) {
-                this.changeType = changeType;
-            }
-
-            public String getChangeLength() {
-                return changeLength;
-            }
-
-            public void setChangeLength(String changeLength) {
-                this.changeLength = changeLength;
-            }
-
-            public String getChangeComment() {
-                return changeComment;
-            }
-
-            public void setChangeComment(String changeComment) {
-                this.changeComment = changeComment;
-            }
         }
 
-        public String getExec() {
-            return exec;
-        }
-
-        public void setExec(String exec) {
-            this.exec = exec;
-        }
-
-        public Table getTable() {
-            return table;
-        }
-
-        public void setTable(Table table) {
-            this.table = table;
-        }
-
-        public Field getField() {
-            return field;
-        }
-
-        public void setField(Field field) {
-            this.field = field;
-        }
     }
 
 
@@ -193,47 +139,4 @@ public class EzasseProperties {
         return folders;
     }
 
-    public void setFolders(List<String> folders) {
-        this.folders = folders;
-    }
-
-    public List<String> getFileList() {
-        return fileList;
-    }
-
-    public void setFileList(List<String> fileList) {
-        this.fileList = fileList;
-    }
-
-    public List<String> getGroupOrder() {
-        return groupOrder;
-    }
-
-    public void setGroupOrder(List<String> groupOrder) {
-        this.groupOrder = groupOrder;
-    }
-
-    public String getDelimiterStart() {
-        return delimiterStart;
-    }
-
-    public void setDelimiterStart(String delimiterStart) {
-        this.delimiterStart = delimiterStart;
-    }
-
-    public String getDelimiterEnd() {
-        return delimiterEnd;
-    }
-
-    public void setDelimiterEnd(String delimiterEnd) {
-        this.delimiterEnd = delimiterEnd;
-    }
-
-    public EzasseKeyWords getKeyWords() {
-        return keyWords;
-    }
-
-    public void setKeyWords(EzasseKeyWords keyWords) {
-        this.keyWords = keyWords;
-    }
 }

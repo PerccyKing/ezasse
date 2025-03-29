@@ -3,7 +3,7 @@ package cn.com.pism.ezasse.jdbc.checker.change;
 import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.model.EzasseDataSource;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
-import org.apache.commons.collections4.IterableUtils;
+import cn.com.pism.ezasse.util.IterableUtils;
 
 import java.util.List;
 

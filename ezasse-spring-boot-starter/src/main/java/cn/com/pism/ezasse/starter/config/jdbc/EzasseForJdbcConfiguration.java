@@ -9,11 +9,11 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,17 +25,17 @@ import static cn.com.pism.ezasse.constants.EzasseConstants.MASTER;
  * @since 25-02-19 22:25
  */
 @Import({EzasseV0DatasourceRegister.class})
+@Configuration
 public class EzasseForJdbcConfiguration {
 
     private static final Log log = LogFactory.getLog(EzasseForJdbcConfiguration.class);
 
-    @Resource
-    private EzasseV0DatasourceRegister ezasseV0DatasourceRegister;
-
     private ApplicationContext applicationContext;
 
     @Autowired
-    public void ezasseForJdbc(ApplicationContext applicationContext, DatasourceManager datasourceManager) {
+    public void ezasseForJdbc(EzasseV0DatasourceRegister ezasseV0DatasourceRegister,
+                              ApplicationContext applicationContext,
+                              DatasourceManager datasourceManager) {
         this.applicationContext = applicationContext;
 
         // 兼容0.x版本的数据源

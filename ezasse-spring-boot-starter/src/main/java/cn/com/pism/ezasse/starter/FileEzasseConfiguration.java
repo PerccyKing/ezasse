@@ -5,6 +5,9 @@ import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.loader.EzasseFileResourceLoader;
 import cn.com.pism.ezasse.resource.EzasseFileResource;
 import cn.com.pism.ezasse.resource.EzasseFileResourceParser;
+import cn.com.pism.ezasse.util.EzasseLogUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +20,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class FileEzasseConfiguration {
+
+    protected static final Log log = LogFactory.getLog(FileEzasseConfiguration.class);
 
     /**
      * <p>
@@ -64,7 +69,8 @@ public class FileEzasseConfiguration {
     @ConditionalOnMissingBean(FileEzasse.class)
     public FileEzasse fileEzasse(EzasseContext ezasseContext,
                                  EzasseFileResourceLoader ezasseFileResourceLoader,
-                                 EzasseFileResourceParser ezasseFileResourceParser) {
+                                 EzasseFileResourceParser ezasseFileResourceParser,
+                                 EzasseProperties ezasseProperties) {
 
         //注册资源加载器
         ezasseContext.resourceLoaderManager()
@@ -74,8 +80,12 @@ public class FileEzasseConfiguration {
         ezasseContext.resourceParserManager()
                 .registerResourceParser(EzasseFileResource.class, ezasseFileResourceParser);
 
-
-        return new FileEzasse(ezasseContext);
+        FileEzasse ezasse = new FileEzasse(ezasseContext);
+        EzasseLogUtil.info(log, "ezasse has been initialized");
+        if (ezasseProperties.isExecute()) {
+            ezasse.execute();
+        }
+        return ezasse;
     }
 
 }

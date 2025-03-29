@@ -2,9 +2,9 @@ package cn.com.pism.ezasse.resource;
 
 import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.model.EzasseConfig;
+import cn.com.pism.ezasse.util.CollUtils;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -80,7 +80,7 @@ public class EzasseFileLine {
                 this.delimiterStart = line.startsWith(config.getDelimiterStart());
                 this.delimiterEnd = line.endsWith(config.getDelimiterEnd());
             }
-            if (!CollectionUtils.isEmpty(checkerKeys)) {
+            if (!CollUtils.isEmpty(checkerKeys)) {
                 checkLineParse(line, config, checkerKeys);
             }
         }

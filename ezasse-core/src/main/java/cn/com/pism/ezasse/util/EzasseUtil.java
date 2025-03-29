@@ -4,8 +4,6 @@ import cn.com.pism.ezasse.exception.EzasseException;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import cn.com.pism.frc.resourcescanner.*;
 import cn.com.pism.frc.resourcescanner.Scanner;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,10 +34,10 @@ public class EzasseUtil {
      * <p>
      * 从databse中获取 数据库名称
      * </p>
+     * by PerccyKing
      *
      * @param dataSource : datasource
      * @return {@link String} 数据库名称
-     * @author PerccyKing
      * @since 2022/04/07 下午 03:49
      */
     public static String getDataBaseNameFromDataSource(DataSource dataSource) {
@@ -67,7 +65,7 @@ public class EzasseUtil {
      * @return tableInfo 对象
      */
     public static List<EzasseTableInfo> toTableInfo(List<Map<String, Object>> mapList) {
-        if (CollectionUtils.isEmpty(mapList)) {
+        if (CollUtils.isEmpty(mapList)) {
             return Collections.emptyList();
         }
         List<EzasseTableInfo> tableInfos = new ArrayList<>();

@@ -6,12 +6,16 @@ import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.starter.EzasseProperties;
 import cn.com.pism.ezasse.starter.EzassePropertitesToConfigFunction;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author PerccyKing
  * @since 25-03-16 14:40
  */
+@EnableConfigurationProperties(EzasseProperties.class)
+@Configuration
 public class EzasseConfigManagerConfiguration {
 
     private final EzassePropertitesToConfigFunction function = new EzassePropertitesToConfigFunction();

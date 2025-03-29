@@ -1,7 +1,7 @@
 package cn.com.pism.ezasse.model;
 
+import cn.com.pism.ezasse.util.CollUtils;
 import lombok.Data;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
@@ -58,7 +58,7 @@ public class EzasseConfig {
     private List<String> lineComment = Arrays.asList("--", "#");
 
     public List<String> getFolders() {
-        if (CollectionUtils.isEmpty(folders)) {
+        if (CollUtils.isEmpty(folders)) {
             return Collections.singletonList("sql");
         }
         return folders;

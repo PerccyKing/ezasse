@@ -24,6 +24,10 @@ public abstract class AbstractEzasse {
 
     protected EzasseContext ezasseContext;
 
+    public EzasseContext getContext() {
+        return ezasseContext;
+    }
+
     protected AbstractEzasse(Class<? extends EzasseResource> resourceClass) {
         this.resourceClass = resourceClass;
         this.ezasseContext = new DefaultEzasseContext();

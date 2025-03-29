@@ -2,7 +2,7 @@ package cn.com.pism.ezasse.manager.impl;
 
 import cn.com.pism.ezasse.manager.DatasourceManager;
 import cn.com.pism.ezasse.model.EzasseDataSource;
-import org.apache.commons.collections4.MapUtils;
+import cn.com.pism.ezasse.util.MapUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -34,7 +34,7 @@ public class DefaultConfigManager implements ConfigManager {
 
     /**
      * <p>
-     * 获取ezasseP诶之
+     * 获取ezasse配置
      * </p>
      * by perccyking
      *

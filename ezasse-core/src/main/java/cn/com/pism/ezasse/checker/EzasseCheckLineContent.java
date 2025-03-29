@@ -1,10 +1,10 @@
 package cn.com.pism.ezasse.checker;
 
 import cn.com.pism.ezasse.resource.EzasseFileLine;
+import cn.com.pism.ezasse.util.CollUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +39,7 @@ public class EzasseCheckLineContent {
 
     public String getExecuteScript() {
         List<EzasseFileLine> executeContent = getExecuteContent();
-        if (CollectionUtils.isEmpty(executeContent)) {
+        if (CollUtils.isEmpty(executeContent)) {
             return "";
         }
         StringBuilder sb = new StringBuilder();
@@ -50,7 +50,7 @@ public class EzasseCheckLineContent {
     }
 
     public List<EzasseFileLine> getExecuteContent() {
-        if (CollectionUtils.isEmpty(content)) {
+        if (CollUtils.isEmpty(content)) {
             return Collections.emptyList();
         }
 
@@ -70,7 +70,7 @@ public class EzasseCheckLineContent {
 
         boolean ignoreDelimiter
                 // 如果没有开始或结束标记，不做处理
-                = (CollectionUtils.isEmpty(delimiterStartIndex) || CollectionUtils.isEmpty(delimiterEndIndex))
+                = (CollUtils.isEmpty(delimiterStartIndex) || CollUtils.isEmpty(delimiterEndIndex))
                 // 如果开始或结束标记存在多个，不做处理
                 || (delimiterStartIndex.size() > 1 || delimiterEndIndex.size() > 1)
                 //如果开始标记位置没有小于结束标记的位置，不做处理

@@ -5,6 +5,7 @@ import cn.com.pism.ezasse.context.EzasseContext;
 import cn.com.pism.ezasse.manager.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -20,6 +21,7 @@ import org.springframework.context.annotation.Import;
         EzasseConfigManagerConfiguration.class,
         EzasseResourceManagerConfiguration.class
 })
+@Configuration
 public class EzasseContextConfiguration {
 
     @Bean

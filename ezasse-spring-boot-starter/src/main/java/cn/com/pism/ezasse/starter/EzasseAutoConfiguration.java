@@ -5,6 +5,7 @@ import cn.com.pism.ezasse.starter.config.EzasseContextConfiguration;
 import cn.com.pism.ezasse.starter.config.jdbc.EzasseForJdbcConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -23,6 +24,7 @@ import org.springframework.context.annotation.Import;
  * @since 2022/04/10 下午 11:07
  */
 @ConditionalOnClass(AbstractEzasse.class)
+@ConditionalOnProperty(value = "spring.ezasse.enable", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(EzasseProperties.class)
 @AutoConfigureAfter({DataSourceAutoConfiguration.class, JdbcTemplateAutoConfiguration.class})
 @Import({

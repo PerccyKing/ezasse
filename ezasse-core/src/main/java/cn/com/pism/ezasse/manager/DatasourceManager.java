@@ -47,7 +47,7 @@ public interface DatasourceManager {
      * </p>
      * by perccyking
      *
-     * @return {@link boolean} true：没有任何数据源
+     * @return true：没有任何数据源
      * @since 25-03-15 21:00
      */
     boolean isEmpty();

@@ -5,7 +5,7 @@ import cn.com.pism.ezasse.jdbc.action.param.GetTableInfoActionParam;
 import cn.com.pism.ezasse.model.EzasseDataSource;
 import cn.com.pism.ezasse.model.EzasseTableInfo;
 import cn.com.pism.ezasse.util.EzasseUtil;
-import org.apache.commons.collections4.IterableUtils;
+import cn.com.pism.ezasse.util.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 

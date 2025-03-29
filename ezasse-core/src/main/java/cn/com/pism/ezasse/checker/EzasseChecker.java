@@ -4,7 +4,6 @@ import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.model.EzasseDataSource;
 import cn.com.pism.ezasse.model.EzasseExecutor;
 import cn.com.pism.ezasse.util.EzasseLogUtil;
-import lombok.Setter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -12,7 +11,6 @@ import org.apache.commons.logging.LogFactory;
  * @author PerccyKing
  * @since 24-10-22 23:06
  */
-@Setter
 public abstract class EzasseChecker {
 
     private static final Log log = LogFactory.getLog(EzasseChecker.class);
@@ -25,7 +23,7 @@ public abstract class EzasseChecker {
      *
      * @param dataSource   : 数据源
      * @param checkContent : 校验内容
-     * @return {@link boolean} true:校验通过 false:校验不通过
+     * @return true:校验通过 false:校验不通过
      * @since 25-01-19 01:42
      */
     public boolean check(EzasseDataSource dataSource, String checkContent) {
@@ -40,7 +38,7 @@ public abstract class EzasseChecker {
      *
      * @param dataSource       : 数据源
      * @param checkLineContent : 校验行对象
-     * @return {@link boolean} true:校验通过 false:校验不通过
+     * @return true:校验通过 false:校验不通过
      * @since 25-01-19 01:42
      */
     public boolean check(EzasseDataSource dataSource, EzasseCheckLineContent checkLineContent) {
