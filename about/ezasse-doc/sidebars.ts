@@ -36,7 +36,8 @@ const sidebars: SidebarsConfig = {
       collapsed: true,
       items: [
         'guides/install',
-        'guides/config'
+        'guides/config',
+        'guides/file_naming_rules'
       ],
     },
     {
