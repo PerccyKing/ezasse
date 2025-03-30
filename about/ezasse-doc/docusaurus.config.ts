@@ -47,7 +47,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/PerccyKing/ezasse/about/ezasse-doc/',
+            'https://github.com/PerccyKing/ezasse/tree/master/about/ezasse-doc/',
           lastVersion: 'current',
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
@@ -62,7 +62,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/PerccyKing/ezasse/about/ezasse-doc/blog/',
+            'https://github.com/PerccyKing/ezasse/tree/master/about/ezasse-doc/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
