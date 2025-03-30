@@ -10,7 +10,7 @@ import EzasseSpringbootStarterDependency from "@site/src/components/EzasseSpring
 
 另外必要的依赖
 
-```xml
+```xml showLineNumbers
 <!--spring-jdbc支持-->
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -18,7 +18,7 @@ import EzasseSpringbootStarterDependency from "@site/src/components/EzasseSpring
 </dependency>
 ```
 
-```xml
+```xml showLineNumbers
 <!--mysql驱动-->
 <dependency>
     <groupId>com.mysql</groupId>
@@ -29,7 +29,7 @@ import EzasseSpringbootStarterDependency from "@site/src/components/EzasseSpring
 
 ## 添加数据库配置
 
-```yaml
+```yaml showLineNumbers
 # 根据实际情况修改
 spring:
   datasource:
@@ -49,7 +49,7 @@ resources 文件夹下创建`sql`文件夹，并且创建文件 `init.sql`
 
 :::
 
-```sql title="/src/main/resources/sql/init.sql"
+```sql title="/src/main/resources/sql/init.sql" showLineNumbers
 -- TABLE(t_user)
 CREATE TABLE t_user
 (
@@ -64,7 +64,7 @@ CREATE TABLE t_user
 
 在启动类上添加注解`@EnableEzasse`
 
-```java title="Application.java"
+```java title="Application.java" showLineNumbers
 package cn.com.pism.example;
 
 import cn.com.pism.ezasse.starter.annotation.EnableEzasse;
@@ -72,7 +72,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+// highlight-start
 @EnableEzasse
+// highlight-end
 public class Application {
 
     public static void main(String[] args) {
