@@ -22,7 +22,7 @@ const sidebars: SidebarsConfig = {
       link: {
         type: 'generated-index',
       },
-      collapsed: true,
+      collapsed: false,
       items: [
         'start/springboot2_mysql'
       ],
@@ -33,22 +33,25 @@ const sidebars: SidebarsConfig = {
       link: {
         type: 'generated-index',
       },
-      collapsed: true,
+      collapsed: false,
       items: [
         'guides/install',
         'guides/config',
-        'guides/file_naming_rules'
+        'guides/file_naming_rules',
+        'guides/grammar',
       ],
     },
     {
       type: 'category',
-      label: '校验器',
+      label: '进阶',
       link: {
         type: 'generated-index',
       },
-      collapsed: true,
+      collapsed: false,
       items: [
-        'checker/index',
+        'advanced/checker',
+        'advanced/executor',
+        'advanced/datasource',
       ],
     },
 
