@@ -38,6 +38,16 @@ const config: Config = {
     locales: ['zh'],
   },
 
+   headTags: [
+    {
+      tagName: 'meta',
+      attributes: {
+        name: 'baidu_union_verify',
+        content: 'e480ffb2f1fe6f5f4be78706b79c377e'
+      }
+    }
+  ],
+
   presets: [
     [
       'classic',
