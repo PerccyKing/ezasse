@@ -18,6 +18,14 @@ import org.apache.commons.logging.LogFactory;
 import static cn.com.pism.ezasse.constants.EzasseExecutorActionConstants.DO_EXECUTE;
 
 /**
+ * Ezasse 从文件中读取 ezasse文件的实现
+ * <br/>
+ * 使用 {@link EzasseFileResourceLoader} 读取所有资源文件
+ * <br/>
+ * 使用 {@link EzasseFileResourceParser} 将资源文件解析为 {@link cn.com.pism.ezasse.resource.EzasseResourceData}
+ * <br/>
+ * {@code FileEzasse} 只对 {@link EzasseFileResourceData} 进行处理
+ *
  * @author PerccyKing
  * @since 24-10-27 00:46
  */

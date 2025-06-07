@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 import static cn.com.pism.ezasse.constants.EzasseConstants.MASTER;
 
 /**
- * 0.x 数据源兼容，将在后续的版本中陆续删除
+ * 0.x 数据源兼容，将在后续的版本中删除
  * @author PerccyKing
  * @since 25-03-13 22:55
  */

@@ -36,14 +36,14 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <scope>provided</scope>
+            <groupId>cn.com.pism</groupId>
+            <artifactId>ezasse-for-jdbc</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>cn.com.pism</groupId>
-            <artifactId>ezasse-for-jdbc</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
