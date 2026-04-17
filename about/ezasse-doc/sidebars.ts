@@ -24,7 +24,8 @@ const sidebars: SidebarsConfig = {
       },
       collapsed: false,
       items: [
-        'start/springboot2_mysql'
+        'start/springboot2_mysql',
+        'start/springboot3_mysql',
       ],
     },
     {
@@ -39,6 +40,7 @@ const sidebars: SidebarsConfig = {
         'guides/config',
         'guides/file_naming_rules',
         'guides/grammar',
+        'guides/faq',
       ],
     },
     {

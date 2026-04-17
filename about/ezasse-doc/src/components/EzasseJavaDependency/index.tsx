@@ -12,34 +12,33 @@ export default function EzasseJavaDependency({showVersion = false}: {
     <>
       {showVersion && <EzasseVersion/>}
       <Tabs groupId="versionManager">
-        <TabItem value="maven" label="maven">
-
+        <TabItem value="maven" label="Maven">
           <CodeBlock
             language="xml"
             title="pom.xml"
             showLineNumbers>
-            {`<!-- ezasse 核心-->
+            {`<!-- ezasse 核心 -->
 <dependency>
     <groupId>cn.com.pism</groupId>
     <artifactId>ezasse-core</artifactId>
     <version>${ezasseConfig.currentVersion}</version>
 </dependency>
 
-<!-- ezasse jdbc实现-->
+<!-- ezasse jdbc 实现 -->
 <dependency>
     <groupId>cn.com.pism</groupId>
     <artifactId>ezasse-for-jdbc</artifactId>
     <version>${ezasseConfig.currentVersion}</version>
 </dependency>
 
-<!-- mysql 驱动-->
+<!-- MySQL 驱动 -->
 <dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.31</version>
+    <groupId>com.mysql</groupId>
+    <artifactId>mysql-connector-j</artifactId>
+    <version>8.3.0</version>
 </dependency>
 
-<!-- spring jdbc 支持-->
+<!-- spring-jdbc 支持 -->
 <dependency>
     <groupId>org.springframework</groupId>
     <artifactId>spring-jdbc</artifactId>
@@ -47,12 +46,22 @@ export default function EzasseJavaDependency({showVersion = false}: {
 </dependency>`}
           </CodeBlock>
         </TabItem>
-        <TabItem value="gradle" label="gradle">
+        <TabItem value="gradle" label="Gradle">
           <CodeBlock
-            language="gradle"
+            language="groovy"
             title="build.gradle"
             showLineNumbers>
-            {``}
+            {`// ezasse 核心
+implementation 'cn.com.pism:ezasse-core:${ezasseConfig.currentVersion}'
+
+// ezasse jdbc 实现
+implementation 'cn.com.pism:ezasse-for-jdbc:${ezasseConfig.currentVersion}'
+
+// MySQL 驱动
+runtimeOnly 'com.mysql:mysql-connector-j:8.3.0'
+
+// spring-jdbc 支持
+implementation 'org.springframework:spring-jdbc:5.3.39'`}
           </CodeBlock>
         </TabItem>
       </Tabs>

@@ -8,7 +8,7 @@ export default function EzasseVersion(): JSX.Element {
     <>
       <Admonition type="info" title={"当前版本信息"}>
         <p>ezasse.version:
-          <a href={ezasseConfig.github + '/tree/v' + ezasseConfig.currentVersion} target={"_blank"}>{ezasseConfig.currentVersion}</a>
+          <a href={ezasseConfig.github + '/tree/' + ezasseConfig.currentVersion} target={"_blank"}>{ezasseConfig.currentVersion}</a>
         </p>
       </Admonition>
     </>
