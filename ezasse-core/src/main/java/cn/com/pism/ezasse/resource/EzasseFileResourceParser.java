@@ -2,6 +2,7 @@ package cn.com.pism.ezasse.resource;
 
 import cn.com.pism.ezasse.checker.EzasseCheckLineContent;
 import cn.com.pism.ezasse.context.EzasseContext;
+import cn.com.pism.ezasse.exception.EzasseException;
 import cn.com.pism.ezasse.model.EzasseConfig;
 import cn.com.pism.ezasse.model.EzasseFile;
 import cn.com.pism.ezasse.util.CollUtils;
@@ -12,11 +13,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.InputStream;
+import java.net.URI;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static cn.com.pism.ezasse.enums.EzasseExceptionCode.FILE_READ_EXCEPTION;
 
 /**
  * @author PerccyKing
@@ -37,30 +41,30 @@ public class EzasseFileResourceParser implements EzasseResourceParser {
         EzasseFileResource resource = (EzasseFileResource) ezasseResource;
         EzasseFileResourceData resourceData = new EzasseFileResourceData();
 
-        List<EzasseFile> sqlFiles = resource.getFiles();
+        List<EzasseFile> files = resource.getFiles();
 
         //打印日志
-        printLog(sqlFiles);
+        printLog(files);
 
         //没有解析到文件，直接结束流程
-        if (CollUtils.isEmpty(sqlFiles)) {
+        if (CollUtils.isEmpty(files)) {
             return resourceData;
         }
 
-        sqlFiles = filterSqlFiles(sqlFiles);
+        files = filterFiles(files);
 
-        EzasseFileResourceData groupParsedData = groupParsed(sqlFiles, resourceData);
+        EzasseFileResourceData groupParsedData = groupParsed(files, resourceData);
         if (groupParsedData != null) {
             return groupParsedData;
         }
 
         //遍历文件
-        sortedFile(sqlFiles).forEach(sqlFile -> parseSqlFile(sqlFile, resourceData));
+        sortedFile(files).forEach(file -> parseFile(file, resourceData));
 
         return resourceData;
     }
 
-    private EzasseFileResourceData groupParsed(List<EzasseFile> sqlFiles, EzasseFileResourceData resourceData) {
+    private EzasseFileResourceData groupParsed(List<EzasseFile> files, EzasseFileResourceData resourceData) {
         //配置
         EzasseConfig config = ezasseContext.configManager().getConfig();
         List<String> groupOrder = config.getGroupOrder();
@@ -70,47 +74,51 @@ public class EzasseFileResourceParser implements EzasseResourceParser {
             return null;
         }
 
-        Map<String, List<EzasseFile>> groupFileMap = sqlFiles.stream().collect(Collectors.groupingBy(EzasseFile::getGroup));
+        Map<String, List<EzasseFile>> groupFileMap = files.stream().collect(Collectors.groupingBy(EzasseFile::getGroup));
 
         groupOrder.forEach(group -> {
             List<EzasseFile> groupFiles = groupFileMap.get(group);
+
+            if (CollUtils.isEmpty(groupFiles)) {
+                return;
+            }
             //文件排序
-            sortedFile(groupFiles).forEach(sqlFile -> parseSqlFile(sqlFile, resourceData));
+            sortedFile(groupFiles).forEach(file -> parseFile(file, resourceData));
         });
         return resourceData;
     }
 
-    private List<EzasseFile> filterSqlFiles(List<EzasseFile> sqlFiles) {
+    private List<EzasseFile> filterFiles(List<EzasseFile> files) {
         //配置
         EzasseConfig config = ezasseContext.configManager().getConfig();
 
         //过滤指定文件
         List<String> fileList = config.getFileList();
         if (!CollUtils.isEmpty(fileList)) {
-            sqlFiles = sqlFiles.stream()
-                    .filter(sqlFile -> fileList.stream().anyMatch(sqlFile.getName()::contains))
-                    .collect(Collectors.toList());
+            files = files.stream()
+                    .filter(file -> fileList.stream().anyMatch(file.getName()::contains))
+                    .toList();
         }
 
         //如果指定了分组
         if (!CollUtils.isEmpty(config.getGroupOrder())) {
             //过滤出指定分组的文件
-            sqlFiles = sqlFiles.stream()
-                    .filter(sqlFile -> config.getGroupOrder().contains(sqlFile.getGroup()))
-                    .collect(Collectors.toList());
+            files = files.stream()
+                    .filter(file -> config.getGroupOrder().contains(file.getGroup()))
+                    .toList();
         }
-        return sqlFiles;
+        return files;
     }
 
-    private Stream<EzasseFile> sortedFile(List<EzasseFile> sqlFiles) {
-        return sqlFiles.stream().sorted(Comparator.comparingInt(o -> Integer.parseInt(o.getOrder())));
+    private Stream<EzasseFile> sortedFile(List<EzasseFile> files) {
+        return files.stream().sorted(Comparator.comparingInt(o -> Integer.parseInt(o.getOrder())));
     }
 
-    private void parseSqlFile(EzasseFile sqlFile, EzasseFileResourceData resourceData) {
+    private void parseFile(EzasseFile file, EzasseFileResourceData resourceData) {
         //读取文件内容
-        List<String> lines = readFile(sqlFile.getPath());
+        List<String> lines = readFile(file.getPath());
 
-        resourceData.addFileData(parseFileLines(sqlFile, lines));
+        resourceData.addFileData(parseFileLines(file, lines));
     }
 
     /**
@@ -119,12 +127,12 @@ public class EzasseFileResourceParser implements EzasseResourceParser {
      * </p>
      * by perccyking
      *
-     * @param sqlFile : 文件对象
-     * @param lines   : 文件内容所有行
+     * @param file  : 文件对象
+     * @param lines : 文件内容所有行
      * @return {@link EzasseFileResourceData.ResourceData}
      * @since 24-11-17 00:09
      */
-    private EzasseFileResourceData.ResourceData parseFileLines(EzasseFile sqlFile, List<String> lines) {
+    private EzasseFileResourceData.ResourceData parseFileLines(EzasseFile file, List<String> lines) {
         // 空文件不做处理
         if (CollUtils.isEmpty(lines)) {
             return null;
@@ -147,7 +155,7 @@ public class EzasseFileResourceParser implements EzasseResourceParser {
                 currentCheckLine = ezasseFileLine;
 
                 // 添加节点信息
-                populateNodeInfo(sqlFile, currentCheckLine);
+                populateNodeInfo(file, currentCheckLine);
 
                 // 创建clc
                 currentCheckLineContent = new EzasseCheckLineContent(currentCheckLine);
@@ -169,9 +177,9 @@ public class EzasseFileResourceParser implements EzasseResourceParser {
         return fileData;
     }
 
-    private void populateNodeInfo(EzasseFile sqlFile, EzasseFileLine currentCheckLine) {
+    private void populateNodeInfo(EzasseFile file, EzasseFileLine currentCheckLine) {
         // 如果校验行没有指定校验节点和执行节点，并且文件指定了校验和执行节点，将文件节点赋值给校验行
-        String fileNode = sqlFile.getNode();
+        String fileNode = file.getNode();
         if (StringUtils.isNotBlank(fileNode)) {
             if (StringUtils.isBlank(currentCheckLine.getCheckNode())) {
                 currentCheckLine.setCheckNode(fileNode);
@@ -194,8 +202,12 @@ public class EzasseFileResourceParser implements EzasseResourceParser {
      * @since 24-11-17 00:39
      */
     public List<String> readFile(String path) {
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(path);
-        return EzasseIoUtil.readLines(inputStream);
+        try (InputStream inputStream = URI.create(path).toURL().openStream()) {
+            return EzasseIoUtil.readLines(inputStream);
+        } catch (Exception e) {
+            //包装异常抛出，防止解析静默失败
+            throw new EzasseException(FILE_READ_EXCEPTION);
+        }
     }
 
     private static final int MIN_WIDTH = 5;

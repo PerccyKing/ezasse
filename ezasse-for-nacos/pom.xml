@@ -9,8 +9,8 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>ezasse-for-jdbc</artifactId>
-    <description>ezasse jdbc 的实现，启动直接进行脚本校验并更新数据库</description>
+    <artifactId>ezasse-for-nacos</artifactId>
+    <description>ezasse nacos 的实现，启动自动更新nacos配置中心的配置</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -31,10 +31,19 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>nacos-client</artifactId>
+            <version>3.0.1</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.3</version>
+            <scope>provided</scope>
+        </dependency>
+
 
     </dependencies>
 

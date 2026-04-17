@@ -10,10 +10,9 @@
     </parent>
 
     <artifactId>ezasse-for-jdbc-enhance</artifactId>
+    <description>ezasse jdbc 的增强实现，只写校验行，自动生成更新脚本</description>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

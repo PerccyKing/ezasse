@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -56,6 +57,12 @@ public class EzasseProperties {
      * 关键字
      */
     private EzasseKeyWords keyWords = new EzasseKeyWords();
+
+    /**
+     * 行注释标记
+     */
+    private List<String> lineComment = Arrays.asList("--", "#");
+
 
     @Data
     public static class EzasseKeyWords {

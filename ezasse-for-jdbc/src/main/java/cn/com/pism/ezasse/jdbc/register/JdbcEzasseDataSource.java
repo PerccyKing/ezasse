@@ -1,5 +1,6 @@
 package cn.com.pism.ezasse.jdbc.register;
 
+import cn.com.pism.ezasse.exception.EzasseException;
 import cn.com.pism.ezasse.model.EzasseDataSource;
 import lombok.AllArgsConstructor;
 import org.apache.commons.logging.Log;
@@ -27,8 +28,8 @@ public class JdbcEzasseDataSource implements EzasseDataSource {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T getDataSource() {
-        return (T) dataSource;
+    public DataSource getDataSource() {
+        return dataSource;
     }
 
     /**
@@ -56,8 +57,8 @@ public class JdbcEzasseDataSource implements EzasseDataSource {
             return getDatabaseProductName(connection.getMetaData().getURL()).toUpperCase();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
+            throw new EzasseException("jdbc get connection error", e);
         }
-        return UNKNOWN;
     }
 
     private String getDatabaseProductName(String jdbcUrl) {

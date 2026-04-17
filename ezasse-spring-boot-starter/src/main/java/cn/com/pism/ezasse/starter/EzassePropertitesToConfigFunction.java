@@ -21,6 +21,7 @@ public class EzassePropertitesToConfigFunction implements Function<EzassePropert
         EzasseProperties.EzasseKeyWords keyWords = ezasseProperties.getKeyWords();
         EzasseKeyWords ezasseKeyWords = buildKeyWords(keyWords);
         config.setKeyWords(ezasseKeyWords);
+        config.setLineComment(ezasseProperties.getLineComment());
         return config;
     }
 

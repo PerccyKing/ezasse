@@ -30,7 +30,8 @@ public class MysqlTableExistsAction implements EzasseExecutorAction<TableIsExist
      */
     @Override
     public Boolean doAction(TableIsExistActionParam actionParam, EzasseDataSource dataSource) {
-        return Boolean.FALSE.equals(JdbcTemplateCache.get(dataSource.getId()).queryForObject(SQL, Boolean.class, actionParam.getTableName(), getDataBaseNameFromDataSource(dataSource.getDataSource())));
+        return !JdbcTemplateCache.get(dataSource.getId())
+                .queryForObject(SQL, Boolean.class, actionParam.getTableName(), getDataBaseNameFromDataSource(dataSource.getDataSource()));
     }
 
     /**

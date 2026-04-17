@@ -103,7 +103,8 @@ public class FileEzasse extends AbstractEzasse {
                     .executorManager()
                     .getExecutor(executeDataSource.getType());
 
-            executor.execute(DO_EXECUTE, new DoExecuteActionParam(checkLineContent.getExecuteScript()), executeDataSource);
+            // 执行
+            executor.execute(DO_EXECUTE, new DoExecuteActionParam(checkLineContent), executeDataSource);
         }
     }
 

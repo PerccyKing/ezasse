@@ -8,6 +8,7 @@
         <module>ezasse-spring-boot-starter</module>
         <module>ezasse-for-jdbc</module>
         <module>ezasse-for-jdbc-enhance</module>
+        <module>ezasse-for-nacos</module>
     </modules>
 
     <groupId>cn.com.pism</groupId>
@@ -53,7 +54,7 @@
 
     <properties>
         <revision>1.0.0-re</revision>
-        <java.version>1.8</java.version>
+        <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -76,6 +77,24 @@
             </dependency>
 
             <dependency>
+                <groupId>cn.com.pism</groupId>
+                <artifactId>ezasse-for-jdbc-enhance</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.com.pism</groupId>
+                <artifactId>ezasse-for-nacos</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.com.pism</groupId>
+                <artifactId>ezasse-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.18.34</version>
@@ -89,27 +108,39 @@
                 <scope>provided</scope>
             </dependency>
 
+            <dependency>
+                <groupId>io.github.classgraph</groupId>
+                <artifactId>classgraph</artifactId>
+                <version>4.8.184</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
 
     <build>
-        <defaultGoal>install</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.13.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <release>${java.version}</release>
                     <encoding>utf-8</encoding>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.42</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -123,7 +154,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
+                <version>3.4.1</version>
                 <configuration>
                     <additionalJOptions>
                         <additionalJOption>-Xdoclint:none</additionalJOption>

@@ -48,10 +48,8 @@ public abstract class EzasseExecutor {
      * @param actionId actionId
      * @return 执行器action实例
      */
-    @SuppressWarnings("all")
     protected EzasseExecutorAction<? extends ActionParam, ?> getAction(String actionId) {
-        EzasseExecutorAction<? extends ActionParam, ?> executorAction = executorManager.getExecutorAction(getDataSourceType(), actionId);
-        return executorAction;
+        return executorManager.getExecutorAction(getDataSourceType(), actionId);
     }
 
     /**

@@ -27,6 +27,10 @@ public abstract class EzasseChecker {
      * @since 25-01-19 01:42
      */
     public boolean check(EzasseDataSource dataSource, String checkContent) {
+        return check(dataSource, getEzasseExecutor(dataSource), checkContent);
+    }
+
+    public boolean check(EzasseDataSource dataSource, EzasseExecutor checkExecutor, String checkContent) {
         return false;
     }
 

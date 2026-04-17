@@ -1,5 +1,6 @@
 package cn.com.pism.ezasse.model;
 
+import cn.com.pism.ezasse.checker.EzasseCheckLineContent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,11 @@ import lombok.NoArgsConstructor;
 public class DoExecuteActionParam implements ActionParam {
 
     /**
-     * 执行内容
+     * 校验行和内容
      */
-    private String executeContent;
+    private EzasseCheckLineContent checkLineContent;
+
+    public String getExecuteContent() {
+        return checkLineContent.getExecuteScript();
+    }
 }

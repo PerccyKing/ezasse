@@ -1,11 +1,14 @@
 package cn.com.pism.ezasse.enums;
 
 
+import lombok.Getter;
+
 /**
  * @author PerccyKing
  * @version 0.0.1
  * @since 2022/04/05 下午 12:50
  */
+@Getter
 public enum EzasseExceptionCode {
     /**
      * 未指定目录异常
@@ -15,8 +18,16 @@ public enum EzasseExceptionCode {
      * 未指定分组
      */
     UNSPECIFIED_GROUP_EXCEPTION("未指定GROUP", "UNSPECIFIED_GROUP"),
+
+    /**
+     * 语法错误
+     */
     SYNTAX_ERROR_EXCEPTION("语法错误", "SYNTAX_ERROR"),
-    ;
+
+    /**
+     * 文件读取异常
+     */
+    FILE_READ_EXCEPTION("文件读取异常", "FILE_READ_EXCEPTION");
 
     EzasseExceptionCode(String message, String code) {
         this.message = message;
@@ -33,11 +44,4 @@ public enum EzasseExceptionCode {
      */
     private final String code;
 
-    public String getMessage() {
-        return message;
-    }
-
-    public String getCode() {
-        return code;
-    }
 }
