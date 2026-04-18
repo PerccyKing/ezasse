@@ -30,7 +30,7 @@ public class DefaultExecutorManager implements ExecutorManager {
     /**
      * 执行器动作id map [执行器类型, [动作id,动作]]]
      */
-    private final Map<String, Map<String, EzasseExecutorAction<? extends ActionParam, ?>>> executorActionIdMap = new HashMap<>(16);
+    private final Map<String, Map<String, EzasseExecutorAction<? extends ActionParam, ?>>> executorActionIdMap = HashMap.newHashMap(16);
 
     /**
      * <p>
@@ -53,12 +53,27 @@ public class DefaultExecutorManager implements ExecutorManager {
      * </p>
      * by perccyking
      *
+     * @param executor : 执行器
+     * @since 26-04-18 22:34
+     */
+    @Override
+    public void registerExecutor(EzasseExecutor executor) {
+        registerExecutor(executor.getDataSourceType(), executor);
+    }
+
+    /**
+     * <p>
+     * 注册执行器
+     * </p>
+     * by perccyking
+     *
      * @param dataSourceType : 数据源类型
      * @param executor       : 执行器实例
      * @since 24-12-29 17:52
      */
     @Override
     public void registerExecutor(String dataSourceType, EzasseExecutor executor) {
+        executor.setExecutorManager(this);
         executorMap.put(dataSourceType, executor);
     }
 
@@ -82,7 +97,7 @@ public class DefaultExecutorManager implements ExecutorManager {
         ezasseExecutorActions.add(executorAction);
 
         Map<String, EzasseExecutorAction<? extends ActionParam, ?>> idExecutorActionMap =
-                executorActionIdMap.computeIfAbsent(dataSourceType, k -> new HashMap<>(16));
+                executorActionIdMap.computeIfAbsent(dataSourceType, k -> HashMap.newHashMap(16));
         idExecutorActionMap.put(executorAction.getId(), executorAction);
     }
 

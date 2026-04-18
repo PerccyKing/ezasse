@@ -3,6 +3,7 @@ package cn.com.pism.ezasse.starter;
 import cn.com.pism.ezasse.AbstractEzasse;
 import cn.com.pism.ezasse.starter.config.EzasseContextConfiguration;
 import cn.com.pism.ezasse.starter.config.jdbc.EzasseForJdbcConfiguration;
+import cn.com.pism.ezasse.starter.config.nacos.EzasseForNacosConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -30,6 +31,7 @@ import org.springframework.context.annotation.Import;
 @Import({
         EzasseContextConfiguration.class,
         EzasseForJdbcConfiguration.class,
+        EzasseForNacosConfiguration.class,
         FileEzasseConfiguration.class
 })
 public class EzasseAutoConfiguration {

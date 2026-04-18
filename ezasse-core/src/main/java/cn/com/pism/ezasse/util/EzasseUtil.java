@@ -99,6 +99,17 @@ public class EzasseUtil {
         }
     }
 
+    /**
+     * 从指定文件夹中获取所有资源文件
+     * <p>
+     * 扫描 classpath 下指定文件夹中的所有资源文件，不限制文件扩展名。
+     * 支持 {@code classpath:} 前缀。
+     * </p>
+     *
+     * @param folder 文件夹路径
+     * @return 该文件夹下的所有资源集合
+     * @throws EzasseException 如果未指定文件夹
+     */
     public static Collection<Resource> getResourcesFromFolder(String folder) {
         //没有指定文件夹时，抛出异常
         if (StringUtils.isBlank(folder)) {
@@ -115,10 +126,8 @@ public class EzasseUtil {
         }
 
         try (ScanResult scanResult = new ClassGraph().acceptPaths(path).scan()) {
-
-            //找到文件夹下的所有SQL文件
-
-            return scanResult.getResourcesWithExtension(SQL_EXTENSION.replace(".", ""));
+            // 加载文件夹下的所有文件，不再限制扩展名
+            return scanResult.getAllResources();
         }
     }
 

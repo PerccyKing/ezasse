@@ -4,14 +4,14 @@ import cn.com.pism.ezasse.checker.EzasseChecker;
 import cn.com.pism.ezasse.model.EzasseDataSource;
 import org.apache.commons.lang3.StringUtils;
 
-import static cn.com.pism.ezasse.nacos.constants.EzasseForNacosConstant.ACTION_PUBLISH;
+import static cn.com.pism.ezasse.nacos.constants.EzasseForNacosConstant.ACTION_MERGE_TO;
 
 /**
- * Nacos 发布检查器（PUBLISH）
+ * Nacos 合并发布检查器（MERGE_TO）
  * <p>
- * 当 ezasse 脚本中使用 {@code -- PUBLISH(GROUP,DATA-ID[,TIMEOUT])} 指令时，
- * 此检查器被触发。PUBLISH 语义为<strong>直接覆盖发布</strong>，即将脚本中的内容
- * 直接作为配置发布到 Nacos，不与原有配置合并。
+ * 当 ezasse 脚本中使用 {@code -- MERGE_TO(GROUP,DATA-ID[,TIMEOUT])} 指令时，
+ * 此检查器被触发。MERGE_TO 语义为<strong>增量合并发布</strong>，即先从 Nacos 获取
+ * 原有配置，将脚本中的新内容与原有配置合并后再发布。
  * </p>
  * <p>
  * checkContent 由核心层的 CHECK_LINE_PATTERN 已解析，格式为：{@code GROUP,DATA-ID[,TIMEOUT]}
@@ -20,10 +20,10 @@ import static cn.com.pism.ezasse.nacos.constants.EzasseForNacosConstant.ACTION_P
  * @author PerccyKing
  * @since 25-06-08 01:16
  */
-public class PublishChecker extends EzasseChecker {
+public class MergeToChecker extends EzasseChecker {
 
     /**
-     * 校验发布参数格式是否合法
+     * 校验合并发布参数格式是否合法
      * <p>
      * checkContent 至少需要包含 GROUP 和 DATA-ID 两个参数（以逗号分隔），
      * 可选的第三个参数为 TIMEOUT（毫秒）。
@@ -49,23 +49,10 @@ public class PublishChecker extends EzasseChecker {
     /**
      * 获取检查器的唯一标识
      *
-     * @return 检查器ID {@code "PUBLISH"}
+     * @return 检查器ID {@code "MERGE_TO"}
      */
     @Override
     public String getId() {
-        return ACTION_PUBLISH;
-    }
-
-    /**
-     * 允许执行内容为空
-     * <p>
-     * PUBLISH 指令允许空内容，表示清空指定配置。
-     * </p>
-     *
-     * @return true 允许空内容
-     */
-    @Override
-    public boolean allowEmpty() {
-        return true;
+        return ACTION_MERGE_TO;
     }
 }

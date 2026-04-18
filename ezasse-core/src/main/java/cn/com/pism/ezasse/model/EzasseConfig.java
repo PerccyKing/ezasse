@@ -5,7 +5,6 @@ import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -59,7 +58,7 @@ public class EzasseConfig {
 
     public List<String> getFolders() {
         if (CollUtils.isEmpty(folders)) {
-            return Collections.singletonList("sql");
+            return Arrays.asList("sql", "ezasse");
         }
         return folders;
     }

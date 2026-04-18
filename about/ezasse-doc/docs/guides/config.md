@@ -8,8 +8,8 @@
 |------|-----------------------------|----------|---------|-----------|--------------------------------|----------------------------------------------|
 | 是否开启 | `spring.ezasse.enable`      | Boolean  | `true`  | `true`    | `true\|false`                  | 是否启用ezasse,如果关闭，ezasse不会实例化                  |
 | 是否执行 | `spring.ezasse.execute`     | Boolean  | `true`  | `true`    | `true\|false`                  | 是否执行ezasse，如果关闭，项目启动后不会自动执行                  |
-| 文件夹  | `spring.ezasse.folders`     | String[] | `true`  | `['sql']` | `['sql','doc1']`               | 会扫描当前文件夹下所有的sql文件,文件夹最好有三位顺序标记，没有标记将按照默认排序执行 |
-| 文件列表 | `spring.ezasse.file-list`   | String[] | `false` |           | `['sql/v0.0.1-100-table.sql']` | 未指定，将校验全部的sql文件，可以是sql文件的完整名称，也可以是文件的分组名称    |
+| 文件夹  | `spring.ezasse.folders`     | String[] | `true`  | `['sql','ezasse']` | `['sql','ezasse']`               | 会扫描当前文件夹下所有的文件（不再限制为sql文件），文件夹最好有三位顺序标记 |
+| 文件列表 | `spring.ezasse.file-list`   | String[] | `false` |           | `['sql/v0.0.1-100-table.sql']` | 未指定，将校验全部的文件，可以是文件的完整名称，也可以是文件的分组名称    |
 | 分组顺序 | `spring.ezasse.group-order` | String[] | `false` |           | `['v0.0.1']`                   | 如果存在多个分组，需要指定分组执行顺序                          |
 
 ### 限定符配置

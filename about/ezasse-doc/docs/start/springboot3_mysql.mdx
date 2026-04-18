@@ -8,7 +8,7 @@ import CodeBlock from '@theme/CodeBlock';
 以 Spring Boot 3 项目使用 MySQL 数据库为例，快速接入 ezasse。
 
 :::info[适用版本]
-本文档适用于 **Spring Boot 3.x** + **Java 17+**。如果你使用的是 Spring Boot 2.x，请参考 [Spring Boot 2 + MySQL](./springboot2_mysql)。
+本文档适用于 **Spring Boot 3.x** + **Java 21+**。如果你使用的是 Spring Boot 2.x，请参考 [Spring Boot 2 + MySQL](./springboot2_mysql)。
 :::
 
 ## 第一步：添加依赖
@@ -63,9 +63,9 @@ spring:
     password: your_password
     driver-class-name: com.mysql.cj.jdbc.Driver
   ezasse:
-    # 指定扫描的 SQL 文件目录（相对于 resources）
+    # 指定扫描的文件目录（默认扫描 sql 和 ezasse 目录）
     folders:
-      - sql
+      - ezasse
 ```
 
 ## 第三步：编写 SQL 文件

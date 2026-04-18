@@ -1,6 +1,7 @@
 package cn.com.pism.ezasse.jdbc.register;
 
 import cn.com.pism.ezasse.jdbc.action.oracle.OracleGetTableInfoAction;
+import cn.com.pism.ezasse.jdbc.executor.JdbcTemplateExecutor;
 import cn.com.pism.ezasse.manager.ExecutorManager;
 import cn.com.pism.ezasse.model.ExecutorActionRegister;
 
@@ -14,5 +15,6 @@ public class JdbcOracleExecutorActionRegister implements ExecutorActionRegister 
 
     public void registry(ExecutorManager executorManager) {
         executorManager.registerExecutorAction(ORACLE, new OracleGetTableInfoAction());
+        executorManager.registerExecutor(new JdbcTemplateExecutor(ORACLE));
     }
 }

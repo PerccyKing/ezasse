@@ -23,7 +23,7 @@ public interface ExecutorManager {
         ServiceLoader<EzasseExecutor> executors = ServiceLoader.load(EzasseExecutor.class);
         executors.forEach(executor -> {
             executor.setExecutorManager(this);
-            registerExecutor(executor.getDataSourceType(), executor);
+            registerExecutor(executor);
         });
     }
 
@@ -47,6 +47,17 @@ public interface ExecutorManager {
      * @since 24-12-29 17:52
      */
     EzasseExecutor getExecutor(String dataSourceType);
+
+    /**
+     * <p>
+     * 注册执行器
+     * </p>
+     * by perccyking
+     *
+     * @param executor : 执行器
+     * @since 26-04-18 22:34
+     */
+    void registerExecutor(EzasseExecutor executor);
 
     /**
      * <p>

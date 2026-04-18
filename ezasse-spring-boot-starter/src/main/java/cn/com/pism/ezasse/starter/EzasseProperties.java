@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -141,7 +140,7 @@ public class EzasseProperties {
 
     public List<String> getFolders() {
         if (CollectionUtils.isEmpty(folders)) {
-            return Collections.singletonList("sql");
+            return Arrays.asList("sql", "ezasse");
         }
         return folders;
     }

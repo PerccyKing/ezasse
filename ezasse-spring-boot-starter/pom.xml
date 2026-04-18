@@ -47,6 +47,21 @@
         </dependency>
 
         <dependency>
+            <groupId>cn.com.pism</groupId>
+            <artifactId>ezasse-for-nacos</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>nacos-client</artifactId>
+            <version>3.0.1</version>
+            <optional>true</optional>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <scope>provided</scope>

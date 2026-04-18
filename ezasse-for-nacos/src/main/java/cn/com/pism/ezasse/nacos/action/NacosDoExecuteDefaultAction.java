@@ -1,51 +1,42 @@
 package cn.com.pism.ezasse.nacos.action;
 
-import cn.com.pism.ezasse.checker.EzasseCheckLineContent;
+import cn.com.pism.ezasse.context.EzasseContextHolder;
 import cn.com.pism.ezasse.model.AbstractDoExecuteAction;
 import cn.com.pism.ezasse.model.DoExecuteActionParam;
 import cn.com.pism.ezasse.model.EzasseDataSource;
-import cn.com.pism.ezasse.resource.EzasseFileLine;
-import com.alibaba.nacos.api.config.ConfigService;
-import com.alibaba.nacos.api.exception.NacosException;
+import cn.com.pism.ezasse.model.EzasseExecutorAction;
+import cn.com.pism.ezasse.nacos.constants.EzasseForNacosConstant;
 
 /**
+ * Nacos 默认执行动作 (Orchestrator)
+ * <p>
+ * 由于 FileEzasse 的默认执行流程硬编码传递了 DO_EXECUTE 动作，
+ * 此类作为 NACOS 数据源的默认 DO_EXECUTE 处理入口，
+ * 并将实际的发布或合并逻辑委托给具体的 {@link EzasseExecutorAction} (例如 {@link NacosPublishAction} 或 {@link NacosMergeToAction})。
+ * </p>
+ *
  * @author PerccyKing
  * @since 25-06-19 22:03
  */
 public class NacosDoExecuteDefaultAction extends AbstractDoExecuteAction {
 
     @Override
+    @SuppressWarnings("unchecked")
     public Boolean doAction(DoExecuteActionParam actionParam, EzasseDataSource dataSource) {
-        ConfigService configService = dataSource.getDataSource();
-        EzasseCheckLineContent checkLineContent = actionParam.getCheckLineContent();
+        // 从校验行中获取动作的 checkKey，例如 "PUBLISH" 或 "MERGE_TO"
+        String checkKey = actionParam.getCheckLineContent().getCheckLine().getCheckKey();
 
-        EzasseFileLine checkLine = checkLineContent.getCheckLine();
+        // 根据 checkKey 从执行器管理器中获取对应的具体动作处理类
+        EzasseExecutorAction<DoExecuteActionParam, Boolean> specificAction =
+                (EzasseExecutorAction<DoExecuteActionParam, Boolean>) EzasseContextHolder.getContext()
+                        .executorManager()
+                        .getExecutorAction(EzasseForNacosConstant.NACOS, checkKey);
 
-        String checkContent = checkLine.getCheckContent();
-        String executeContent = actionParam.getExecuteContent();
-        String config = null;
-        try {
-            config = configService.getConfig("", "", 200L);
-        } catch (NacosException e) {
-            throw new RuntimeException(e);
+        if (specificAction != null) {
+            return specificAction.doAction(actionParam, dataSource);
         }
 
-        try {
-            configService.publishConfig("","",merge(config,executeContent));
-        } catch (NacosException e) {
-            throw new RuntimeException(e);
-        }
-
-        return null;
-    }
-
-    private String merge(String config, String executeContent) {
-        // TEXT
-        // JSON
-        // XML
-        // YAML
-        // HTML
-        // Properties
-        return  "";
+        throw new UnsupportedOperationException("No specific Nacos action found for checkKey: " + checkKey);
     }
 }
+

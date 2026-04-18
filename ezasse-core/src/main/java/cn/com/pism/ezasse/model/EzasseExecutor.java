@@ -2,6 +2,7 @@ package cn.com.pism.ezasse.model;
 
 import cn.com.pism.ezasse.manager.ExecutorManager;
 import cn.com.pism.ezasse.util.EzasseLogUtil;
+import lombok.Data;
 import lombok.Setter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,12 +13,18 @@ import org.apache.commons.logging.LogFactory;
  * @author PerccyKing
  * @since 24-12-14 12:33
  */
-@Setter
-public abstract class EzasseExecutor {
+@Data
+public class EzasseExecutor {
 
     protected static final Log log = LogFactory.getLog(EzasseExecutor.class);
 
     protected ExecutorManager executorManager;
+
+    private String dataSourceType;
+
+    public EzasseExecutor(String dataSourceType) {
+        this.dataSourceType = dataSourceType;
+    }
 
     /**
      * 执行action
@@ -51,16 +58,5 @@ public abstract class EzasseExecutor {
     protected EzasseExecutorAction<? extends ActionParam, ?> getAction(String actionId) {
         return executorManager.getExecutorAction(getDataSourceType(), actionId);
     }
-
-    /**
-     * <p>
-     * 获取执行器数据源类型
-     * </p>
-     * by perccyking
-     *
-     * @return 执行器数据源类型
-     * @since 25-02-08 12:18
-     */
-    public abstract String getDataSourceType();
 
 }

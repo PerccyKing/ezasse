@@ -10,7 +10,11 @@ import cn.com.pism.ezasse.model.EzasseExecutorAction;
  * @author PerccyKing
  * @since 25-01-13 22:37
  */
-public abstract class JdbcTemplateExecutor extends EzasseExecutor {
+public class JdbcTemplateExecutor extends EzasseExecutor {
+
+    public JdbcTemplateExecutor(String dataSourceType) {
+        super(dataSourceType);
+    }
 
     @Override
     public EzasseExecutorAction<? extends ActionParam, ?> getAction(String actionId) {
@@ -18,6 +22,7 @@ public abstract class JdbcTemplateExecutor extends EzasseExecutor {
         if (action != null) {
             return action;
         }
+        // 获取公共的action
         return executorManager.getExecutorAction(JdbcTemplateExecutor.class.getName(), actionId);
     }
 
